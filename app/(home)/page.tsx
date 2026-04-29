@@ -190,8 +190,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
               {/* 1. Main Hero Card — spans 2 columns on desktop */}
               <BentoCard className="md:col-span-2 p-6 sm:p-8 flex flex-col justify-center min-h-[280px] sm:min-h-[320px]">
-                <VersionBadge />
-                <h1 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--foreground)] leading-[1.1]">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--foreground)] leading-[1.1]">
                   你钟爱的{' '}
                   <span className="text-[var(--accent)]">React.js</span>
                   <br className="hidden sm:block" />
