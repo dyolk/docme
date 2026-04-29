@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@heroui/styles';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
@@ -9,4 +10,113 @@ html {
 html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
+}
+
+/* Bento Grid custom styles */
+.bento-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .bento-grid {
+    gap: 1.25rem;
+  }
+}
+
+/* Bento card base */
+.bento-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border, rgba(255,255,255,0.08));
+  background: var(--surface, #ffffff);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px -10px rgba(0,0,0,0.12);
+}
+
+/* Dark mode bento card */
+.dark .bento-card {
+  background: var(--surface, #0a0a0a);
+  border-color: rgba(255,255,255,0.06);
+}
+
+.dark .bento-card:hover {
+  box-shadow: 0 8px 30px -10px rgba(0,0,0,0.5);
+}
+
+/* Gradient backgrounds for bento cards */
+.bento-gradient-blue {
+  background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(147,51,234,0.05) 100%);
+}
+
+.bento-gradient-purple {
+  background: linear-gradient(135deg, rgba(147,51,234,0.08) 0%, rgba(59,130,246,0.05) 100%);
+}
+
+.bento-gradient-green {
+  background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, rgba(59,130,246,0.05) 100%);
+}
+
+.bento-gradient-orange {
+  background: linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(234,179,8,0.05) 100%);
+}
+
+/* Custom animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Terminal styling */
+.terminal-window {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+}
+
+.dark .terminal-window {
+  background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Glow effect */
+.glow {
+  box-shadow: 0 0 60px -15px var(--accent);
+}
+
+/* Footer styling - removed hardcoded colors, use theme variables in component */
+
+/* Responsive typography scaling */
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
