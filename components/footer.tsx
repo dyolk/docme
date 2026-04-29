@@ -1,11 +1,21 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  BookOpen,
   Github,
   Globe,
   MessageSquare,
 } from 'lucide-react';
+
+function DILogo({ className = '' }: { className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center justify-center rounded-lg bg-[var(--accent)] text-white font-bold select-none ${className}`}
+      style={{ fontSize: '0.6em', lineHeight: 1 }}
+    >
+      DI
+    </span>
+  );
+}
 
 export function Footer() {
   const linkGroups = [
@@ -54,10 +64,8 @@ export function Footer() {
           {/* Logo & description - takes 2 columns on desktop */}
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4 group">
-              <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-                <BookOpen className="size-4 text-white" />
-              </div>
-              <span className="text-lg font-bold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">DocMe</span>
+              <DILogo className="w-8 h-8 text-lg" />
+              <span className="text-lg font-bold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">DocME</span>
             </Link>
             <p className="text-sm text-[var(--muted)] leading-relaxed max-w-xs mb-6">
               为开发者打造的现代化文档框架，
@@ -116,7 +124,7 @@ export function Footer() {
       <div className="bg-[var(--surface-secondary)] border-t border-[var(--border)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[var(--muted)]">
-            <p>© {new Date().getFullYear()} DocMe. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</p>
             {/* ICP placeholder - themed for both light and dark mode */}
             <div className="flex items-center gap-4">
               <span>京ICP备XXXXXXXX号-1</span>

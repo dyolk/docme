@@ -10,6 +10,17 @@ import {
   ChevronRight,
 } from 'lucide-react';
 
+function DILogo({ className = '' }: { className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center justify-center rounded-lg bg-[var(--accent)] text-white font-bold select-none ${className}`}
+      style={{ fontSize: '0.6em', lineHeight: 1 }}
+    >
+      DI
+    </span>
+  );
+}
+
 /* ── Changelog Data ─────────────────────────────── */
 
 interface ChangelogEntry {
@@ -27,9 +38,9 @@ const changelogData: ChangelogEntry[] = [
   {
     version: '2.0.0',
     date: '2024-12-15',
-    title: 'DocMe 2.0 正式发布',
+    title: 'DocME 2.0 正式发布',
     description:
-      '经过数月的打磨，DocMe 2.0 终于和大家见面了！这一版本带来了全新的 Bento 风格首页设计、完整的 HeroUI v3 集成，以及一系列性能优化。',
+      '经过数月的打磨，DocME 2.0 终于和大家见面了！这一版本带来了全新的 Bento 风格首页设计、完整的 HeroUI v3 集成，以及一系列性能优化。',
     features: [
       '全新 Bento Grid 风格首页，支持响应式布局',
       '集成 HeroUI v3 组件库，开箱即用',
@@ -78,9 +89,9 @@ const changelogData: ChangelogEntry[] = [
   {
     version: '1.0.0',
     date: '2024-08-01',
-    title: 'DocMe 首次发布',
+    title: 'DocME 首次发布',
     description:
-      'DocMe 正式问世！基于 Next.js App Router 和 Fumadocs 构建的现代化文档框架，让创建精美文档站点变得前所未有的简单。',
+      'DocME 正式问世！基于 Next.js App Router 和 Fumadocs 构建的现代化文档框架，让创建精美文档站点变得前所未有的简单。',
     features: [
       '基于 Next.js App Router 的文档框架',
       '内置 MDX 支持',
@@ -237,8 +248,8 @@ export default function ChangelogPage() {
             <h1 className="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-3">
               更新日志
             </h1>
-            <p className="text-sm text-[var(--muted)]">
-              追踪 DocMe 的每一次迭代与成长
+            <p className="text-sm text-[var(--muted)] inline-flex items-center gap-1.5 justify-center">
+              追踪 <DILogo className="w-5 h-5 text-[10px]" /> DocME 的每一次迭代与成长
             </p>
           </div>
 

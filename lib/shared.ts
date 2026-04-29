@@ -1,4 +1,4 @@
-export const appName = 'DocMe';
+export const appName = 'DocME';
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 export const docsContentRoute = '/llms.mdx/docs';

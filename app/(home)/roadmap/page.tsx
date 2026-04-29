@@ -16,6 +16,17 @@ import {
   Calendar,
 } from 'lucide-react';
 
+function DILogo({ className = '' }: { className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center justify-center rounded-lg bg-[var(--accent)] text-white font-bold select-none ${className}`}
+      style={{ fontSize: '0.6em', lineHeight: 1 }}
+    >
+      DI
+    </span>
+  );
+}
+
 /* ── Roadmap Data (reverse chronological) ─────────────────────────────── */
 
 interface RoadmapItem {
@@ -34,7 +45,7 @@ const roadmapData: RoadmapItem[] = [
     description: '更完善的 CLI 工具与生态集成。',
     status: 'planned',
     icon: <Terminal className="size-5" />,
-    features: ['DocMe CLI 工具', 'VS Code 扩展插件', '自动化部署集成', '性能监控与分析'],
+    features: ['DocME CLI 工具', 'VS Code 扩展插件', '自动化部署集成', '性能监控与分析'],
   },
   {
     title: '协作与版本管理',
@@ -69,7 +80,7 @@ const roadmapData: RoadmapItem[] = [
     features: ['多语言文档支持（i18n）', '自动语言检测与切换', 'RTL 布局适配', '本地化搜索'],
   },
   {
-    title: 'DocMe 2.0 正式发布',
+    title: 'DocME 2.0 正式发布',
     date: '2024-12-15',
     description: '全新设计，更强大的功能和更好的体验。',
     status: 'completed',
@@ -93,7 +104,7 @@ const roadmapData: RoadmapItem[] = [
     features: ['新增 Cards、Callout、Tabs 等文档组件', '支持自定义 MDX 组件', '代码块新增行号显示和复制功能'],
   },
   {
-    title: 'DocMe 1.0 正式发布',
+    title: 'DocME 1.0 正式发布',
     date: '2024-08-01',
     description: '项目首次发布，提供基础的文档站点构建能力。',
     status: 'completed',
@@ -302,7 +313,7 @@ export default function RoadmapPage() {
               产品路线图
             </h1>
             <p className="text-sm sm:text-base text-[var(--muted)] max-w-lg mx-auto leading-relaxed">
-              从未来愿景到已实现的功能，见证 DocMe 的每一步成长。
+              从未来愿景到已实现的功能，见证 <DILogo className="w-5 h-5 text-[10px]" /> DocME 的每一步成长。
             </p>
 
             {/* Legend */}
