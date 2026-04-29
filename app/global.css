@@ -114,6 +114,31 @@ html > body[data-scroll-locked] {
 
 /* Footer styling - removed hardcoded colors, use theme variables in component */
 
+/* Footnotes styling */
+section[data-footnotes],
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+section[data-footnotes] h2#footnote-label,
+.footnotes h2 {
+  font-size: 0;
+  margin-bottom: 0.75rem;
+}
+
+section[data-footnotes] h2#footnote-label::before,
+.footnotes h2::before {
+  content: '脚注';
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* Responsive typography scaling */
 @media (max-width: 640px) {
   .bento-grid {
