@@ -17,7 +17,6 @@ import {
   FileText,
   Code2,
   Sparkles,
-  Rocket,
   Shield,
   Star,
   Cpu,
@@ -231,7 +230,7 @@ export default function HomePage() {
               >
                 <div>
                   <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center mb-4">
-                    <Rocket className="size-5 text-[var(--accent)]" />
+                    <Sparkles className="size-5 text-[var(--accent)]" />
                   </div>
                   <p className="text-xs text-[var(--muted)] uppercase tracking-wider font-semibold mb-1">
                     最新版本
@@ -258,12 +257,7 @@ export default function HomePage() {
                 <StatCard icon={<Heart className="size-4 text-[var(--accent)]" />} label="Contributors" value="28+" />
               </BentoCard>
 
-              {/* 4. Terminal Card */}
-              <BentoCard className="md:col-span-2 min-h-[200px]">
-                <TerminalBento />
-              </BentoCard>
-
-              {/* 5. Framework Badge Card */}
+              {/* 4. Framework Badge Card — swapped with Terminal */}
               <BentoCard
                 className="p-5 sm:p-6 flex flex-col justify-center"
                 gradient
@@ -288,6 +282,11 @@ export default function HomePage() {
                     </div>
                   ))}
                 </div>
+              </BentoCard>
+
+              {/* 5. Terminal Card — swapped with Framework */}
+              <BentoCard className="md:col-span-2 min-h-[200px]">
+                <TerminalBento />
               </BentoCard>
             </div>
           </div>
@@ -498,45 +497,70 @@ export default function HomePage() {
       </section>
 
       {/* ===== CTA ===== */}
-      <section className="py-16 sm:py-24">
+      <section className="py-10 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <BentoCard className="p-8 sm:p-12" gradient gradientClass="bento-gradient-purple">
-            <div className="flex flex-col sm:flex-row items-center gap-8 h-full">
-              {/* Left: text content fills entire width when no right content */}
-              <div className="flex-1 text-center sm:text-left">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] mb-4">
-                  构建你的文档
-                </h2>
-                <p className="text-base sm:text-lg text-[var(--muted)] mb-8 max-w-xl sm:max-w-none">
-                  轻盈而美丽，就像月光一样。秒级初始化，即刻开始。
-                </p>
-                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-                  <Link href="/docs">
-                    <Button variant="primary" size="lg">
-                      <BookOpen className="size-4" />
-                      阅读文档
-                      <ChevronRight className="size-4" />
-                    </Button>
-                  </Link>
-                  <Link
-                    href="https://github.com/fuma-nama/fumadocs"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Button variant="outline" size="lg">
-                      <Github className="size-4" />
-                      打开 GitHub
-                    </Button>
-                  </Link>
+          <div
+            className="relative overflow-hidden rounded-[1.25rem]"
+            style={{
+              backgroundImage: 'url(/images/bg.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            {/* Inner blur overlay — contained within card */}
+            <div className="absolute inset-0 backdrop-blur-md bg-[var(--surface)]/60" />
+
+            <div className="relative z-10 p-8 sm:p-12">
+              <div className="flex flex-col sm:flex-row items-center gap-8">
+                {/* Left: text content */}
+                <div className="flex-1 text-center sm:text-left">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] mb-4">
+                    构建你的文档
+                  </h2>
+                  <p className="text-base sm:text-lg text-[var(--muted)] mb-8 max-w-xl sm:max-w-none">
+                    轻盈而美丽，为开发者设计的现代化文档平台，秒级初始化，即刻开始。
+                  </p>
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                    <Link href="/docs">
+                      <Button variant="primary" size="lg">
+                        <BookOpen className="size-4" />
+                        阅读文档
+                        <ChevronRight className="size-4" />
+                      </Button>
+                    </Link>
+                    <Link
+                      href="https://github.com/fuma-nama/fumadocs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button variant="outline" size="lg">
+                        <Github className="size-4" />
+                        打开 GitHub
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Right: code snippet decoration */}
+                <div className="hidden sm:flex flex-col gap-2 w-[220px] lg:w-[260px] flex-shrink-0 p-4 rounded-xl bg-black/40 border border-white/10 font-mono text-xs text-white/70 backdrop-blur-sm">
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400/70" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-400/70" />
+                    <span className="ml-2 text-[10px] text-white/40">bash</span>
+                  </div>
+                  <div className="space-y-1">
+                    <p><span className="text-green-400">$</span> <span className="text-white/90">npm create docme-app</span></p>
+                    <p className="text-white/40 pl-4">✓ Project created</p>
+                    <p className="text-white/40 pl-4">✓ Dependencies installed</p>
+                    <p><span className="text-green-400">$</span> <span className="text-white/90">cd my-docs</span></p>
+                    <p><span className="text-green-400">$</span> <span className="text-white/90">npm run dev</span></p>
+                    <p className="text-white/40 pl-4">Ready on http://localhost:3000</p>
+                  </div>
                 </div>
               </div>
-
-              {/* Right: decorative visual block aligned with Enterprise card */}
-              <div className="hidden sm:flex items-center justify-center w-[180px] h-[180px] lg:w-[220px] lg:h-[220px] rounded-2xl bg-white/5 border border-white/10 flex-shrink-0">
-                <Rocket className="size-20 lg:size-24 text-white/20" />
-              </div>
             </div>
-          </BentoCard>
+          </div>
         </div>
       </section>
 

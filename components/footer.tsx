@@ -1,10 +1,10 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   BookOpen,
   Github,
   Globe,
   MessageSquare,
-  Shield,
 } from 'lucide-react';
 
 export function Footer() {
@@ -122,7 +122,7 @@ export function Footer() {
               <span>京ICP备XXXXXXXX号-1</span>
               <span className="text-[var(--border)]">|</span>
               <span className="inline-flex items-center gap-1">
-                <Shield className="size-3" />
+                <Image src="/images/beian.png" alt="备案" width={14} height={14} className="opacity-70" />
                 京公网安备XXXXXXXXXXX号
               </span>
             </div>
