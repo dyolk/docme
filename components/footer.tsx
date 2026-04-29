@@ -23,7 +23,7 @@ export function Footer() {
       links: [
         { label: '博客', href: '#' },
         { label: '展示案例', href: '#' },
-        { label: '更新日志', href: '#' },
+        { label: '更新日志', href: '/changelog' },
         { label: '路线图', href: '#' },
       ],
     },
