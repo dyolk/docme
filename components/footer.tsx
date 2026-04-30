@@ -43,7 +43,7 @@ export function Footer() {
         { label: 'GitHub', href: 'https://github.com/fuma-nama/fumadocs', external: true },
         { label: 'Discord', href: '#', external: true },
         { label: 'X / Twitter', href: '#', external: true },
-        { label: '贡献指南', href: '#' },
+        { label: '贡献指南', href: '/contributing' },
       ],
     },
     {
