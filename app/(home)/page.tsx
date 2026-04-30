@@ -1,6 +1,4 @@
 import { Button } from '@heroui/react';
-import { Card } from '@heroui/react';
-import { Badge } from '@heroui/react';
 import Link from 'next/link';
 import { Footer } from '@/components/footer';
 import {
@@ -22,6 +20,16 @@ import {
   Cpu,
   Eye,
   Heart,
+  Lock,
+  ScanLine,
+  Workflow,
+  Container,
+  Bug,
+  Radio,
+  Gauge,
+  AlertTriangle,
+  CheckCircle2,
+  Timer,
 } from 'lucide-react';
 
 /* ── Bento Components ─────────────────────────────── */
@@ -46,15 +54,6 @@ function BentoCard({
   );
 }
 
-function VersionBadge() {
-  return (
-    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-semibold border border-[var(--accent)]/20">
-      <Sparkles className="size-3" />
-      v1.0 现已发布
-    </div>
-  );
-}
-
 function TerminalBento() {
   return (
     <div className="h-full flex flex-col">
@@ -68,14 +67,13 @@ function TerminalBento() {
         <div className="flex items-center gap-1.5">
           <span className="text-green-500">➜</span>
           <span className="text-[var(--accent)]">~</span>
-          <span className="text-[var(--foreground)]">pnpm create fumadocs-app</span>
+          <span className="text-[var(--foreground)]">trivy image myapp:latest</span>
         </div>
         <div className="text-[var(--muted)] pl-4 leading-relaxed">
-          ◇ Project name<br />
-          │ my-app<br />
-          ◆ Choose a framework<br />
-          │ ● Next.js<br />
-          │ ○ Waku<br />
+          2025-01-15T09:23:01Z&nbsp;&nbsp;&nbsp;INFO<br />
+          2025-01-15T09:23:02Z&nbsp;&nbsp;&nbsp;INFO&nbsp;&nbsp;Detected OS: alpine<br />
+          2025-01-15T09:23:03Z&nbsp;&nbsp;&nbsp;WARN&nbsp;&nbsp;0 vulnerability found<br />
+          2025-01-15T09:23:03Z&nbsp;&nbsp;&nbsp;INFO&nbsp;&nbsp;Scan completed ✓
         </div>
         <div className="flex items-center gap-1.5 pt-1">
           <span className="text-green-500">➜</span>
@@ -191,20 +189,19 @@ export default function HomePage() {
               {/* 1. Main Hero Card — spans 2 columns on desktop */}
               <BentoCard className="md:col-span-2 p-6 sm:p-8 flex flex-col justify-center min-h-[280px] sm:min-h-[320px]">
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--foreground)] leading-[1.1]">
-                  你钟爱的{' '}
-                  <span className="text-[var(--accent)]">React.js</span>
+                  <span className="text-[var(--accent)]">DevSecOps</span>
                   <br className="hidden sm:block" />
-                  {' '}文档框架
+                  {' '}安全文档中心
                 </h1>
                 <p className="mt-4 text-base sm:text-lg text-[var(--muted)] max-w-lg leading-relaxed">
-                  打造出色的文档站点，你的风格。为开发者设计的现代化文档平台，
-                  让技术文档变得赏心悦目。
+                  为安全团队打造的现代化技术文档平台。统一沉淀安全规范、
+                  漏洞响应流程与合规检查清单，让安全左移真正落地。
                 </p>
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Link href="/docs">
                     <Button variant="primary" size="lg">
                       <BookOpen className="size-4" />
-                      开始使用
+                      阅读文档
                       <ChevronRight className="size-4" />
                     </Button>
                   </Link>
@@ -229,48 +226,48 @@ export default function HomePage() {
               >
                 <div>
                   <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center mb-4">
-                    <Sparkles className="size-5 text-[var(--accent)]" />
+                    <Shield className="size-5 text-[var(--accent)]" />
                   </div>
                   <p className="text-xs text-[var(--muted)] uppercase tracking-wider font-semibold mb-1">
-                    最新版本
+                    安全态势
                   </p>
-                  <p className="text-3xl font-bold text-[var(--foreground)]">v1.0</p>
+                  <p className="text-3xl font-bold text-[var(--foreground)]">98.6%</p>
                 </div>
                 <div className="mt-4">
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 text-xs font-medium">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                    已发布
+                    合规通过
                   </div>
-                  <p className="text-xs text-[var(--muted)] mt-2">包含全新 Bento 首页设计</p>
+                  <p className="text-xs text-[var(--muted)] mt-2">本月安全扫描通过率</p>
                 </div>
               </BentoCard>
 
               {/* 3. Stats Row — 3 small cards */}
               <BentoCard className="md:col-span-1">
-                <StatCard icon={<Star className="size-4 text-[var(--accent)]" />} label="GitHub Stars" value="2.8k+" />
+                <StatCard icon={<ScanLine className="size-4 text-[var(--accent)]" />} label="安全扫描" value="12.5k+" />
               </BentoCard>
               <BentoCard className="md:col-span-1">
-                <StatCard icon={<Zap className="size-4 text-[var(--accent)]" />} label="Downloads" value="120k+" />
+                <StatCard icon={<Timer className="size-4 text-[var(--accent)]" />} label="平均修复时间" value="4.2h" />
               </BentoCard>
               <BentoCard className="md:col-span-1">
-                <StatCard icon={<Heart className="size-4 text-[var(--accent)]" />} label="Contributors" value="28+" />
+                <StatCard icon={<CheckCircle2 className="size-4 text-[var(--accent)]" />} label="合规检查" value="100%" />
               </BentoCard>
 
-              {/* 4. Framework Badge Card — swapped with Terminal */}
+              {/* 4. Framework Badge Card */}
               <BentoCard
                 className="p-5 sm:p-6 flex flex-col justify-center"
                 gradient
                 gradientClass="bento-gradient-blue"
               >
                 <p className="text-xs text-[var(--muted)] uppercase tracking-wider font-semibold mb-4">
-                  深受喜爱的框架
+                  安全工具链
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { icon: <Code2 className="size-4" />, name: 'Next.js' },
-                    { icon: <Zap className="size-4" />, name: 'Turbopack' },
-                    { icon: <Terminal className="size-4" />, name: 'TypeScript' },
-                    { icon: <Layers className="size-4" />, name: 'Tailwind' },
+                    { icon: <ScanLine className="size-4" />, name: 'Trivy' },
+                    { icon: <Lock className="size-4" />, name: 'Snyk' },
+                    { icon: <Bug className="size-4" />, name: 'SonarQube' },
+                    { icon: <Container className="size-4" />, name: 'Falco' },
                   ].map((item) => (
                     <div
                       key={item.name}
@@ -283,7 +280,7 @@ export default function HomePage() {
                 </div>
               </BentoCard>
 
-              {/* 5. Terminal Card — swapped with Framework */}
+              {/* 5. Terminal Card */}
               <BentoCard className="md:col-span-2 min-h-[200px]">
                 <TerminalBento />
               </BentoCard>
@@ -297,10 +294,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-12">
             <h2 className="text-sm font-semibold text-[var(--accent)] uppercase tracking-wider mb-3">
-              核心特性
+              核心能力
             </h2>
             <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--foreground)]">
-              极简美学，极致可定制
+              安全左移，贯穿全生命周期
             </p>
           </div>
 
@@ -310,21 +307,21 @@ export default function HomePage() {
               <div className="p-5 sm:p-6 h-full flex flex-col sm:flex-row gap-5">
                 <div className="flex-1">
                   <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center mb-4">
-                    <Zap className="size-5 text-[var(--accent)]" />
+                    <Shield className="size-5 text-[var(--accent)]" />
                   </div>
                   <h3 className="text-lg font-semibold text-[var(--foreground)] mb-2">
-                    极速构建体验
+                    安全左移实践
                   </h3>
                   <p className="text-sm text-[var(--muted)] leading-relaxed">
-                    基于 Next.js App Router 与 Turbopack，开发体验丝般顺滑。
-                    增量编译、快速刷新，让开发效率提升数倍。
+                    在编码阶段即引入 SAST、SCA 和密钥扫描，将安全漏洞消灭在萌芽期。
+                    集成 SonarQube、Snyk、Trivy 等工具，实现自动化安全门禁。
                   </p>
                 </div>
                 <div className="sm:w-[220px] flex-shrink-0">
                   <div className="h-full min-h-[120px] rounded-xl bg-[var(--surface-secondary)]/60 border border-[var(--border)] p-4 flex items-center justify-center">
                     <div className="text-center">
-                      <p className="text-3xl font-bold text-[var(--accent)]">10x</p>
-                      <p className="text-xs text-[var(--muted)] mt-1">更快的构建速度</p>
+                      <p className="text-3xl font-bold text-[var(--accent)]">-72%</p>
+                      <p className="text-xs text-[var(--muted)] mt-1">生产环境漏洞减少</p>
                     </div>
                   </div>
                 </div>
@@ -334,36 +331,36 @@ export default function HomePage() {
             {/* Feature 2 */}
             <BentoCard>
               <FeatureBento
-                icon={<Layout className="size-5 text-[var(--accent)]" />}
-                title="优雅布局"
-                description="内置多种文档布局，侧边栏导航、全屏展示、首页模板，满足各类场景。"
+                icon={<Workflow className="size-5 text-[var(--accent)]" />}
+                title="CI/CD 安全集成"
+                description="在流水线中嵌入漏洞扫描、镜像安全检查和 IaC 合规验证，确保每次交付都符合安全标准。"
               />
             </BentoCard>
 
             {/* Feature 3 */}
             <BentoCard>
               <FeatureBento
-                icon={<Search className="size-5 text-[var(--accent)]" />}
-                title="全文搜索"
-                description="集成 Orama 全文搜索引擎，让内容检索变得快速而精准。"
+                icon={<FileText className="size-5 text-[var(--accent)]" />}
+                title="合规即代码"
+                description="将安全合规要求转化为可执行的策略代码，通过 Open Policy Agent 实现自动化合规检查。"
               />
             </BentoCard>
 
             {/* Feature 4 */}
             <BentoCard>
               <FeatureBento
-                icon={<FileText className="size-5 text-[var(--accent)]" />}
-                title="MDX 支持"
-                description="原生支持 MDX，在文档中直接使用 React 组件，创作更灵活。"
+                icon={<AlertTriangle className="size-5 text-[var(--accent)]" />}
+                title="威胁建模"
+                description="基于 STRIDE 和 MITRE ATT&CK 框架，系统性地识别和评估系统潜在威胁，输出可落地的缓解方案。"
               />
             </BentoCard>
 
             {/* Feature 5 */}
             <BentoCard>
               <FeatureBento
-                icon={<Compass className="size-5 text-[var(--accent)]" />}
-                title="类型安全"
-                description="完全基于 TypeScript，提供完整的类型支持，开发更安心。"
+                icon={<Eye className="size-5 text-[var(--accent)]" />}
+                title="运行时安全"
+                description="通过 Falco 等工具实时监控容器和 Kubernetes 集群的异常行为，快速响应安全事件。"
               />
             </BentoCard>
 
@@ -372,17 +369,17 @@ export default function HomePage() {
               <div className="p-5 sm:p-6 h-full flex flex-col sm:flex-row gap-5">
                 <div className="flex-1">
                   <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center mb-4">
-                    <Shield className="size-5 text-[var(--accent)]" />
+                    <Lock className="size-5 text-[var(--accent)]" />
                   </div>
                   <h3 className="text-lg font-semibold text-[var(--foreground)] mb-2">
-                    企业级可靠
+                    零信任架构
                   </h3>
                   <p className="text-sm text-[var(--muted)] leading-relaxed">
-                    持续维护、活跃社区、完全开源。已被 Vercel、Unkey、Orama 等众多团队采用。
+                    实施最小权限原则、双向 TLS 认证和动态访问控制，构建"永不信任，始终验证"的安全基础设施。
                   </p>
                 </div>
                 <div className="sm:w-[200px] flex-shrink-0 flex flex-wrap content-center gap-2">
-                  {['Vercel', 'Unkey', 'Orama', 'Million'].map((name) => (
+                  {['mTLS', 'RBAC', 'SSO', 'Vault'].map((name) => (
                     <span
                       key={name}
                       className="px-3 py-1.5 rounded-lg bg-[var(--surface-secondary)]/60 text-[var(--foreground)] text-xs font-medium border border-[var(--border)]"
@@ -402,33 +399,33 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-12">
             <h2 className="text-sm font-semibold text-[var(--accent)] uppercase tracking-wider mb-3">
-              社区推荐
+              团队评价
             </h2>
             <p className="text-2xl sm:text-3xl font-bold text-[var(--foreground)]">
-              深受开发者喜爱
+              深受安全团队信赖
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
             <BentoCard>
               <QuoteBento
-                quote="Fumadocs 是目前最好的 Next.js 文档框架，它让构建文档站点变得前所未有的简单。"
-                author="Aiden Bai"
-                role="Million.js 作者"
+                quote="这份文档平台让我们的安全规范终于有了一处统一的归宿。新成员上手时间从两周缩短到三天。"
+                author="李明"
+                role="安全架构师"
               />
             </BentoCard>
             <BentoCard>
               <QuoteBento
-                quote="如果没有 Fumadocs，我绝对无法把文档做得这么好看。强烈推荐给每一个开发者。"
-                author="David Blass"
-                role="ArkType 作者"
+                quote="将威胁建模模板和漏洞响应流程沉淀为文档后，我们的 MTTR 降低了 60%。强烈推荐！"
+                author="王芳"
+                role="DevSecOps 负责人"
               />
             </BentoCard>
             <BentoCard>
               <QuoteBento
-                quote="一套完美的文档构建方案，既美观又实用。Fuma 做了一件了不起的工作。"
-                author="shadcn"
-                role="Shadcn UI 作者"
+                quote="CI/CD 安全门禁的文档化让开发团队和安全团队的协作变得前所未有的顺畅。"
+                author="张伟"
+                role="研发效能负责人"
               />
             </BentoCard>
           </div>
@@ -440,40 +437,40 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-12">
             <h2 className="text-sm font-semibold text-[var(--accent)] uppercase tracking-wider mb-3">
-              架构设计
+              安全架构
             </h2>
             <p className="text-2xl sm:text-3xl font-bold text-[var(--foreground)] mb-3">
-              真正的可组合框架
+              纵深防御，层层设防
             </p>
             <p className="text-sm sm:text-base text-[var(--muted)] max-w-2xl mx-auto">
-              内容 → 核心 → UI 的分离架构，像搭积木一样构建文档站点
+              从代码到运行时，从基础设施到应用层，构建全方位的安全防护体系
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {[
               {
-                icon: <FileText className="size-5 text-[var(--accent)]" />,
-                title: 'fumadocs-mdx',
-                desc: '在 React 框架中优雅地使用 MDX',
+                icon: <Code2 className="size-5 text-[var(--accent)]" />,
+                title: '代码安全',
+                desc: 'SAST / SCA / 密钥扫描，在编码阶段拦截漏洞',
                 gradient: 'bento-gradient-blue',
               },
               {
-                icon: <Cpu className="size-5 text-[var(--accent)]" />,
-                title: 'fumadocs-core',
-                desc: '构建文档和处理内容的无头库',
+                icon: <Container className="size-5 text-[var(--accent)]" />,
+                title: '容器安全',
+                desc: '镜像漏洞扫描、运行时防护、供应链安全',
                 gradient: 'bento-gradient-purple',
               },
               {
-                icon: <Layout className="size-5 text-[var(--accent)]" />,
-                title: 'fumadocs-ui',
-                desc: '用于构建文档的 UI 组件库',
+                icon: <Layers className="size-5 text-[var(--accent)]" />,
+                title: '基础设施',
+                desc: 'IaC 合规检查、云安全态势管理、网络隔离',
                 gradient: 'bento-gradient-green',
               },
               {
-                icon: <Eye className="size-5 text-[var(--accent)]" />,
-                title: 'fumadocs-openapi',
-                desc: '扩展渲染 OpenAPI 文档',
+                icon: <Radio className="size-5 text-[var(--accent)]" />,
+                title: '可观测性',
+                desc: '安全事件监控、审计日志、威胁检测与响应',
                 gradient: 'bento-gradient-orange',
               },
             ].map((item) => (
@@ -514,10 +511,11 @@ export default function HomePage() {
                 {/* Left: text content */}
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] mb-4">
-                    构建你的文档
+                    构建你的安全文档中心
                   </h2>
                   <p className="text-base sm:text-lg text-[var(--muted)] mb-8 max-w-xl sm:max-w-none">
-                    轻盈而美丽，为开发者设计的现代化文档平台，秒级初始化，即刻开始。
+                    统一沉淀安全规范、漏洞响应流程与合规检查清单，
+                    让安全左移真正落地到每个开发环节。
                   </p>
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
                     <Link href="/docs">
@@ -550,9 +548,9 @@ export default function HomePage() {
                   </div>
                   <div className="space-y-1">
                     <p><span className="text-green-400">$</span> <span className="text-white/90">npm create docme-app</span></p>
-                    <p className="text-white/40 pl-4">✓ Project created</p>
-                    <p className="text-white/40 pl-4">✓ Dependencies installed</p>
-                    <p><span className="text-green-400">$</span> <span className="text-white/90">cd my-docs</span></p>
+                    <p className="text-white/40 pl-4">✓ Security policies loaded</p>
+                    <p className="text-white/40 pl-4">✓ Compliance checks ready</p>
+                    <p><span className="text-green-400">$</span> <span className="text-white/90">cd security-docs</span></p>
                     <p><span className="text-green-400">$</span> <span className="text-white/90">npm run dev</span></p>
                     <p className="text-white/40 pl-4">Ready on http://localhost:3000</p>
                   </div>
