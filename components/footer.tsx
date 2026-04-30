@@ -31,7 +31,7 @@ export function Footer() {
     {
       title: '资源',
       links: [
-        { label: '博客', href: '#' },
+        { label: '博客', href: '/blog' },
         { label: '展示案例', href: '#' },
         { label: '更新日志', href: '/changelog' },
         { label: '路线图', href: '/roadmap' },

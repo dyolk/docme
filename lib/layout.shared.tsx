@@ -7,6 +7,18 @@ export function baseOptions(): BaseLayoutProps {
       // JSX supported
       title: appName,
     },
+    links: [
+      {
+        text: '文档',
+        url: '/docs',
+        active: 'nested-url',
+      },
+      {
+        text: '博客',
+        url: '/blog',
+        active: 'nested-url',
+      },
+    ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
 }
