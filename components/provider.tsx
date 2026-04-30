@@ -23,6 +23,11 @@ export function Provider({ children }: { children: ReactNode }) {
       i18n={{
         translations: zhTranslations,
       }}
+      theme={{
+        enableSystem: true,
+        defaultTheme: 'system',
+        attribute: 'class',
+      }}
     >
       {children}
     </RootProvider>

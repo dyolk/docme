@@ -3,6 +3,42 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+/* ── Fumadocs 主题色覆盖为蓝色 ─────────────────────── */
+@theme {
+  --color-fd-primary: hsl(217, 91%, 60%);
+  --color-fd-primary-foreground: hsl(0, 0%, 98%);
+  --color-fd-accent: hsla(217, 91%, 60%, 0.15);
+  --color-fd-accent-foreground: hsl(217, 91%, 40%);
+  --color-fd-ring: hsl(217, 91%, 60%);
+}
+
+.dark {
+  --color-fd-primary: hsl(217, 91%, 65%);
+  --color-fd-primary-foreground: hsl(0, 0%, 9%);
+  --color-fd-accent: hsla(217, 91%, 65%, 0.2);
+  --color-fd-accent-foreground: hsl(217, 91%, 80%);
+  --color-fd-ring: hsl(217, 91%, 65%);
+}
+
+/* ── Theme-aware CSS variables (used across site) ─── */
+:root {
+  --accent: #2563eb;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --surface: #ffffff;
+  --surface-secondary: #f8fafc;
+}
+
+.dark {
+  --accent: #3b82f6;
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --border: #1e293b;
+  --surface: #0a0a0a;
+  --surface-secondary: #141414;
+}
+
 html {
   scrollbar-gutter: stable;
 }
@@ -24,29 +60,32 @@ html > body[data-scroll-locked] {
   }
 }
 
-/* Bento card base */
+/* Bento card base — clean elegant style */
 .bento-card {
   position: relative;
   overflow: hidden;
-  border-radius: 1.25rem;
-  border: 1px solid var(--border, rgba(255,255,255,0.08));
-  background: var(--surface, #ffffff);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.02);
 }
 
 .bento-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px -10px rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.12);
 }
 
 /* Dark mode bento card */
 .dark .bento-card {
-  background: var(--surface, #0a0a0a);
-  border-color: rgba(255,255,255,0.06);
+  background: #141414;
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dark .bento-card:hover {
-  box-shadow: 0 8px 30px -10px rgba(0,0,0,0.5);
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5);
 }
 
 /* Gradient backgrounds for bento cards */

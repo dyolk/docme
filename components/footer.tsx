@@ -9,7 +9,7 @@ import {
 function DILogo({ className = '' }: { className?: string }) {
   return (
     <span
-      className={`inline-flex items-center justify-center rounded-lg bg-[var(--accent)] text-white font-bold select-none ${className}`}
+      className={`inline-flex items-center justify-center rounded-lg bg-blue-600 text-white font-bold select-none ${className}`}
       style={{ fontSize: '0.6em', lineHeight: 1 }}
     >
       DI
@@ -56,7 +56,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-[var(--border)] bg-[var(--surface)]/50">
+    <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
@@ -64,9 +64,9 @@ export function Footer() {
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4 group">
               <DILogo className="w-8 h-8 text-lg" />
-              <span className="text-lg font-bold text-[var(--foreground)] group-hover:text-[var(--accent)] transition-colors">DocME</span>
+              <span className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">DocME</span>
             </Link>
-            <p className="text-sm text-[var(--muted)] leading-relaxed max-w-xs mb-6">
+            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mb-6">
               为开发者打造的现代化文档框架，
               让构建精美文档站点变得前所未有的简单。
             </p>
@@ -75,19 +75,19 @@ export function Footer() {
                 href="https://github.com/fuma-nama/fumadocs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-[var(--surface-secondary)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition-colors"
+                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               >
                 <Github className="size-4" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-xl bg-[var(--surface-secondary)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition-colors"
+                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               >
                 <Globe className="size-4" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-xl bg-[var(--surface-secondary)] flex items-center justify-center text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition-colors"
+                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               >
                 <MessageSquare className="size-4" />
               </a>
@@ -97,7 +97,7 @@ export function Footer() {
           {/* Link groups */}
           {linkGroups.map((group) => (
             <div key={group.title}>
-              <h3 className="text-sm font-semibold text-[var(--foreground)] mb-3">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
                 {group.title}
               </h3>
               <ul className="space-y-2.5">
@@ -107,7 +107,7 @@ export function Footer() {
                       href={link.href}
                       target={link.external ? '_blank' : undefined}
                       rel={link.external ? 'noopener noreferrer' : undefined}
-                      className="text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
+                      className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -120,14 +120,13 @@ export function Footer() {
       </div>
 
       {/* Bottom bar with ICP placeholder */}
-      <div className="bg-[var(--surface-secondary)] border-t border-[var(--border)]">
+      <div className="bg-slate-100 dark:bg-slate-800/60 border-t border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[var(--muted)]">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
             <p>© {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</p>
-            {/* ICP placeholder - themed for both light and dark mode */}
             <div className="flex items-center gap-4">
               <span>京ICP备XXXXXXXX号-1</span>
-              <span className="text-[var(--border)]">|</span>
+              <span className="text-slate-300 dark:text-slate-600">|</span>
               <span className="inline-flex items-center gap-1">
                 <Image src="/images/beian.png" alt="备案" width={14} height={14} className="opacity-70" />
                 京公网安备XXXXXXXXXXX号

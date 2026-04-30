@@ -22,3 +22,14 @@ export function baseOptions(): BaseLayoutProps {
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
 }
+
+/** 仅用于 docs 子路由的 layout 选项（无导航链接） */
+export function docsOptions(): BaseLayoutProps {
+  return {
+    nav: {
+      title: appName,
+    },
+    links: [],
+    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
+  };
+}
