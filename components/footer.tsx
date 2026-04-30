@@ -56,7 +56,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
+    <footer className="glass-footer">
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
@@ -75,19 +75,19 @@ export function Footer() {
                 href="https://github.com/fuma-nama/fumadocs"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                className="w-9 h-9 rounded-xl flex items-center justify-center glass-icon !w-9 !h-9 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
               >
                 <Github className="size-4" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                className="w-9 h-9 rounded-xl flex items-center justify-center glass-icon !w-9 !h-9 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
               >
                 <Globe className="size-4" />
               </a>
               <a
                 href="#"
-                className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                className="w-9 h-9 rounded-xl flex items-center justify-center glass-icon !w-9 !h-9 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
               >
                 <MessageSquare className="size-4" />
               </a>
@@ -120,7 +120,7 @@ export function Footer() {
       </div>
 
       {/* Bottom bar with ICP placeholder */}
-      <div className="bg-slate-100 dark:bg-slate-800/60 border-t border-slate-200 dark:border-slate-800">
+      <div className="bg-white/20 dark:bg-white/5 backdrop-blur-md border-t border-white/30 dark:border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
             <p>© {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</p>

@@ -4,8 +4,10 @@ import { docsOptions } from '@/lib/layout.shared';
 
 export default function Layout({ children }: LayoutProps<'/docs'>) {
   return (
-    <DocsLayout tree={source.getPageTree()} {...docsOptions()}>
-      {children}
-    </DocsLayout>
+    <div className="glass-page-bg min-h-screen">
+      <DocsLayout tree={source.getPageTree()} {...docsOptions()}>
+        {children}
+      </DocsLayout>
+    </div>
   );
 }

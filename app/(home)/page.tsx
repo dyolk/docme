@@ -40,7 +40,7 @@ function BentoCard({
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#f8f9fc] dark:bg-[#050505]">
+    <div className="flex flex-col min-h-screen glass-page-bg">
       {/* ===== HERO: Bento Grid ===== */}
       <section className="relative overflow-hidden pt-20 sm:pt-24 pb-8 sm:pb-12">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +49,7 @@ export default function HomePage() {
             {/* 1. Hero Card — 2x2 */}
             <BentoCard className="md:col-span-2 row-span-2 p-8 sm:p-10 flex flex-col justify-between min-h-[360px]">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold w-fit mb-6">
+                <div className="glass-badge text-slate-700 dark:text-slate-300 w-fit mb-6">
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
@@ -67,7 +67,7 @@ export default function HomePage() {
               </div>
               <div className="flex flex-wrap items-center gap-3 mt-8">
                 <Link href="/docs">
-                  <Button variant="primary" size="lg" className="bg-slate-900 hover:bg-blue-600 text-white rounded-xl px-6">
+                  <Button variant="primary" size="lg" className="glass-button text-slate-900 dark:text-white px-6">
                     <BookOpen className="size-4" />
                     阅读文档
                     <ChevronRight className="size-4" />
@@ -78,7 +78,7 @@ export default function HomePage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button variant="outline" size="lg" className="rounded-xl border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                  <Button variant="outline" size="lg" className="glass-button text-slate-700 dark:text-slate-300">
                     <Github className="size-4" />
                     GitHub
                   </Button>
@@ -134,7 +134,7 @@ export default function HomePage() {
                 ].map((tool) => (
                   <span
                     key={tool}
-                    className="px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:border-blue-200 dark:hover:border-blue-900 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-default"
+                    className="px-3 py-1.5 rounded-lg bg-white/30 dark:bg-white/5 backdrop-blur-md border border-white/40 dark:border-white/10 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-default"
                   >
                     {tool}
                   </span>
@@ -143,7 +143,7 @@ export default function HomePage() {
             </BentoCard>
 
             {/* 5. DevSecOps Cycle Card */}
-            <BentoCard className="md:col-span-2 bg-slate-900 dark:bg-[#080808] border-slate-800 dark:border-slate-800/60 p-0 overflow-hidden flex flex-col">
+            <BentoCard className="md:col-span-2 p-0 overflow-hidden flex flex-col">
               <div className="px-6 pt-6 pb-2">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">安全流水线</h3>
               </div>
@@ -172,7 +172,7 @@ export default function HomePage() {
             <BentoCard className="sm:col-span-2 lg:col-span-2">
               <div className="p-6 sm:p-8 h-full flex flex-col sm:flex-row gap-6 items-center">
                 <div className="flex-1">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center mb-4">
+                  <div className="glass-icon mb-4">
                     <Shield className="size-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
@@ -193,7 +193,7 @@ export default function HomePage() {
             {/* Feature 2 */}
             <BentoCard>
               <div className="p-6 h-full flex flex-col">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center mb-4">
+                <div className="glass-icon mb-4">
                   <Workflow className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
@@ -208,7 +208,7 @@ export default function HomePage() {
             {/* Feature 3 */}
             <BentoCard>
               <div className="p-6 h-full flex flex-col">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center mb-4">
+                <div className="glass-icon mb-4">
                   <FileText className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
@@ -223,7 +223,7 @@ export default function HomePage() {
             {/* Feature 4 */}
             <BentoCard>
               <div className="p-6 h-full flex flex-col">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center mb-4">
+                <div className="glass-icon mb-4">
                   <AlertTriangle className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
@@ -238,7 +238,7 @@ export default function HomePage() {
             {/* Feature 5 */}
             <BentoCard>
               <div className="p-6 h-full flex flex-col">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center mb-4">
+                <div className="glass-icon mb-4">
                   <Eye className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
@@ -254,7 +254,7 @@ export default function HomePage() {
             <BentoCard className="sm:col-span-2 lg:col-span-3">
               <div className="p-6 sm:p-8 h-full flex flex-col sm:flex-row gap-6 items-center">
                 <div className="flex-1">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center mb-4">
+                  <div className="glass-icon mb-4">
                     <Lock className="size-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
@@ -268,7 +268,7 @@ export default function HomePage() {
                   {['mTLS', 'RBAC', 'SSO', 'Vault', 'WAF', 'DLP'].map((name) => (
                     <span
                       key={name}
-                      className="px-3 py-1 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:border-blue-200 dark:hover:border-blue-900 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-default"
+                      className="px-3 py-1 rounded-lg bg-white/30 dark:bg-white/5 backdrop-blur-md border border-white/40 dark:border-white/10 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-default"
                     >
                       {name}
                     </span>
@@ -374,7 +374,7 @@ export default function HomePage() {
             ].map((item) => (
               <BentoCard key={item.title}>
                 <div className="p-6 h-full">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/40 flex items-center justify-center mb-4">
+                  <div className="glass-icon mb-4">
                     {item.icon}
                   </div>
                   <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
@@ -393,8 +393,7 @@ export default function HomePage() {
       {/* ===== CTA ===== */}
       <section className="py-10 sm:py-14">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <BentoCard className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/60 via-white to-slate-50/60 dark:from-blue-950/20 dark:via-[#0a0a0a] dark:to-slate-900/20" />
+            <BentoCard className="relative overflow-hidden">
             <div className="relative z-10 p-8 sm:p-12">
               <div className="flex flex-col sm:flex-row items-center gap-8">
                 <div className="flex-1 text-center sm:text-left">
@@ -406,7 +405,7 @@ export default function HomePage() {
                   </p>
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
                     <Link href="/docs">
-                      <Button variant="primary" size="lg" className="bg-slate-900 hover:bg-blue-600 text-white rounded-xl px-6">
+                      <Button variant="primary" size="lg" className="glass-button text-slate-900 dark:text-white px-6">
                         <BookOpen className="size-4" />
                         阅读文档
                         <ArrowRight className="size-4" />
@@ -417,7 +416,7 @@ export default function HomePage() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <Button variant="outline" size="lg" className="rounded-xl border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                      <Button variant="outline" size="lg" className="glass-button text-slate-700 dark:text-slate-300">
                         <Github className="size-4" />
                         GitHub
                       </Button>
