@@ -3,8 +3,8 @@ import './global.css';
 
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="zh-CN" className="font-sans" suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen text-foreground">
+    <html lang="zh-CN" suppressHydrationWarning>
+      <body className="flex flex-col min-h-screen text-foreground antialiased" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif' }}>
         {/* Glassmorphism background blobs */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
           <div className="glass-blob glass-blob-1" />

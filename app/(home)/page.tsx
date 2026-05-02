@@ -57,15 +57,15 @@ export default function HomePage() {
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
                   </span>
-                  教程持续更新
+                  持续更新
                 </div>
-                <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold tracking-tight text-slate-900 dark:text-slate-100 leading-[1.05]">
-                  <span className="text-blue-600 dark:text-blue-500">DevSecOps</span>
+                <h1 className="text-5xl sm:text-6xl lg:text-[4.2rem] font-extrabold tracking-tighter text-slate-900 dark:text-slate-100 leading-[1.05]">
+                  <span className="text-blue-600 dark:text-blue-500">安全。</span>
                   <br className="hidden sm:block" />
-                  {' '}实践教程
+                  生来如此。
                 </h1>
-                <p className="mt-5 text-base sm:text-lg text-slate-500 dark:text-slate-400 max-w-md leading-relaxed">
-                  从安全左移理念到生产环境防护，系统讲解 DevSecOps 全流程实践。涵盖流水线搭建、安全扫描、合规治理与可观测性建设。
+                <p className="mt-6 text-lg sm:text-xl text-slate-500 dark:text-slate-400 max-w-md leading-relaxed font-light">
+                  从代码提交到生产部署，防护贯穿每一个环节。不是事后补救，而是与生俱来的安全。
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-3 mt-8">
@@ -94,7 +94,7 @@ export default function HomePage() {
               <Library className="size-5 text-slate-300 dark:text-slate-600" />
               <div>
                 <p className="text-5xl sm:text-6xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tighter">8<span className="text-blue-600 dark:text-blue-500">大</span></p>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-2 font-semibold uppercase tracking-wider">DevSecOps 实践阶段</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-2 font-semibold uppercase tracking-wider">阶段全覆盖</p>
               </div>
             </BentoCard>
 
@@ -102,26 +102,26 @@ export default function HomePage() {
             <div className="md:col-span-1 grid grid-cols-2 gap-4">
               <BentoCard className="flex flex-col justify-end p-5 aspect-square">
                 <p className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">6<span className="text-blue-600 dark:text-blue-500">类</span></p>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">安全扫描工具</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">扫描无死角</p>
               </BentoCard>
               <BentoCard className="flex flex-col justify-end p-5 aspect-square">
                 <p className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">12<span className="text-blue-600 dark:text-blue-500">+</span></p>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">流水线实战</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">实战即战力</p>
               </BentoCard>
               <BentoCard className="flex flex-col justify-end p-5 aspect-square">
                 <p className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">4<span className="text-blue-600 dark:text-blue-500">大</span></p>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">合规框架</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">合规零门槛</p>
               </BentoCard>
               <BentoCard className="flex flex-col justify-end p-5 aspect-square">
                 <p className="text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">100<span className="text-blue-600 dark:text-blue-500">%</span></p>
-                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">开源免费</p>
+                <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-1">完全开放</p>
               </BentoCard>
             </div>
 
             {/* 4. Tech Stack — 2x1 */}
             <BentoCard className="md:col-span-2 p-6 sm:p-8 flex flex-col justify-center">
               <div className="flex items-center justify-between mb-5">
-                <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">工具链覆盖</h3>
+                <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">工具生态</h3>
                 <Zap className="size-4 text-slate-300 dark:text-slate-600" />
               </div>
               <div className="flex flex-wrap gap-2">
@@ -153,11 +153,11 @@ export default function HomePage() {
       <section className="py-12 sm:py-16">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-12">
-            <h2 className="text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-wider mb-3">
+            <h2 className="text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-[0.25em] mb-3">
               核心教程
             </h2>
-            <p className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
-              安全左移，贯穿全生命周期
+            <p className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              全生命周期。零死角。
             </p>
           </div>
 
@@ -170,11 +170,10 @@ export default function HomePage() {
                     <GraduationCap className="size-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
-                    DevSecOps 全流程实践
+                    全流程。零死角。
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                    从规划阶段的安全需求分析，到编码时的 SAST/SCA 扫描，再到构建、测试、部署各阶段的安全门禁配置。
-                    手把手教你搭建完整的 DevSecOps 流水线。
+                    从 Plan 到 Monitor，八个阶段完整覆盖。每一个环节都有详尽教程与可落地的实践方案。
                   </p>
                 </div>
                 <div className="sm:w-[160px] flex-shrink-0 text-center">
@@ -190,12 +189,12 @@ export default function HomePage() {
                 <div className="glass-icon mb-4">
                   <Terminal className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
-                  CI/CD 安全集成
-                </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  在 Jenkins、GitLab CI 或 GitHub Actions 中集成 SonarQube、Trivy、Snyk 等工具，实现自动化安全扫描与质量门禁。
-                </p>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
+                    流水线。固若金汤。
+                  </h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Jenkins、GitLab CI、GitHub Actions，SonarQube、Trivy、Snyk 无缝嵌入。门禁自动拦截，问题代码无处遁形。
+                  </p>
               </div>
             </BentoCard>
 
@@ -205,12 +204,12 @@ export default function HomePage() {
                 <div className="glass-icon mb-4">
                   <Search className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
-                  代码安全扫描
-                </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  深入讲解 SAST（静态分析）、SCA（依赖扫描）、密钥检测与容器镜像扫描的原理、配置与实践技巧。
-                </p>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
+                    代码。滴水不漏。
+                  </h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    SAST、SCA、密钥检测、镜像扫描。层层过滤，漏洞在提交前即被消灭。
+                  </p>
               </div>
             </BentoCard>
 
@@ -220,12 +219,12 @@ export default function HomePage() {
                 <div className="glass-icon mb-4">
                   <Lightbulb className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
-                  合规即代码
-                </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  使用 Open Policy Agent、Checkov 等工具将合规要求转化为可执行策略，实现基础设施与配置的自动化合规检查。
-                </p>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
+                    合规。自动发生。
+                  </h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    OPA、Checkov 将策略变成代码。零人工审计，每次变更自动合规。
+                  </p>
               </div>
             </BentoCard>
 
@@ -235,12 +234,12 @@ export default function HomePage() {
                 <div className="glass-icon mb-4">
                   <Globe className="size-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
-                  运行时安全
-                </h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Falco 异常行为检测、RASP 应用自防护、容器运行时安全策略配置，教你守护生产环境最后一公里。
-                </p>
+                  <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
+                    运行。万无一失。
+                  </h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Falco 实时捕捉异常，RASP 贴身守护，容器策略锁定运行时行为。最后一道防线，坚不可摧。
+                  </p>
               </div>
             </BentoCard>
 
@@ -252,11 +251,10 @@ export default function HomePage() {
                     <Rocket className="size-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
-                    可观测性与安全运营
+                    看见一切。掌控全局。
                   </h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-                    构建统一的安全可观测体系：Prometheus + Grafana 监控指标、ELK 日志审计、SkyWalking 链路追踪。
-                    从告警到响应，完整的安全运营闭环。
+                    Prometheus + Grafana 洞察指标，ELK 留存审计日志，SkyWalking 追踪请求链路。从告警到响应，清晰可掌控。
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2 sm:w-[280px] sm:justify-end">
@@ -279,28 +277,28 @@ export default function HomePage() {
       <section className="py-12 sm:py-16 bg-white/50 dark:bg-white/[0.02]">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-12">
-            <h2 className="text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-wider mb-3">
+            <h2 className="text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-[0.25em] mb-3">
               读者反馈
             </h2>
-            <p className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
-              帮助团队落地安全实践
+            <p className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              他们这样说。
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
             {[
               {
-                quote: '按照教程搭了一套完整的 GitLab CI + Trivy + SonarQube 流水线，团队代码质量明显提升。',
+                quote: '一套流水线，从漏洞百出到滴水不漏。只用了三天。',
                 author: '李明',
                 role: 'DevOps 工程师',
               },
               {
-                quote: '之前对 OPA 和策略即代码完全不了解，这里的渐进式教程让我两周内就在生产环境落地了合规检查。',
+                quote: '两周前还不知道 OPA 是什么。现在，生产环境每一次变更都自带合规验证。',
                 author: '王芳',
                 role: '安全工程师',
               },
               {
-                quote: '从 SAST 到容器扫描，从密钥管理到运行时防护，整套知识体系帮我理清了 DevSecOps 的实施路径。',
+                quote: '从一头雾水到心中有谱。终于知道安全应该放在哪里，以及为什么。',
                 author: '张伟',
                 role: '技术负责人',
               },
@@ -333,14 +331,14 @@ export default function HomePage() {
       <section className="py-12 sm:py-16">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-12">
-            <h2 className="text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-wider mb-3">
+            <h2 className="text-xs font-bold text-blue-600 dark:text-blue-500 uppercase tracking-[0.25em] mb-3">
               知识专题
             </h2>
-            <p className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mb-3">
-              覆盖 DevSecOps 全链路
+            <p className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mb-3">
+              从 Plan 到 Monitor。一览无遗。
             </p>
-            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
-              从安全需求到运行时防护，系统覆盖 DevSecOps 八大阶段的核心知识与实践
+            <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
+              八大阶段，八大专题。每一步都有详尽的教程与可落地的实践方案。
             </p>
           </div>
 
@@ -348,23 +346,23 @@ export default function HomePage() {
             {[
               {
                 icon: <Code2 className="size-5 text-blue-600 dark:text-blue-400" />,
-                title: '安全编码',
-                desc: 'SAST、SCA、密钥检测与代码审计实践',
+                title: '编码即安全',
+                desc: 'SAST、SCA、密钥检测，漏洞在提交前消灭',
               },
               {
                 icon: <Cpu className="size-5 text-blue-600 dark:text-blue-400" />,
-                title: '流水线安全',
-                desc: 'CI/CD 门禁、镜像扫描与制品签名',
+                title: '流水线即防线',
+                desc: '门禁自动拦截，问题代码无处遁形',
               },
               {
                 icon: <Layers className="size-5 text-blue-600 dark:text-blue-400" />,
-                title: '基础设施安全',
-                desc: 'IaC 合规、容器安全与云安全态势管理',
+                title: '基础设施即信任',
+                desc: 'IaC 合规、容器安全，每次变更自动验证',
               },
               {
                 icon: <Compass className="size-5 text-blue-600 dark:text-blue-400" />,
-                title: '安全运营',
-                desc: '可观测性、日志审计与威胁响应',
+                title: '运营即洞察',
+                desc: '全链路可观测，告警到响应一气呵成',
               },
             ].map((item) => (
               <BentoCard key={item.title}>
@@ -393,10 +391,10 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row items-center gap-8">
                 <div className="flex-1 text-center sm:text-left">
                   <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mb-4">
-                    构建你的 DevSecOps 能力体系
+                    开始你的安全进化。
                   </h2>
                   <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 mb-8 max-w-xl sm:max-w-none">
-                    从安全左移理念到生产环境防护，系统化教程帮助你掌握 DevSecOps 全流程实践。
+                    漏洞不会等你准备好。现在就开始，让安全成为本能。
                   </p>
                   <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
                     <Link href="/docs">
