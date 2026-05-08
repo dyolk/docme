@@ -1,6 +1,8 @@
 {
   "title": "使用指南",
+  "description": "文档编写与部署",
+  "icon": "Compass",
   "root": true,
   "defaultOpen": false,
-  "pages": ["writing-docs", "deployment"]
+  "pages": ["index", "writing-docs", "deployment"]
 }

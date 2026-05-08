@@ -160,7 +160,7 @@ export default async function HomePage() {
             </HeroStaggerItem>
             <HeroStaggerItem>
               <div className="mt-10 flex items-center justify-center gap-4">
-                <Link href="/docs" className="apple-btn-primary">
+                <Link href="/docs/getting-started/installation" className="apple-btn-primary">
                   开始阅读
                 </Link>
                 <Link href="/docs" className="apple-btn-secondary">

@@ -1,6 +1,8 @@
 {
   "title": "快速开始",
+  "description": "安装与配置指南",
+  "icon": "BookOpen",
   "root": true,
   "defaultOpen": true,
-  "pages": ["installation", "configuration"]
+  "pages": ["index", "installation", "configuration"]
 }
