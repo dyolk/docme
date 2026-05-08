@@ -33,7 +33,19 @@ async function getCveCount(): Promise<number> {
   try {
     const cveDir = join(process.cwd(), 'content', 'docs', 'cve');
     const files = readdirSync(cveDir, { withFileTypes: true });
-    return files.filter((f) => f.isFile() && (f.name.endsWith('.mdx') || f.name.endsWith('.md'))).length;
+    return files.filter((f) => f.isFile() && (f.name.endsWith('.mdx') || f.name.endsWith('.md'))).length - 2;
+  } catch {
+    return 0;
+  }
+}
+
+/* ── Checklist Counter ───────────────────────── */
+
+async function getChecklistCount(): Promise<number> {
+  try {
+    const checklistDir = join(process.cwd(), 'content', 'docs', 'checklist');
+    const files = readdirSync(checklistDir, { withFileTypes: true });
+    return files.filter((f) => f.isFile() && (f.name.endsWith('.mdx') || f.name.endsWith('.md'))).length - 2;
   } catch {
     return 0;
   }
@@ -123,6 +135,7 @@ const categories = [
 
 export default async function HomePage() {
   const cveCount = await getCveCount();
+  const checklistCount = await getChecklistCount();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -245,11 +258,11 @@ export default async function HomePage() {
                 </p>
                 <div className="mt-8 flex flex-wrap gap-6">
                   <div>
-                    <div className="text-3xl font-semibold text-white">50+</div>
+                    <div className="text-3xl font-semibold text-white">{checklistCount || '0'}</div>
                     <div className="text-sm text-[#a1a1a6] mt-1">检查清单</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-semibold text-white">{cveCount || '100'}+</div>
+                    <div className="text-3xl font-semibold text-white">{cveCount || '0'}</div>
                     <div className="text-sm text-[#a1a1a6] mt-1">CVE 收录</div>
                   </div>
                   <div>

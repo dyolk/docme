@@ -1,344 +1,254 @@
+'use client';
+
 import { Footer } from '@/components/footer';
+import {
+  AppleCard,
+  HeroStagger,
+  HeroStaggerItem,
+} from '@/components/apple-animations';
 import {
   CheckCircle2,
   CircleDot,
   Circle,
+  Calendar,
+  ArrowRight,
   Rocket,
   Palette,
   Search,
   Globe,
-  GitBranch,
   Zap,
   Layout,
-  Terminal,
   Sparkles,
-  ArrowRight,
-  Calendar,
+  Smartphone,
 } from 'lucide-react';
 
-function DILogo({ className = '' }: { className?: string }) {
-  return (
-    <span
-      className={`inline-flex items-center justify-center rounded-lg bg-[var(--accent)] text-white font-bold select-none ${className}`}
-      style={{ fontSize: '0.6em', lineHeight: 1 }}
-    >
-      DI
-    </span>
-  );
-}
+/* ── Types ─────────────────────────────────────────── */
 
-/* ── Roadmap Data (reverse chronological) ─────────────────────────────── */
-
-interface RoadmapItem {
+interface RoadmapPhase {
+  quarter: string;
   title: string;
-  date: string;
   description: string;
   status: 'completed' | 'in-progress' | 'planned';
   icon: React.ReactNode;
   features: string[];
 }
 
-const roadmapData: RoadmapItem[] = [
+/* ── Data ──────────────────────────────────────────── */
+
+const roadmapData: RoadmapPhase[] = [
   {
-    title: '开发者工具链',
-    date: '2025-Q4',
-    description: '更完善的 CLI 工具与生态集成。',
-    status: 'planned',
-    icon: <Terminal className="size-5" />,
-    features: ['DocME CLI 工具', 'VS Code 扩展插件', '自动化部署集成', '性能监控与分析'],
-  },
-  {
-    title: '协作与版本管理',
-    date: '2025-Q4',
-    description: '团队协作文档与版本控制。',
-    status: 'planned',
-    icon: <GitBranch className="size-5" />,
-    features: ['多人实时协作编辑', '文档版本历史', '审阅与批注系统', '内容发布工作流'],
-  },
-  {
-    title: '主题与定制系统',
-    date: '2025-Q3',
-    description: '更灵活的主题配置和深度定制能力。',
-    status: 'planned',
-    icon: <Palette className="size-5" />,
-    features: ['可视化主题编辑器', '更多内置主题预设', 'CSS 变量级定制', '插件化主题扩展'],
-  },
-  {
-    title: '高级搜索与 AI',
-    date: '2025-Q3',
-    description: '更智能的文档检索与 AI 辅助阅读。',
-    status: 'planned',
-    icon: <Search className="size-5" />,
-    features: ['AI 智能问答助手', '语义搜索（向量检索）', '搜索建议与自动补全', '搜索结果高亮与预览'],
-  },
-  {
-    title: '国际化支持',
-    date: '2025-Q2',
-    description: '让文档触达全球更多开发者。',
-    status: 'in-progress',
-    icon: <Globe className="size-5" />,
-    features: ['多语言文档支持（i18n）', '自动语言检测与切换', 'RTL 布局适配', '本地化搜索'],
-  },
-  {
-    title: 'DocME 2.0 正式发布',
-    date: '2024-12-15',
-    description: '全新设计，更强大的功能和更好的体验。',
-    status: 'completed',
-    icon: <Sparkles className="size-5" />,
-    features: ['全新 Bento Grid 风格首页', '集成 HeroUI v3 组件库', '新增全文搜索功能（Orama）', '支持暗黑模式自动切换', '新增更新日志页面'],
-  },
-  {
-    title: '性能大幅提升',
-    date: '2024-11-01',
-    description: '专注于构建性能和开发体验的优化。',
-    status: 'completed',
-    icon: <Zap className="size-5" />,
-    features: ['Turbopack 构建速度提升 40%', 'MDX 编译缓存优化', '新增图片自动优化功能'],
-  },
-  {
-    title: '组件库全面升级',
-    date: '2024-09-20',
-    description: '引入更多实用组件，提升文档编写体验。',
-    status: 'completed',
-    icon: <Layout className="size-5" />,
-    features: ['新增 Cards、Callout、Tabs 等文档组件', '支持自定义 MDX 组件', '代码块新增行号显示和复制功能'],
-  },
-  {
-    title: 'DocME 1.0 正式发布',
-    date: '2024-08-01',
-    description: '项目首次发布，提供基础的文档站点构建能力。',
+    quarter: 'Q1 2025',
+    title: '基础架构',
+    description: '项目起步，搭建核心文档引擎与内容体系。',
     status: 'completed',
     icon: <Rocket className="size-5" />,
-    features: ['基于 Next.js App Router 的文档框架', '内置 MDX 支持', '自动生成目录导航', '支持 Open Graph 图片生成'],
+    features: ['项目初始化与工程化配置', '基础文档框架搭建', '全文搜索功能集成'],
+  },
+  {
+    quarter: 'Q2 2025',
+    title: '体验革新',
+    description: '全面升级用户界面，引入更多开发者工具。',
+    status: 'in-progress',
+    icon: <Palette className="size-5" />,
+    features: ['Apple 风格全站 UI 改版', '多语言支持（i18n）', 'CVE 数据库集成'],
+  },
+  {
+    quarter: 'Q3 2025',
+    title: '智能生态',
+    description: '引入 AI 能力，构建开放的社区贡献体系。',
+    status: 'planned',
+    icon: <Sparkles className="size-5" />,
+    features: ['AI 辅助搜索与问答', '社区贡献系统', 'API 文档自动生成'],
+  },
+  {
+    quarter: 'Q4 2025',
+    title: '协作与移动化',
+    description: '优化移动端体验，支持团队协作与离线访问。',
+    status: 'planned',
+    icon: <Smartphone className="size-5" />,
+    features: ['移动端体验优化', '离线访问支持（PWA）', '团队协作功能'],
   },
 ];
 
-/* ── Status Config ─────────────────────────────── */
+/* ── Status Config ─────────────────────────────────── */
 
 const STATUS_META = {
   completed: {
     label: '已完成',
-    color: '#10b981',
-    bg: 'rgba(16,185,129,0.10)',
-    border: 'rgba(16,185,129,0.30)',
-    glow: '0 0 20px rgba(16,185,129,0.15)',
+    color: '#34c759',
+    bg: 'rgba(52,199,89,0.08)',
+    border: 'rgba(52,199,89,0.25)',
+    bar: '#34c759',
   },
   'in-progress': {
     label: '进行中',
-    color: '#3b82f6',
-    bg: 'rgba(59,130,246,0.10)',
-    border: 'rgba(59,130,246,0.30)',
-    glow: '0 0 20px rgba(59,130,246,0.15)',
+    color: '#0071e3',
+    bg: 'rgba(0,113,227,0.08)',
+    border: 'rgba(0,113,227,0.25)',
+    bar: '#0071e3',
   },
   planned: {
     label: '计划中',
-    color: '#94a3b8',
-    bg: 'rgba(148,163,184,0.08)',
-    border: 'rgba(148,163,184,0.25)',
-    glow: '0 0 20px rgba(148,163,184,0.10)',
+    color: '#6e6e73',
+    bg: 'rgba(110,110,115,0.06)',
+    border: 'rgba(110,110,115,0.2)',
+    bar: '#6e6e73',
   },
 } as const;
 
-/* ── Components ─────────────────────────────── */
+/* ── Components ────────────────────────────────────── */
 
-function RoadmapCard({ item }: { item: RoadmapItem }) {
-  const meta = STATUS_META[item.status];
-
+function StatusBadge({ status }: { status: RoadmapPhase['status'] }) {
+  const meta = STATUS_META[status];
   return (
-    <div
-      className="group rounded-xl border p-5 sm:p-6 transition-all duration-300 hover:-translate-y-0.5"
+    <span
+      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border"
       style={{
-        background: 'var(--surface)',
+        color: meta.color,
+        background: meta.bg,
         borderColor: meta.border,
-        boxShadow: `${meta.glow}, 0 1px 3px rgba(0,0,0,0.04)`,
       }}
     >
-      {/* Header row */}
-      <div className="flex items-center justify-between gap-3 mb-3">
-        <div className="flex items-center gap-2">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-            style={{ background: meta.bg, color: meta.color }}
-          >
-            {item.icon}
+      {status === 'completed' && <CheckCircle2 className="size-3.5" />}
+      {status === 'in-progress' && <CircleDot className="size-3.5" />}
+      {status === 'planned' && <Circle className="size-3.5" />}
+      {meta.label}
+    </span>
+  );
+}
+
+function RoadmapCard({ phase, index }: { phase: RoadmapPhase; index: number }) {
+  const meta = STATUS_META[phase.status];
+
+  return (
+    <AppleCard delay={index * 0.12} className="relative overflow-hidden">
+      {/* Status color bar */}
+      <div
+        className="absolute left-0 top-0 bottom-0 w-1"
+        style={{ background: meta.bar }}
+      />
+
+      <div className="p-8 sm:p-10 pl-10 sm:pl-12">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: meta.bg, color: meta.color }}
+            >
+              {phase.icon}
+            </div>
+            <div>
+              <h3 className="apple-headline">{phase.title}</h3>
+              <div className="flex items-center gap-1.5 text-sm mt-0.5" style={{ color: '#6e6e73' }}>
+                <Calendar className="size-3.5" />
+                {phase.quarter}
+              </div>
+            </div>
           </div>
-          <h3 className="text-sm font-bold text-[var(--foreground)]">{item.title}</h3>
+          <StatusBadge status={phase.status} />
         </div>
-        <span
-          className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold border"
-          style={{ color: meta.color, background: meta.bg, borderColor: meta.border }}
+
+        {/* Description */}
+        <p
+          className="text-lg leading-relaxed mb-6"
+          style={{ color: '#6e6e73', fontSize: '19px', lineHeight: 1.5 }}
         >
-          {item.status === 'completed' && <CheckCircle2 className="size-3" />}
-          {item.status === 'in-progress' && <CircleDot className="size-3" />}
-          {item.status === 'planned' && <Circle className="size-3" />}
-          {meta.label}
-        </span>
-      </div>
+          {phase.description}
+        </p>
 
-      {/* Date */}
-      <div className="flex items-center gap-1.5 text-[11px] text-[var(--muted)] mb-2">
-        <Calendar className="size-3" />
-        {item.date}
-      </div>
-
-      {/* Description */}
-      <p className="text-xs text-[var(--muted)] leading-relaxed mb-3">{item.description}</p>
-
-      {/* Features */}
-      <ul className="space-y-1">
-        {item.features.map((f, i) => (
-          <li key={i} className="flex items-start gap-1.5 text-xs text-[var(--foreground)]">
-            <ArrowRight className="size-3 mt-0.5 shrink-0 text-[var(--accent)]" />
-            <span>{f}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-/* ── Desktop Alternating Timeline ─────────────────────────────── */
-
-function DesktopTimeline() {
-  return (
-    <div className="hidden lg:block relative">
-      {/* Center line */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2">
-        <div className="w-full h-full bg-gradient-to-b from-[var(--accent)]/40 via-[var(--border)] to-[var(--border)]" />
-      </div>
-
-      {/* Items */}
-      <div className="relative space-y-12">
-        {roadmapData.map((item, index) => {
-          const meta = STATUS_META[item.status];
-          const isRight = index % 2 === 0;
-
-          return (
-            <div key={item.title} className="relative grid grid-cols-2 gap-8 items-start">
-              {/* Left side */}
-              <div className={`${isRight ? 'col-start-2 pl-8' : 'pr-8 text-right'}`}>
-                <div className={isRight ? '' : 'ml-auto'}>
-                  <RoadmapCard item={item} />
-                </div>
-              </div>
-
-              {/* Node on center line */}
-              <div
-                className={`absolute top-6 z-10 ${
-                  isRight ? 'left-1/2' : 'left-1/2'
-                } -translate-x-1/2`}
-              >
-                <div
-                  className="w-4 h-4 rounded-full ring-4 ring-[var(--surface)]"
-                  style={{
-                    background: meta.color,
-                    boxShadow: meta.glow,
-                  }}
-                />
-              </div>
-
-              {/* Connector line from node to card */}
-              <div
-                className="absolute top-7 h-px bg-[var(--border)]"
-                style={{
-                  width: 32,
-                  left: isRight ? 'calc(50% + 8px)' : 'auto',
-                  right: isRight ? 'auto' : 'calc(50% + 8px)',
-                }}
+        {/* Features */}
+        <ul className="space-y-3">
+          {phase.features.map((feature, i) => (
+            <li key={i} className="flex items-start gap-3" style={{ color: '#1d1d1f' }}>
+              <ArrowRight
+                className="size-4 mt-0.5 shrink-0"
+                style={{ color: meta.color }}
               />
-            </div>
-          );
-        })}
+              <span className="text-base leading-relaxed">{feature}</span>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+    </AppleCard>
   );
 }
 
-/* ── Mobile Timeline ─────────────────────────────── */
-
-function MobileTimeline() {
-  return (
-    <div className="lg:hidden relative">
-      {/* Left line */}
-      <div className="absolute left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-[var(--accent)]/40 via-[var(--border)] to-[var(--border)]" />
-
-      {/* Items */}
-      <div className="space-y-6">
-        {roadmapData.map((item, index) => {
-          const meta = STATUS_META[item.status];
-          const isLast = index === roadmapData.length - 1;
-
-          return (
-            <div key={item.title} className="relative flex gap-4">
-              {/* Node */}
-              <div className="relative z-10 shrink-0">
-                <div
-                  className="w-[30px] h-[30px] rounded-full flex items-center justify-center ring-4 ring-[var(--surface)]"
-                  style={{
-                    background: meta.color,
-                    boxShadow: meta.glow,
-                  }}
-                >
-                  <div className="w-2 h-2 rounded-full bg-white" />
-                </div>
-              </div>
-
-              {/* Card */}
-              <div className="flex-1 min-w-0">
-                <RoadmapCard item={item} />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-/* ── Page ─────────────────────────────────────────── */
+/* ── Page ──────────────────────────────────────────── */
 
 export default function RoadmapPage() {
   return (
     <>
-      <main className="apple-section">
-        <div className="max-w-[720px] mx-auto">
-          <h1 className="apple-display-1 text-center mb-6">产品路线图</h1>
-          <p className="apple-body-lg text-center mb-4">
-            从未来愿景到已实现的功能，见证 <DILogo className="w-5 h-5 text-[10px]" /> DocME 的每一步成长。
-          </p>
+      {/* Hero */}
+      <section
+        className="relative overflow-hidden"
+        style={{ background: '#ffffff', padding: '120px 1.5rem 80px' }}
+      >
+        <div className="max-w-[1120px] mx-auto text-center">
+          <HeroStagger>
+            <HeroStaggerItem>
+              <h1 className="apple-display-1 mb-6">产品路线图</h1>
+            </HeroStaggerItem>
+            <HeroStaggerItem>
+              <p
+                className="apple-body-lg max-w-[680px] mx-auto"
+                style={{ fontSize: '19px', lineHeight: 1.5 }}
+              >
+                从未来愿景到已实现的功能，见证 DocME 的每一步成长。
+              </p>
+            </HeroStaggerItem>
+          </HeroStagger>
 
           {/* Legend */}
-          <div className="mt-6 mb-16 inline-flex flex-wrap items-center justify-center gap-3 w-full">
-            <div
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
-              style={{ color: STATUS_META['in-progress'].color, background: STATUS_META['in-progress'].bg, borderColor: STATUS_META['in-progress'].border }}
-            >
-              <CircleDot className="size-3.5" />
-              进行中
-            </div>
-            <div
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
-              style={{ color: STATUS_META.completed.color, background: STATUS_META.completed.bg, borderColor: STATUS_META.completed.border }}
-            >
-              <CheckCircle2 className="size-3.5" />
-              已完成
-            </div>
-            <div
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
-              style={{ color: STATUS_META.planned.color, background: STATUS_META.planned.bg, borderColor: STATUS_META.planned.border }}
-            >
-              <Circle className="size-3.5" />
-              计划中
-            </div>
+          <div className="mt-12 inline-flex flex-wrap items-center justify-center gap-3">
+            <StatusBadge status="completed" />
+            <StatusBadge status="in-progress" />
+            <StatusBadge status="planned" />
           </div>
-
-          {/* Desktop */}
-          <DesktopTimeline />
-
-          {/* Mobile */}
-          <MobileTimeline />
         </div>
-      </main>
+      </section>
+
+      {/* Roadmap Cards */}
+      <section
+        style={{ background: '#f5f5f7', padding: '120px 1.5rem' }}
+      >
+        <div className="max-w-[800px] mx-auto space-y-8">
+          {roadmapData.map((phase, index) => (
+            <RoadmapCard key={phase.quarter} phase={phase} index={index} />
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section
+        style={{ background: '#ffffff', padding: '120px 1.5rem' }}
+      >
+        <div className="max-w-[1120px] mx-auto text-center">
+          <HeroStagger>
+            <HeroStaggerItem>
+              <h2 className="apple-section-title mb-4">有想法？告诉我们</h2>
+            </HeroStaggerItem>
+            <HeroStaggerItem>
+              <p
+                className="apple-body-lg max-w-[600px] mx-auto mb-8"
+                style={{ fontSize: '19px', lineHeight: 1.5 }}
+              >
+                我们欢迎社区反馈，你的建议可能会出现在下一个版本中。
+              </p>
+            </HeroStaggerItem>
+            <HeroStaggerItem>
+              <a
+                href="https://github.com/dyolk/docme/issues"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="apple-btn-primary"
+              >
+                提交功能请求
+              </a>
+            </HeroStaggerItem>
+          </HeroStagger>
+        </div>
+      </section>
 
       <Footer />
     </>
