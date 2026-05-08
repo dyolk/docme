@@ -63,89 +63,62 @@ const checklist = [
 
 export default function ContributingPage() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Header */}
-      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-16">
-        <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[var(--accent)] opacity-[0.04] blur-[100px] rounded-full" />
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] tracking-tight mb-4">
-            贡献指南
-          </h1>
-          <p className="text-base sm:text-lg text-[var(--muted)] max-w-2xl mx-auto leading-relaxed">
+    <>
+      <main className="apple-section">
+        <div className="max-w-[720px] mx-auto">
+          <h1 className="apple-display-1 text-center mb-6">贡献指南</h1>
+          <p className="apple-body-lg text-center mb-16">
             感谢每一位贡献者。您的参与让 DocME 变得更好。
           </p>
-        </div>
-      </section>
 
-      {/* Content */}
-      <section className="pb-16 sm:pb-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-6">
+          <div className="space-y-12">
             {contributingSections.map((section) => (
-              <div key={section.title} className="bento-card p-6 sm:p-8">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+              <section key={section.title}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
                     {section.icon}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-lg sm:text-xl font-semibold text-[var(--foreground)] mb-3">
-                      {section.title}
-                    </h2>
-                    <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed whitespace-pre-line">
-                      {section.content}
-                    </p>
-                  </div>
+                  <h2 className="apple-headline">{section.title}</h2>
                 </div>
-              </div>
+                <p className="apple-body whitespace-pre-line">{section.content}</p>
+              </section>
             ))}
 
-            {/* Checklist Card */}
-            <div className="bento-card p-6 sm:p-8">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
                   <CheckCircle2 className="size-5 text-[var(--accent)]" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-lg sm:text-xl font-semibold text-[var(--foreground)] mb-4">
-                    提交前检查清单
-                  </h2>
-                  <ul className="space-y-2.5">
-                    {checklist.map((item, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-[var(--foreground)]"
-                      >
-                        <ArrowRight className="size-4 mt-0.5 shrink-0 text-[var(--accent)]" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <h2 className="apple-headline">提交前检查清单</h2>
               </div>
-            </div>
-          </div>
+              <ul className="space-y-3">
+                {checklist.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 apple-body">
+                    <ArrowRight className="size-4 mt-1 shrink-0 text-[var(--accent)]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-          {/* GitHub CTA */}
-          <div className="mt-8 p-6 sm:p-8 rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 text-center">
-            <p className="text-sm text-[var(--muted)]">
-              准备好开始了吗？前往
-              <a
-                href="https://github.com/fuma-nama/fumadocs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[var(--accent)] hover:underline mx-1"
-              >
-                GitHub
-              </a>
-              查看仓库并提交您的第一个 Issue 或 PR。
-            </p>
+            <section className="pt-6">
+              <p className="apple-body text-center">
+                准备好开始了吗？前往
+                <a
+                  href="https://github.com/fuma-nama/fumadocs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="apple-link mx-1"
+                >
+                  GitHub
+                </a>
+                查看仓库并提交您的第一个 Issue 或 PR。
+              </p>
+            </section>
           </div>
         </div>
-      </section>
-
+      </main>
       <Footer />
-    </div>
+    </>
   );
 }

@@ -1,8 +1,8 @@
 import { getPageImage, getPageMarkdownUrl, source } from '@/lib/source';
+import { DocsPage } from 'fumadocs-ui/page';
 import {
   DocsBody,
   DocsDescription,
-  DocsPage,
   DocsTitle,
   MarkdownCopyButton,
   ViewOptionsPopover,
@@ -22,7 +22,15 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const markdownUrl = getPageMarkdownUrl(page).url;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full}>
+    <DocsPage
+      toc={page.data.toc}
+      full={page.data.full}
+      lastUpdate={page.data.lastModified ? new Date(page.data.lastModified) : undefined}
+      breadcrumb={{ includeRoot: true, includePage: true }}
+      tableOfContent={{
+        style: 'clerk',
+      }}
+    >
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">

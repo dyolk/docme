@@ -4,13 +4,7 @@ import { getMDXComponents } from '@/components/mdx';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import {
-  Calendar,
-  User,
-  Tag,
-  ArrowLeft,
-  Clock,
-} from 'lucide-react';
+import { ArrowLeft, Tag } from 'lucide-react';
 
 export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
   const params = await props.params;
@@ -19,34 +13,31 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
   if (!page) notFound();
 
   const MDX = page.data.body;
+  const readingTime = Math.ceil(page.data.body.toString().length / 500);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Article Header */}
-      <section className="relative overflow-hidden pt-20 sm:pt-24 pb-8 sm:pb-12">
-        <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-[var(--accent)] opacity-[0.05] blur-[120px] rounded-full" />
-        </div>
+    <div className="py-20 px-6">
+      <div className="max-w-[720px] mx-auto">
+        {/* Back link */}
+        <Link
+          href="/blog"
+          className="text-[var(--apple-blue)] text-base inline-flex items-center gap-1 mb-8 hover:underline transition-colors"
+        >
+          <ArrowLeft size={16} />
+          返回博客
+        </Link>
 
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back link */}
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-1.5 text-sm text-[var(--muted)] hover:text-[var(--accent)] transition-colors mb-6"
-          >
-            <ArrowLeft className="size-4" />
-            返回博客
-          </Link>
-
+        {/* Article Header */}
+        <header className="text-center mb-12">
           {/* Tags */}
           {page.data.tags && page.data.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap justify-center gap-2 mb-5">
               {page.data.tags.map((tag: string) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-medium"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-[10px] font-medium"
                 >
-                  <Tag className="size-3" />
+                  <Tag size={10} />
                   {tag}
                 </span>
               ))}
@@ -54,58 +45,40 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
           )}
 
           {/* Title */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--foreground)] leading-[1.1] mb-4">
+          <h1 className="apple-display-1 mb-5">
             {page.data.title}
           </h1>
 
-          {/* Description */}
-          {page.data.description && (
-            <p className="text-lg text-[var(--muted)] leading-relaxed mb-6">
-              {page.data.description}
-            </p>
-          )}
-
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-[var(--muted)]">
-            {page.data.author && (
-              <div className="flex items-center gap-1.5">
-                <User className="size-4" />
-                <span>{page.data.author}</span>
-              </div>
-            )}
-            {page.data.date && (
-              <div className="flex items-center gap-1.5">
-                <Calendar className="size-4" />
-                <span>{page.data.date}</span>
-              </div>
-            )}
-            <div className="flex items-center gap-1.5">
-              <Clock className="size-4" />
-              <span>阅读时间约 {Math.ceil(page.data.body.toString().length / 500)} 分钟</span>
-            </div>
-          </div>
-        </div>
-      </section>
+          <p className="apple-caption">
+            {[
+              page.data.author,
+              page.data.date,
+              `阅读时间约 ${readingTime} 分钟`,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </p>
+        </header>
 
-      {/* Article Content */}
-      <article className="py-8 sm:py-12 blog-article">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Article Content */}
+        <article className="leading-[1.75]">
           <DocsBody>
             <MDX components={getMDXComponents()} />
           </DocsBody>
+        </article>
 
-          {/* Back to Blog */}
-          <div className="mt-16 pt-8 border-t border-[var(--border)]">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] text-sm font-medium text-[var(--foreground)] hover:text-[var(--accent)] hover:border-[var(--accent)]/30 transition-colors"
-            >
-              <ArrowLeft className="size-4" />
-              返回博客列表
-            </Link>
-          </div>
+        {/* Bottom Back Link */}
+        <div className="mt-16 pt-8 border-t border-[var(--apple-border)] text-center">
+          <Link
+            href="/blog"
+            className="text-[var(--apple-blue)] text-base inline-flex items-center gap-1 hover:underline transition-colors"
+          >
+            <ArrowLeft size={16} />
+            返回博客
+          </Link>
         </div>
-      </article>
+      </div>
     </div>
   );
 }

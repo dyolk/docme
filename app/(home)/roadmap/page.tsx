@@ -299,46 +299,36 @@ function MobileTimeline() {
 
 export default function RoadmapPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Main Content */}
-      <main className="flex-1">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          {/* Page Title */}
-          <div className="text-center mb-14 sm:mb-20">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-xs font-semibold border border-[var(--accent)]/20 mb-4">
-              <Sparkles className="size-3.5" />
-              持续迭代中
-            </div>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] tracking-tight mb-4">
-              产品路线图
-            </h1>
-            <p className="text-sm sm:text-base text-[var(--muted)] max-w-lg mx-auto leading-relaxed">
-              从未来愿景到已实现的功能，见证 <DILogo className="w-5 h-5 text-[10px]" /> DocME 的每一步成长。
-            </p>
+    <>
+      <main className="apple-section">
+        <div className="max-w-[720px] mx-auto">
+          <h1 className="apple-display-1 text-center mb-6">产品路线图</h1>
+          <p className="apple-body-lg text-center mb-4">
+            从未来愿景到已实现的功能，见证 <DILogo className="w-5 h-5 text-[10px]" /> DocME 的每一步成长。
+          </p>
 
-            {/* Legend */}
-            <div className="mt-8 inline-flex flex-wrap items-center justify-center gap-3">
-              <div
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
-                style={{ color: STATUS_META['in-progress'].color, background: STATUS_META['in-progress'].bg, borderColor: STATUS_META['in-progress'].border }}
-              >
-                <CircleDot className="size-3.5" />
-                进行中
-              </div>
-              <div
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
-                style={{ color: STATUS_META.completed.color, background: STATUS_META.completed.bg, borderColor: STATUS_META.completed.border }}
-              >
-                <CheckCircle2 className="size-3.5" />
-                已完成
-              </div>
-              <div
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
-                style={{ color: STATUS_META.planned.color, background: STATUS_META.planned.bg, borderColor: STATUS_META.planned.border }}
-              >
-                <Circle className="size-3.5" />
-                计划中
-              </div>
+          {/* Legend */}
+          <div className="mt-6 mb-16 inline-flex flex-wrap items-center justify-center gap-3 w-full">
+            <div
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
+              style={{ color: STATUS_META['in-progress'].color, background: STATUS_META['in-progress'].bg, borderColor: STATUS_META['in-progress'].border }}
+            >
+              <CircleDot className="size-3.5" />
+              进行中
+            </div>
+            <div
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
+              style={{ color: STATUS_META.completed.color, background: STATUS_META.completed.bg, borderColor: STATUS_META.completed.border }}
+            >
+              <CheckCircle2 className="size-3.5" />
+              已完成
+            </div>
+            <div
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border"
+              style={{ color: STATUS_META.planned.color, background: STATUS_META.planned.bg, borderColor: STATUS_META.planned.border }}
+            >
+              <Circle className="size-3.5" />
+              计划中
             </div>
           </div>
 
@@ -350,8 +340,7 @@ export default function RoadmapPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <Footer />
-    </div>
+    </>
   );
 }

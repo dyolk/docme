@@ -30,106 +30,79 @@ const licenseSections = [
 
 export default function LicensePage() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Header */}
-      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-16">
-        <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[var(--accent)] opacity-[0.04] blur-[100px] rounded-full" />
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] tracking-tight mb-4">
-            开源协议
-          </h1>
-          <p className="text-base sm:text-lg text-[var(--muted)] max-w-2xl mx-auto leading-relaxed">
+    <>
+      <main className="apple-section">
+        <div className="max-w-[720px] mx-auto">
+          <h1 className="apple-display-1 text-center mb-6">开源协议</h1>
+          <p className="apple-body-lg text-center mb-16">
             本项目基于 MIT 协议开源，您可以自由使用、修改和分发。
           </p>
-        </div>
-      </section>
 
-      {/* Content */}
-      <section className="pb-16 sm:pb-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-6">
+          <div className="space-y-12">
             {licenseSections.map((section) => (
-              <div
-                key={section.title}
-                className="bento-card p-6 sm:p-8"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+              <section key={section.title}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
                     {section.icon}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-lg sm:text-xl font-semibold text-[var(--foreground)] mb-3">
-                      {section.title}
-                    </h2>
-                    <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">
-                      {section.content}
-                    </p>
-                  </div>
+                  <h2 className="apple-headline">{section.title}</h2>
                 </div>
-              </div>
+                <p className="apple-body">{section.content}</p>
+              </section>
             ))}
 
-            {/* MIT License Full Text Card */}
-            <div className="bento-card p-6 sm:p-8">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+            <section>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
                   <ScrollText className="size-5 text-[var(--accent)]" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-lg sm:text-xl font-semibold text-[var(--foreground)] mb-4">
-                    MIT 协议内容
-                  </h2>
-                  <div className="rounded-xl bg-[var(--surface-secondary)]/60 border border-[var(--border)] p-5 sm:p-6 font-mono text-xs sm:text-sm text-[var(--muted)] leading-relaxed overflow-x-auto">
-                    <p className="mb-2">MIT License</p>
-                    <p className="mb-4">Copyright (c) {new Date().getFullYear()} My App</p>
-                    <p className="mb-4">
-                      Permission is hereby granted, free of charge, to any person obtaining a copy
-                      of this software and associated documentation files (the &quot;Software&quot;), to deal
-                      in the Software without restriction, including without limitation the rights
-                      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-                      copies of the Software, and to permit persons to whom the Software is
-                      furnished to do so, subject to the following conditions:
-                    </p>
-                    <p className="mb-4">
-                      The above copyright notice and this permission notice shall be included in all
-                      copies or substantial portions of the Software.
-                    </p>
-                    <p>
-                      THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-                      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-                      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-                      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-                      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-                      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-                      SOFTWARE.
-                    </p>
-                  </div>
-                </div>
+                <h2 className="apple-headline">MIT 协议内容</h2>
               </div>
-            </div>
-          </div>
+              <div className="rounded-xl bg-[var(--surface-secondary)]/60 border border-[var(--border)] p-5 sm:p-6 font-mono text-xs sm:text-sm text-[var(--muted)] leading-relaxed overflow-x-auto">
+                <p className="mb-2">MIT License</p>
+                <p className="mb-4">Copyright (c) {new Date().getFullYear()} My App</p>
+                <p className="mb-4">
+                  Permission is hereby granted, free of charge, to any person obtaining a copy
+                  of this software and associated documentation files (the &quot;Software&quot;), to deal
+                  in the Software without restriction, including without limitation the rights
+                  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+                  copies of the Software, and to permit persons to whom the Software is
+                  furnished to do so, subject to the following conditions:
+                </p>
+                <p className="mb-4">
+                  The above copyright notice and this permission notice shall be included in all
+                  copies or substantial portions of the Software.
+                </p>
+                <p>
+                  THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+                  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+                  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+                  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+                  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+                  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+                  SOFTWARE.
+                </p>
+              </div>
+            </section>
 
-          {/* GitHub Link */}
-          <div className="mt-8 p-6 sm:p-8 rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 text-center">
-            <p className="text-sm text-[var(--muted)]">
-              完整的协议文本和项目源码可在
-              <a
-                href="https://github.com/fuma-nama/fumadocs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[var(--accent)] hover:underline mx-1"
-              >
-                GitHub
-              </a>
-              上查看。
-            </p>
+            <section className="pt-6">
+              <p className="apple-body text-center">
+                完整的协议文本和项目源码可在
+                <a
+                  href="https://github.com/fuma-nama/fumadocs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="apple-link mx-1"
+                >
+                  GitHub
+                </a>
+                上查看。
+              </p>
+            </section>
           </div>
         </div>
-      </section>
-
+      </main>
       <Footer />
-    </div>
+    </>
   );
 }

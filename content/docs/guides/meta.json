@@ -1,0 +1,6 @@
+{
+  "title": "使用指南",
+  "root": true,
+  "defaultOpen": false,
+  "pages": ["writing-docs", "deployment"]
+}

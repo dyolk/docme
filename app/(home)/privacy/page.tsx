@@ -40,70 +40,48 @@ const sections = [
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Header */}
-      <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-16">
-        <div className="absolute inset-0 -z-10 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[var(--accent)] opacity-[0.04] blur-[100px] rounded-full" />
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--foreground)] tracking-tight mb-4">
-            隐私政策
-          </h1>
-          <p className="text-base sm:text-lg text-[var(--muted)] max-w-2xl mx-auto leading-relaxed">
+    <>
+      <main className="apple-section">
+        <div className="max-w-[720px] mx-auto">
+          <h1 className="apple-display-1 text-center mb-6">隐私政策</h1>
+          <p className="apple-body-lg text-center mb-4">
             我们尊重并保护您的个人隐私，本政策说明了我们如何处理您的信息。
           </p>
-          <p className="text-xs text-[var(--muted)] mt-4">
+          <p className="apple-caption text-center mb-16">
             最后更新日期：2025年4月29日
           </p>
-        </div>
-      </section>
 
-      {/* Content */}
-      <section className="pb-16 sm:pb-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-6">
+          <div className="space-y-12">
             {sections.map((section) => (
-              <div
-                key={section.title}
-                className="bento-card p-6 sm:p-8"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
+              <section key={section.title}>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
                     {section.icon}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h2 className="text-lg sm:text-xl font-semibold text-[var(--foreground)] mb-3">
-                      {section.title}
-                    </h2>
-                    <p className="text-sm sm:text-base text-[var(--muted)] leading-relaxed">
-                      {section.content}
-                    </p>
-                  </div>
+                  <h2 className="apple-headline">{section.title}</h2>
                 </div>
-              </div>
+                <p className="apple-body">{section.content}</p>
+              </section>
             ))}
-          </div>
 
-          {/* Contact */}
-          <div className="mt-8 p-6 sm:p-8 rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 text-center">
-            <p className="text-sm text-[var(--muted)]">
-              如果您对本隐私政策有任何疑问，请通过我们的
-              <a
-                href="https://github.com/fuma-nama/fumadocs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[var(--accent)] hover:underline mx-1"
-              >
-                GitHub
-              </a>
-              联系我们。
-            </p>
+            <section className="pt-6">
+              <p className="apple-body text-center">
+                如果您对本隐私政策有任何疑问，请通过我们的
+                <a
+                  href="https://github.com/fuma-nama/fumadocs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="apple-link mx-1"
+                >
+                  GitHub
+                </a>
+                联系我们。
+              </p>
+            </section>
           </div>
         </div>
-      </section>
-
+      </main>
       <Footer />
-    </div>
+    </>
   );
 }

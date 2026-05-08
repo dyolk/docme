@@ -1,6 +1,9 @@
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import { z } from 'zod';
+import lastModified from 'fumadocs-mdx/plugins/last-modified';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 // 扩展博客文章的 schema
 const blogPageSchema = pageSchema.extend({
@@ -13,10 +16,14 @@ const blogPageSchema = pageSchema.extend({
 
 // You can customize Zod schemas for frontmatter and `meta.json` here
 // see https://fumadocs.dev/docs/mdx/collections
+const docsPageSchema = pageSchema.extend({
+  lastModified: z.date().optional(),
+});
+
 export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
-    schema: pageSchema,
+    schema: docsPageSchema,
     postprocess: {
       includeProcessedMarkdown: true,
     },
@@ -40,7 +47,9 @@ export const blog = defineDocs({
 });
 
 export default defineConfig({
+  plugins: [lastModified()],
   mdxOptions: {
-    // MDX options
+    remarkPlugins: [remarkMath],
+    rehypePlugins: (v) => [rehypeKatex, ...v],
   },
 });

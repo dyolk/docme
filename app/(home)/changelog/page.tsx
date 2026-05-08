@@ -239,19 +239,13 @@ function ChangelogCard({
 
 export default function ChangelogPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Main Content */}
-      <main className="flex-1">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          {/* Page Title */}
-          <div className="text-center mb-10 sm:mb-12">
-            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-3">
-              更新日志
-            </h1>
-            <p className="text-sm text-[var(--muted)] inline-flex items-center gap-1.5 justify-center">
-              追踪 <DILogo className="w-5 h-5 text-[10px]" /> DocME 的每一次迭代与成长
-            </p>
-          </div>
+    <>
+      <main className="apple-section">
+        <div className="max-w-[720px] mx-auto">
+          <h1 className="apple-display-1 text-center mb-6">更新日志</h1>
+          <p className="apple-body-lg text-center mb-16">
+            追踪 <DILogo className="w-5 h-5 text-[10px]" /> DocME 的每一次迭代与成长
+          </p>
 
           {/* Timeline */}
           <div className="relative">
@@ -272,8 +266,7 @@ export default function ChangelogPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <Footer />
-    </div>
+    </>
   );
 }

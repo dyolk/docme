@@ -1,21 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Github,
-  Globe,
-  MessageSquare,
-} from 'lucide-react';
-
-function DILogo({ className = '' }: { className?: string }) {
-  return (
-    <span
-      className={`inline-flex items-center justify-center rounded-lg bg-blue-600 text-white font-bold select-none ${className}`}
-      style={{ fontSize: '0.6em', lineHeight: 1 }}
-    >
-      DI
-    </span>
-  );
-}
 
 export function Footer() {
   const linkGroups = [
@@ -34,6 +18,7 @@ export function Footer() {
         { label: '博客', href: '/blog' },
         { label: '更新日志', href: '/changelog' },
         { label: '路线图', href: '/roadmap' },
+        { label: 'Sitemap', href: '/sitemap.xml' },
       ],
     },
     {
@@ -55,49 +40,19 @@ export function Footer() {
     },
   ];
 
-  return (
-    <footer className="glass-footer">
-      {/* Main footer content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-12">
-          {/* Logo & description - takes 2 columns on desktop */}
-          <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4 group">
-              <DILogo className="w-8 h-8 text-lg" />
-              <span className="text-lg font-bold text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">DocME</span>
-            </Link>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mb-6">
-              为开发者打造的现代化文档框架，
-              让构建精美文档站点变得前所未有的简单。
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://github.com/fuma-nama/fumadocs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-xl flex items-center justify-center glass-icon !w-9 !h-9 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-              >
-                <Github className="size-4" />
-              </a>
-              <a
-                href="#"
-                className="w-9 h-9 rounded-xl flex items-center justify-center glass-icon !w-9 !h-9 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-              >
-                <Globe className="size-4" />
-              </a>
-              <a
-                href="#"
-                className="w-9 h-9 rounded-xl flex items-center justify-center glass-icon !w-9 !h-9 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
-              >
-                <MessageSquare className="size-4" />
-              </a>
-            </div>
-          </div>
+  const legalLinks = [
+    { label: '隐私政策', href: '/privacy' },
+    { label: '服务条款', href: '/terms' },
+    { label: '开源协议', href: '/license' },
+  ];
 
-          {/* Link groups */}
+  return (
+    <footer className="bg-[#f5f5f7] dark:bg-[#1d1d1f]">
+      <div className="max-w-[980px] mx-auto px-6 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12 pb-12 border-b border-[var(--apple-border)]">
           {linkGroups.map((group) => (
             <div key={group.title}>
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">
+              <h3 className="text-xs font-semibold text-[var(--apple-text)] mb-3 uppercase tracking-wider">
                 {group.title}
               </h3>
               <ul className="space-y-2.5">
@@ -107,7 +62,7 @@ export function Footer() {
                       href={link.href}
                       target={link.external ? '_blank' : undefined}
                       rel={link.external ? 'noopener noreferrer' : undefined}
-                      className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+                      className="text-xs text-[var(--apple-text-secondary)] hover:text-[var(--apple-text)] transition-colors duration-300"
                     >
                       {link.label}
                     </Link>
@@ -117,21 +72,33 @@ export function Footer() {
             </div>
           ))}
         </div>
-      </div>
 
-      {/* Bottom bar with ICP placeholder */}
-      <div className="bg-white/20 dark:bg-white/5 backdrop-blur-md border-t border-white/30 dark:border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
-            <p>© {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</p>
-            <div className="flex items-center gap-4">
-              <span>京ICP备XXXXXXXX号-1</span>
-              <span className="text-slate-300 dark:text-slate-600">|</span>
-              <span className="inline-flex items-center gap-1">
-                <Image src="/images/beian.png" alt="备案" width={14} height={14} className="opacity-70" />
-                京公网安备XXXXXXXXXXX号
+        <div className="space-y-2 text-xs text-[var(--apple-text-secondary)]">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            {legalLinks.map((link, index) => (
+              <span key={link.href} className="inline-flex items-center gap-x-3">
+                <Link
+                  href={link.href}
+                  className="hover:text-[var(--apple-text)] transition-colors duration-300"
+                >
+                  {link.label}
+                </Link>
+                {index < legalLinks.length - 1 && (
+                  <span className="text-[var(--apple-border)]">|</span>
+                )}
               </span>
-            </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            <span>© {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</span>
+            <span className="hidden sm:inline text-[var(--apple-border)]">|</span>
+            <span>京ICP备XXXXXXXX号-1</span>
+            <span className="hidden sm:inline text-[var(--apple-border)]">|</span>
+            <span className="inline-flex items-center gap-1">
+              <Image src="/images/beian.png" alt="备案" width={14} height={14} className="opacity-70" />
+              京公网安备XXXXXXXXXXX号
+            </span>
           </div>
         </div>
       </div>

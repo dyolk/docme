@@ -5,7 +5,14 @@ import { docsOptions } from '@/lib/layout.shared';
 export default function Layout({ children }: LayoutProps<'/docs'>) {
   return (
     <div className="glass-page-bg min-h-screen">
-      <DocsLayout tree={source.getPageTree()} {...docsOptions()}>
+      <DocsLayout
+        tree={source.getPageTree()}
+        {...docsOptions()}
+        sidebar={{
+          collapsible: true,
+          defaultOpenLevel: 1,
+        }}
+      >
         {children}
       </DocsLayout>
     </div>
