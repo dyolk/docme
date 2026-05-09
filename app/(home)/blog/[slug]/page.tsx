@@ -27,6 +27,18 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
           返回博客
         </Link>
 
+        {/* Hero Cover */}
+        {page.data.cover && (
+          <div className="relative w-full h-[360px] mb-12 rounded-2xl overflow-hidden">
+            <img
+              src={page.data.cover}
+              alt={page.data.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          </div>
+        )}
+
         {/* Article Header */}
         <header className="text-center mb-12">
           {/* Tags */}

@@ -26,6 +26,7 @@ import {
   ListChecks,
   BookOpen,
 } from 'lucide-react';
+import { blogSource } from '@/lib/blog-source';
 
 /* ── CVE Counter ─────────────────────────────── */
 
@@ -136,6 +137,13 @@ const categories = [
 export default async function HomePage() {
   const cveCount = await getCveCount();
   const checklistCount = await getChecklistCount();
+
+  // 最新博客
+  const blogs = blogSource.getPages().sort((a, b) => {
+    const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+    const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+    return dateB - dateA;
+  }).slice(0, 6);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -292,6 +300,41 @@ export default async function HomePage() {
                 ))}
               </div>
             </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== LATEST BLOGS ===== */}
+      <section className="py-[120px] max-md:py-[80px]">
+        <div className="max-w-[1120px] mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="apple-section-title text-center mb-4">最新文章</h2>
+            <p className="apple-section-subtitle text-center mb-12">探索我们的最新技术洞察</p>
+          </ScrollReveal>
+
+          {/* 横向滚动容器 */}
+          <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-6 px-6">
+            {blogs.map((blog) => (
+              <Link key={blog.url} href={blog.url} className="flex-none w-[340px] snap-start group">
+                <div className="rounded-[20px] overflow-hidden bg-white dark:bg-[#1d1d1f] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 h-[420px] flex flex-col">
+                  {/* 封面图 */}
+                  <div className="h-[200px] relative overflow-hidden bg-gradient-to-br from-[#0071E3] to-[#00C7FF]">
+                    {blog.data.cover && (
+                      <img src={blog.data.cover} alt={blog.data.title} className="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  {/* 内容 */}
+                  <div className="p-6 flex-1 flex flex-col">
+                    {blog.data.tags?.[0] && (
+                      <span className="text-xs font-medium text-[#0071E3] mb-2">{blog.data.tags[0]}</span>
+                    )}
+                    <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-white mb-2 line-clamp-2">{blog.data.title}</h3>
+                    <p className="text-sm text-[#6e6e73] flex-1 line-clamp-3">{blog.data.description}</p>
+                    <span className="text-xs text-[#6e6e73] mt-4">{blog.data.date}</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

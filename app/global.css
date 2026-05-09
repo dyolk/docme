@@ -357,6 +357,15 @@ section[data-footnotes] h2#footnote-label::before,
   letter-spacing: 0.05em;
 }
 
+/* ── Scrollbar Hide ─────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Theme-aware CSS variables (used across site) ───── */
 :root {
   --accent: #2563eb;

@@ -42,7 +42,14 @@ export default async function BlogPage() {
             {sorted.map((page, index) => (
               <FadeInStaggerItem key={page.url}>
                 <Link href={page.url} className="block h-full">
-                  <AppleCard delay={index * 0.1} className="h-full">
+                  <AppleCard delay={index * 0.1} className="h-full overflow-hidden">
+                    {page.data.cover && (
+                      <img
+                        src={page.data.cover}
+                        alt={page.data.title}
+                        className="w-full h-[200px] object-cover"
+                      />
+                    )}
                     <div className="p-8 h-full flex flex-col">
                       {/* Tags */}
                       {page.data.tags && page.data.tags.length > 0 && (
