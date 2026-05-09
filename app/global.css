@@ -8,26 +8,11 @@
 :root {
   --color-fd-primary: hsl(211, 100%, 45%); /* Apple Blue #0071E3 */
   --color-fd-accent: hsla(211, 100%, 45%, 0.12);
-  /* Layout Tab 颜色 */
-  --getting-started-color: hsl(142, 71%, 45%);  /* 绿色 */
-  --guides-color: hsl(217, 91%, 60%);           /* 蓝色 */
 }
 
 .dark {
   --color-fd-primary: hsl(211, 100%, 50%); /* #007AFF */
   --color-fd-accent: hsla(211, 100%, 50%, 0.12);
-  /* Layout Tab 颜色 */
-  --getting-started-color: hsl(142, 76%, 60%);
-  --guides-color: hsl(217, 100%, 75%);
-}
-
-/* Tab 主题色跟随 - 当 URL 包含对应路径时自动应用 */
-[data-section="getting-started"] {
-  --color-fd-primary: var(--getting-started-color);
-}
-
-[data-section="guides"] {
-  --color-fd-primary: var(--guides-color);
 }
 
 /* ── Tailwind Dark Mode (class strategy) ───────────── */

@@ -3,6 +3,7 @@ import { source } from '@/lib/source';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { docsOptions } from '@/lib/layout.shared';
 import { DocsThemeWrapper } from '@/components/docs-theme-wrapper';
+import { getSectionColors } from '@/lib/tab-colors';
 
 // 根据 tab URL 路径获取对应的颜色分组
 function getTabSection(url: string | undefined): string {
@@ -12,38 +13,40 @@ function getTabSection(url: string | undefined): string {
 }
 
 export default function Layout({ children }: LayoutProps<'/docs'>) {
-  return (
-    <div className="glass-page-bg min-h-screen">
-      <DocsLayout
-        tree={source.getPageTree()}
-        {...docsOptions()}
-        sidebar={{
-          collapsible: true,
-          defaultOpenLevel: 1,
-        }}
-        tabs={{
-          transform(option, node) {
-            const section = getTabSection(option.url);
-            const color = `var(--${section}-color, var(--color-fd-foreground))`;
+  const sectionColors = getSectionColors();
 
-            return {
-              ...option,
-              icon: (
-                <div
-                  className="flex items-center justify-center rounded-md p-1 [&_svg]:size-5"
-                  style={{ color } as React.CSSProperties}
-                >
-                  {node.icon}
-                </div>
-              ),
-            };
-          },
-        }}
-      >
-        <DocsThemeWrapper>
+  return (
+    <DocsThemeWrapper colors={sectionColors}>
+      <div className="glass-page-bg min-h-screen">
+        <DocsLayout
+          tree={source.getPageTree()}
+          {...docsOptions()}
+          sidebar={{
+            collapsible: true,
+            defaultOpenLevel: 1,
+          }}
+          tabs={{
+            transform(option, node) {
+              const section = getTabSection(option.url);
+              const color = sectionColors[section] ?? 'var(--color-fd-foreground)';
+
+              return {
+                ...option,
+                icon: (
+                  <div
+                    className="flex items-center justify-center rounded-md p-1 [&_svg]:size-5"
+                    style={{ color } as React.CSSProperties}
+                  >
+                    {node.icon}
+                  </div>
+                ),
+              };
+            },
+          }}
+        >
           {children}
-        </DocsThemeWrapper>
-      </DocsLayout>
-    </div>
+        </DocsLayout>
+      </div>
+    </DocsThemeWrapper>
   );
 }

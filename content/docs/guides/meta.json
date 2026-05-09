@@ -3,6 +3,7 @@
   "description": "文档编写与部署",
   "icon": "Compass",
   "root": true,
+  "color": "hsl(217, 91%, 60%)",
   "defaultOpen": false,
   "pages": ["index", "writing-docs", "deployment"]
 }

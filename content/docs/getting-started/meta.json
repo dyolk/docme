@@ -3,6 +3,7 @@
   "description": "安装与配置指南",
   "icon": "BookOpen",
   "root": true,
+  "color": "hsl(30, 100%, 50%)",
   "defaultOpen": true,
   "pages": ["index", "installation", "configuration"]
 }
