@@ -22,6 +22,11 @@ import {
   Cloud,
   Bug,
   ShieldCheck,
+  Shield,
+  Box,
+  Network,
+  Code,
+  ClipboardCheck,
   ListChecks,
   BookOpen,
 } from 'lucide-react';
@@ -57,76 +62,76 @@ const features = [
   {
     icon: ListChecks,
     title: '安全检查清单',
-    desc: '覆盖 Linux、Docker、Kubernetes 等平台的安全基线检查项，开箱即用。',
+    desc: '逐项排查，滴水不漏。',
     href: '/docs',
   },
   {
     icon: Bug,
     title: 'CVE 漏洞库',
-    desc: '收录常见 CVE 漏洞详情与修复方案，快速定位安全风险。',
+    desc: '已知威胁，尽在掌握。',
     href: '/docs',
   },
   {
     icon: BookOpen,
     title: '最佳实践指南',
-    desc: '汇集业界 DevSecOps 最佳实践，从代码到部署全链路安全。',
+    desc: '前人铺路，后人无忧。',
     href: '/docs',
   },
   {
     icon: Search,
     title: '全文搜索',
-    desc: '支持中文分词的全文检索，秒级定位所需安全知识。',
+    desc: '所想即所得。',
     href: '/docs',
   },
   {
     icon: GitCommit,
     title: '持续更新',
-    desc: '社区驱动的内容维护，紧跟最新安全威胁与防护方案。',
+    desc: '与威胁赛跑，永不停歇。',
     href: '/docs',
   },
   {
     icon: GitBranch,
     title: '开源协作',
-    desc: '基于 Git 的协作模式，欢迎贡献安全知识与经验。',
+    desc: '众人拾柴，安全无界。',
     href: '/docs',
   },
 ];
 
 const categories = [
   {
-    icon: Server,
+    icon: Shield,
     title: '服务器安全',
-    desc: 'Linux 系统加固、SSH 配置、防火墙策略、日志审计。',
+    description: '固若金汤，从根基开始。',
     href: '/docs/server-prep',
   },
   {
-    icon: ShieldCheck,
+    icon: Box,
     title: '容器安全',
-    desc: 'Docker 镜像扫描、容器运行时防护、供应链安全。',
+    description: '轻量之中，层层设防。',
     href: '/docs/platform',
   },
   {
-    icon: Cloud,
+    icon: Network,
     title: 'Kubernetes 安全',
-    desc: '集群加固、RBAC 策略、网络策略、Pod 安全标准。',
+    description: '编排有序，防护有道。',
     href: '/docs/cloud-native',
   },
   {
-    icon: Globe,
+    icon: Cloud,
     title: '云原生安全',
-    desc: '云平台安全配置、IAM 最佳实践、数据加密。',
+    description: '上云无忧，安全随行。',
     href: '/docs/cloud-native',
   },
   {
-    icon: Bug,
+    icon: Code,
     title: '应用安全',
-    desc: 'OWASP Top 10、代码审计、依赖漏洞管理。',
+    description: '每一行代码，都值得信赖。',
     href: '/docs/cve',
   },
   {
-    icon: FileText,
+    icon: ClipboardCheck,
     title: '合规审计',
-    desc: '等保 2.0、ISO 27001、SOC 2 合规要求与实施。',
+    description: '合规不是终点，是起点。',
     href: '/docs/checklists',
   },
 ];
@@ -154,9 +159,9 @@ export default async function HomePage() {
         <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <h2 className="apple-section-title">DevSecOps 知识库</h2>
+              <h2 className="apple-section-title">为安全而生。</h2>
               <p className="apple-section-subtitle mt-4 max-w-[520px] mx-auto">
-                开源安全知识沉淀，从基础设施到应用交付全链路覆盖
+                沉淀知识，守护每一行代码。
               </p>
             </div>
           </ScrollReveal>
@@ -184,72 +189,31 @@ export default async function HomePage() {
       </section>
 
       {/* ===== DEVSECOPS CATEGORIES ===== */}
-      <section className="py-[120px] max-md:py-[80px] overflow-hidden">
-        <div className="max-w-[1120px] mx-auto px-6 mb-12">
+      <section className="py-[120px] max-md:py-[80px] bg-[#f5f5f7] dark:bg-[#111111]">
+        <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
-            <h2 className="apple-section-title text-center">覆盖 DevSecOps 全链路</h2>
+            <h2 className="apple-section-title text-center">从代码到云端，一路护航。</h2>
             <p className="apple-section-subtitle text-center mt-4 max-w-[560px] mx-auto">
-              从基础设施到应用层，全方位安全防护
+              每一环，都固若金汤。
             </p>
           </ScrollReveal>
-        </div>
 
-        {/* 无限滚动容器 */}
-        <div className="group relative">
-          <div className="flex gap-6 w-max animate-scroll-left hover:[animation-play-state:paused]">
-            {/* 第一组卡片 */}
-            {categories.map((cat, i) => {
-              const gradientClasses = [
-                'bg-gradient-to-br from-[#1a1a2e] to-[#16213e]',
-                'bg-gradient-to-br from-[#0f3460] to-[#533483]',
-                'bg-gradient-to-br from-[#326fa8] to-[#4834d4]',
-                'bg-gradient-to-br from-[#00b4d8] to-[#0077b6]',
-                'bg-gradient-to-br from-[#e63946] to-[#a8201a]',
-                'bg-gradient-to-br from-[#2d6a4f] to-[#1b4332]',
-              ];
-              return (
+          <div className="mt-16 grid grid-cols-3 gap-5 max-md:grid-cols-1">
+            {categories.map((cat, i) => (
+              <ScrollReveal key={cat.title} delay={i * 0.08}>
                 <Link
-                  key={cat.title}
                   href={cat.href}
-                  className={`flex-none w-[300px] p-8 rounded-[20px] ${gradientClasses[i]} text-white transition-transform duration-300 hover:scale-[1.02]`}
+                  className="group block bg-white dark:bg-[#1d1d1f] rounded-[20px] p-8 h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
                 >
-                  <div className="w-14 h-14 rounded-[16px] bg-white/15 flex items-center justify-center mb-5 backdrop-blur-sm">
-                    <cat.icon className="size-7 text-white" />
+                  <div className="w-12 h-12 rounded-2xl bg-[#0071E3]/10 dark:bg-[#0071E3]/20 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
+                    <cat.icon className="w-6 h-6 text-[#0071E3]" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{cat.title}</h3>
-                  <p className="text-sm opacity-80 leading-relaxed">{cat.desc}</p>
+                  <h3 className="text-xl font-semibold text-[#1d1d1f] dark:text-white mb-3">{cat.title}</h3>
+                  <p className="text-[15px] text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed">{cat.description}</p>
                 </Link>
-              );
-            })}
-            {/* 复制一组实现无缝循环 */}
-            {categories.map((cat, i) => {
-              const gradientClasses = [
-                'bg-gradient-to-br from-[#1a1a2e] to-[#16213e]',
-                'bg-gradient-to-br from-[#0f3460] to-[#533483]',
-                'bg-gradient-to-br from-[#326fa8] to-[#4834d4]',
-                'bg-gradient-to-br from-[#00b4d8] to-[#0077b6]',
-                'bg-gradient-to-br from-[#e63946] to-[#a8201a]',
-                'bg-gradient-to-br from-[#2d6a4f] to-[#1b4332]',
-              ];
-              return (
-                <Link
-                  key={`dup-${cat.title}`}
-                  href={cat.href}
-                  className={`flex-none w-[300px] p-8 rounded-[20px] ${gradientClasses[i]} text-white transition-transform duration-300 hover:scale-[1.02]`}
-                >
-                  <div className="w-14 h-14 rounded-[16px] bg-white/15 flex items-center justify-center mb-5 backdrop-blur-sm">
-                    <cat.icon className="size-7 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">{cat.title}</h3>
-                  <p className="text-sm opacity-80 leading-relaxed">{cat.desc}</p>
-                </Link>
-              );
-            })}
+              </ScrollReveal>
+            ))}
           </div>
-
-          {/* 左右渐隐遮罩 */}
-          <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-black to-transparent pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-black to-transparent pointer-events-none" />
         </div>
       </section>
 
@@ -260,25 +224,25 @@ export default async function HomePage() {
             <ScrollReveal>
               <div>
                 <h2 className="text-[clamp(2rem,4vw,3rem)] font-semibold tracking-tight leading-[1.1] text-white">
-                  手册在手。
+                  不止于文档。
                   <br />
-                  心中有谱。
+                  远不止于此。
                 </h2>
                 <p className="mt-6 text-[1.0625rem] text-[#a1a1a6] leading-relaxed max-w-[480px]">
-                  不用从零摸索，不用重复踩坑。遇到问题时，打开手册，直接找到答案。每一篇文档都是真实项目沉淀，每一个清单都经过生产环境验证。
+                  每一页，都是实战。
                 </p>
                 <div className="mt-8 flex flex-wrap gap-6">
                   <div>
                     <div className="text-3xl font-semibold text-white">{checklistCount || '0'}</div>
-                    <div className="text-sm text-[#a1a1a6] mt-1">检查清单</div>
+                    <div className="text-sm text-[#a1a1a6] mt-1">安全清单</div>
                   </div>
                   <div>
                     <div className="text-3xl font-semibold text-white">{cveCount || '0'}</div>
-                    <div className="text-sm text-[#a1a1a6] mt-1">CVE 收录</div>
+                    <div className="text-sm text-[#a1a1a6] mt-1">漏洞收录</div>
                   </div>
                   <div>
                     <div className="text-3xl font-semibold text-white">6</div>
-                    <div className="text-sm text-[#a1a1a6] mt-1">核心领域</div>
+                    <div className="text-sm text-[#a1a1a6] mt-1">安全领域</div>
                   </div>
                 </div>
               </div>
@@ -286,12 +250,12 @@ export default async function HomePage() {
             <ScrollReveal delay={0.15} direction="right">
               <div className="space-y-4">
                 {[
-                  { icon: Server, text: '服务器准备与安全加固' },
-                  { icon: Terminal, text: 'CI/CD 平台搭建与权限管控' },
-                  { icon: Activity, text: '全链路监控与告警标准化' },
-                  { icon: Cloud, text: '云原生集群规划与灰度发布' },
-                  { icon: ShieldCheck, text: 'CVE 追踪与修复方案' },
-                  { icon: BookOpen, text: '真实项目经验沉淀' },
+                  { icon: Server, text: '服务器安全加固' },
+                  { icon: Terminal, text: 'CI/CD 权限管控' },
+                  { icon: Activity, text: '全链路监控告警' },
+                  { icon: Cloud, text: '云原生集群规划' },
+                  { icon: ShieldCheck, text: '漏洞追踪修复' },
+                  { icon: BookOpen, text: '项目经验沉淀' },
                 ].map((item, i) => (
                   <div
                     key={i}
@@ -311,8 +275,8 @@ export default async function HomePage() {
       <section className="py-[120px] max-md:py-[80px]">
         <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
-            <h2 className="apple-section-title text-center mb-4">最新文章</h2>
-            <p className="apple-section-subtitle text-center mb-12">探索我们的最新技术洞察</p>
+            <h2 className="apple-section-title text-center mb-4">新鲜出炉。</h2>
+            <p className="apple-section-subtitle text-center mb-12">最新洞察。</p>
           </ScrollReveal>
 
           {/* 横向滚动容器 */}
@@ -347,18 +311,18 @@ export default async function HomePage() {
         <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
             <h2 className="apple-section-title">
-              准备好开始了吗？
+              开始探索。
             </h2>
             <p className="apple-section-subtitle mt-4 max-w-[520px] mx-auto">
-              浏览文档，查找清单，追踪 CVE。一切尽在掌握。
+              一切尽在掌握。
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
               <Link href="/docs" className="apple-btn-primary">
-                速查手册
+                查阅手册
                 <ArrowRight className="size-4 ml-2" />
               </Link>
               <Link href="/blog" className="apple-btn-secondary">
-                阅读博客
+                浏览博客
               </Link>
             </div>
           </ScrollReveal>

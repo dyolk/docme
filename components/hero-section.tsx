@@ -19,7 +19,7 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <Chip color="accent" variant="soft" className="mb-6">
-            开源 DevSecOps 文档项目
+            开源 · 免费 · 共建
           </Chip>
         </motion.div>
 
@@ -38,9 +38,7 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="apple-hero-subtitle max-w-[640px] mx-auto"
         >
-          涵盖安全检查清单、CVE 漏洞库、最佳实践指南
-          <br className="hidden md:block" />
-          一本手册，全部覆盖。
+          安全知识，一册尽览。
         </motion.p>
 
         {/* CTA 按钮 */}
@@ -52,7 +50,7 @@ export function HeroSection() {
         >
           <Link href="/docs/getting-started/installation" className="inline-flex">
             <Button variant="primary" size="lg" className="rounded-full">
-              开始阅读
+              开始探索
             </Button>
           </Link>
           <a
