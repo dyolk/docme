@@ -16,9 +16,9 @@ export function Footer() {
       title: '资源',
       links: [
         { label: '博客', href: '/blog' },
+        { label: '资源库', href: '/resources' },
         { label: '更新日志', href: '/changelog' },
         { label: '路线图', href: '/roadmap' },
-        { label: 'Sitemap', href: '/sitemap.xml' },
       ],
     },
     {

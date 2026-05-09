@@ -18,6 +18,11 @@ export function baseOptions(): BaseLayoutProps {
         url: '/blog',
         active: 'nested-url',
       },
+      {
+        text: '资源',
+        url: '/resources',
+        active: 'nested-url',
+      },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
