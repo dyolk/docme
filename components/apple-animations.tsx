@@ -9,6 +9,60 @@ const appleEase = [0.16, 1, 0.3, 1] as const;
 const appleEaseOut = [0.25, 0.1, 0.25, 1] as const;
 
 /**
+ * TextRevealByWord - 逐字弹入动画
+ */
+export function TextRevealByWord({
+  text,
+  className = '',
+}: {
+  text: string;
+  className?: string;
+}) {
+  const chars = text.split('');
+  return (
+    <span className={className}>
+      {chars.map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            delay: i * 0.05,
+            duration: 0.4,
+            ease: appleEaseOut,
+          }}
+          className="inline-block"
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
+/**
+ * GradientFlowText - 渐变流动文字
+ */
+export function GradientFlowText({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.span
+      className={`bg-gradient-to-r from-[#0071E3] via-[#00C7FF] to-[#0071E3] bg-clip-text text-transparent ${className}`}
+      style={{ backgroundSize: '200% auto' }}
+      animate={{ backgroundPosition: ['0% center', '200% center'] }}
+      transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
+/**
  * ScrollReveal - 滚动淡入组件
  * 当元素进入视口时从下方淡入，使用更优雅的弹性缓动
  */

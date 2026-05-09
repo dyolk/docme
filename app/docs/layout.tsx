@@ -30,7 +30,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
               ...option,
               icon: (
                 <div
-                  className="rounded-md p-1 [&_svg]:size-5"
+                  className="flex items-center justify-center rounded-md p-1 [&_svg]:size-5"
                   style={{ color } as React.CSSProperties}
                 >
                   {node.icon}

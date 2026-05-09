@@ -2,10 +2,9 @@ import Link from 'next/link';
 import { Footer } from '@/components/footer';
 import {
   ScrollReveal,
-  HeroStagger,
-  HeroStaggerItem,
   HoverLiftCard,
 } from '@/components/apple-animations';
+import { HeroSection } from '@/components/hero-section';
 import { readdirSync } from 'fs';
 import { join } from 'path';
 
@@ -56,39 +55,39 @@ async function getChecklistCount(): Promise<number> {
 
 const features = [
   {
+    icon: ListChecks,
+    title: '安全检查清单',
+    desc: '覆盖 Linux、Docker、Kubernetes 等平台的安全基线检查项，开箱即用。',
+    href: '/docs',
+  },
+  {
+    icon: Bug,
+    title: 'CVE 漏洞库',
+    desc: '收录常见 CVE 漏洞详情与修复方案，快速定位安全风险。',
+    href: '/docs',
+  },
+  {
+    icon: BookOpen,
+    title: '最佳实践指南',
+    desc: '汇集业界 DevSecOps 最佳实践，从代码到部署全链路安全。',
+    href: '/docs',
+  },
+  {
     icon: Search,
-    title: '文档搜索',
-    desc: '基于 Orama 的全文检索引擎，毫秒级响应，支持模糊匹配与高亮展示。',
-    href: '/docs',
-  },
-  {
-    icon: FileText,
-    title: 'MDX 渲染',
-    desc: 'Fumadocs 原生 MDX 支持，组件化内容编写，交互式代码块与实时预览。',
-    href: '/docs',
-  },
-  {
-    icon: Calculator,
-    title: '数学公式',
-    desc: '集成 KaTeX，支持行内与块级 LaTeX 公式渲染，排版精确、加载迅速。',
-    href: '/docs',
-  },
-  {
-    icon: GitBranch,
-    title: '流程图',
-    desc: '内置 Mermaid 支持，直接在文档中绘制流程图、时序图与状态图。',
+    title: '全文搜索',
+    desc: '支持中文分词的全文检索，秒级定位所需安全知识。',
     href: '/docs',
   },
   {
     icon: GitCommit,
-    title: '版本管理',
-    desc: 'Git 驱动的内容版本控制，每次变更可追溯，支持多分支文档策略。',
+    title: '持续更新',
+    desc: '社区驱动的内容维护，紧跟最新安全威胁与防护方案。',
     href: '/docs',
   },
   {
-    icon: Globe,
-    title: '多语言支持',
-    desc: '内置国际化框架，轻松扩展多语言文档，适配全球化团队协作需求。',
+    icon: GitBranch,
+    title: '开源协作',
+    desc: '基于 Git 的协作模式，欢迎贡献安全知识与经验。',
     href: '/docs',
   },
 ];
@@ -96,38 +95,38 @@ const features = [
 const categories = [
   {
     icon: Server,
-    title: '服务器准备',
-    desc: '操作系统选型、内核调优、安全加固、基线检查。',
+    title: '服务器安全',
+    desc: 'Linux 系统加固、SSH 配置、防火墙策略、日志审计。',
     href: '/docs/server-prep',
   },
   {
-    icon: Terminal,
-    title: '平台构建',
-    desc: 'GitLab、Jenkins、Harbor、Nexus 从零搭建。',
+    icon: ShieldCheck,
+    title: '容器安全',
+    desc: 'Docker 镜像扫描、容器运行时防护、供应链安全。',
     href: '/docs/platform',
   },
   {
-    icon: Activity,
-    title: '监控构建',
-    desc: 'Prometheus + Grafana + ELK，指标、日志、告警标准化。',
-    href: '/docs/monitoring',
+    icon: Cloud,
+    title: 'Kubernetes 安全',
+    desc: '集群加固、RBAC 策略、网络策略、Pod 安全标准。',
+    href: '/docs/cloud-native',
   },
   {
-    icon: Cloud,
-    title: '云原生实现',
-    desc: 'Docker、Kubernetes、Helm、Istio 生产级实践。',
+    icon: Globe,
+    title: '云原生安全',
+    desc: '云平台安全配置、IAM 最佳实践、数据加密。',
     href: '/docs/cloud-native',
   },
   {
     icon: Bug,
-    title: 'CVE 收录',
-    desc: '影响版本、修复方案、验证步骤、回滚预案，直接查，直接修。',
+    title: '应用安全',
+    desc: 'OWASP Top 10、代码审计、依赖漏洞管理。',
     href: '/docs/cve',
   },
   {
-    icon: ListChecks,
-    title: '详细清单',
-    desc: '服务器检查、部署验收、安全审计、故障排查、上线确认。',
+    icon: FileText,
+    title: '合规审计',
+    desc: '等保 2.0、ISO 27001、SOC 2 合规要求与实施。',
     href: '/docs/checklists',
   },
 ];
@@ -148,46 +147,16 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#ffffff_0%,_#f5f5f7_70%)] dark:bg-[radial-gradient(ellipse_at_center,_#000000_0%,_#1d1d1f_70%)]" />
-        <div className="relative z-10 max-w-[1120px] mx-auto">
-          <HeroStagger>
-            <HeroStaggerItem>
-              <h1 className="apple-hero-title">
-                DevSecOps
-                <br />
-                查询手册
-              </h1>
-            </HeroStaggerItem>
-            <HeroStaggerItem>
-              <p className="apple-hero-subtitle mt-6 max-w-[640px] mx-auto">
-                服务器、平台、监控、云原生、CVE、清单。
-                <br className="hidden md:block" />
-                一本手册，全部覆盖。
-              </p>
-            </HeroStaggerItem>
-            <HeroStaggerItem>
-              <div className="mt-10 flex items-center justify-center gap-4">
-                <Link href="/docs/getting-started/installation" className="apple-btn-primary">
-                  开始阅读
-                </Link>
-                <Link href="/docs" className="apple-btn-secondary">
-                  了解更多
-                </Link>
-              </div>
-            </HeroStaggerItem>
-          </HeroStagger>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* ===== FEATURE GRID ===== */}
       <section className="apple-section apple-section-alt">
         <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <h2 className="apple-section-title">为开发者设计</h2>
+              <h2 className="apple-section-title">DevSecOps 知识库</h2>
               <p className="apple-section-subtitle mt-4 max-w-[520px] mx-auto">
-                现代化的文档体验，让知识触手可及
+                开源安全知识沉淀，从基础设施到应用交付全链路覆盖
               </p>
             </div>
           </ScrollReveal>
@@ -206,7 +175,6 @@ export default async function HomePage() {
                     className="apple-link mt-5 inline-flex items-center"
                   >
                     了解更多
-                    <ArrowRight className="size-4 ml-1" />
                   </Link>
                 </div>
               </HoverLiftCard>
@@ -241,7 +209,6 @@ export default async function HomePage() {
                     className="apple-link mt-5 inline-flex items-center"
                   >
                     查看详情
-                    <ArrowRight className="size-4 ml-1" />
                   </Link>
                 </div>
               </HoverLiftCard>
