@@ -5,6 +5,7 @@ import { Footer } from '@/components/footer';
 import {
   ResourceBrowser,
   type ResourceData,
+  type UsageDoc,
 } from '@/components/resource-browser';
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function scanResources(): ResourceData {
+function scanResources(): Omit<ResourceData, 'usageDocs'> {
   const resourcesPath = join(process.cwd(), 'public', 'resources');
   let rootReadme = '';
   const directories: ResourceData['directories'] = [];
@@ -83,8 +84,53 @@ function scanResources(): ResourceData {
   };
 }
 
+function scanUsageDocs(): UsageDoc[] {
+  const usagePath = join(process.cwd(), 'content', 'usage');
+  const docs: UsageDoc[] = [];
+
+  try {
+    const entries = readdirSync(usagePath, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.endsWith('.mdx')) continue;
+
+      const filePath = join(usagePath, entry.name);
+      const content = readFileSync(filePath, 'utf-8');
+      const slug = parse(entry.name).name;
+
+      // 解析 frontmatter（简单正则，不引入新依赖）
+      const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
+      const frontmatter = fmMatch?.[1] ?? '';
+      const body = fmMatch?.[2] ?? content;
+
+      const titleMatch = frontmatter.match(/^title:\s*["']?(.+?)["']?\s*$/m);
+      const orderMatch = frontmatter.match(/^order:\s*(\d+)\s*$/m);
+
+      const title = titleMatch?.[1] ?? slug;
+      const order = parseInt(orderMatch?.[1] ?? '999', 10);
+
+      docs.push({
+        slug,
+        title,
+        content: body.trim(),
+        order,
+      });
+    }
+  } catch {
+    // 目录不存在时返回空
+  }
+
+  return docs.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+}
+
 export default function ResourcesPage() {
-  const data = scanResources();
+  const resourceData = scanResources();
+  const usageDocs = scanUsageDocs();
+
+  const data: ResourceData = {
+    ...resourceData,
+    usageDocs,
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f5f5f7] dark:bg-black">

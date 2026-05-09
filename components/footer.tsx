@@ -16,7 +16,6 @@ export function Footer() {
       title: '资源',
       links: [
         { label: '博客', href: '/blog' },
-        { label: '资源库', href: '/resources' },
         { label: '更新日志', href: '/changelog' },
         { label: '路线图', href: '/roadmap' },
       ],
@@ -49,7 +48,7 @@ export function Footer() {
   return (
     <footer className="bg-[#f5f5f7] dark:bg-[#1d1d1f]">
       <div className="max-w-[980px] mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12 pb-12 border-b border-[var(--apple-border)]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 pb-12 border-b border-[var(--apple-border)] justify-items-center">
           {linkGroups.map((group) => (
             <div key={group.title}>
               <h3 className="text-xs font-semibold text-[var(--apple-text)] mb-3 uppercase tracking-wider">

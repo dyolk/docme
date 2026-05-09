@@ -2,7 +2,13 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Folder, FileText, ChevronRight, BookOpen } from 'lucide-react';
+import {
+  Folder,
+  FileText,
+  ChevronRight,
+  BookOpen,
+  FolderOpen,
+} from 'lucide-react';
 
 /* ===================== 类型定义 ===================== */
 
@@ -20,9 +26,17 @@ export interface ResourceDirectory {
   files: ResourceFile[];
 }
 
+export interface UsageDoc {
+  slug: string;
+  title: string;
+  content: string;
+  order?: number;
+}
+
 export interface ResourceData {
   readme: string;
   directories: ResourceDirectory[];
+  usageDocs: UsageDoc[];
 }
 
 type ViewState =
@@ -401,17 +415,81 @@ function FileView({
   );
 }
 
+/* ===================== 使用指南 Tab 内容 ===================== */
+
+function UsageGuideView({ usageDocs }: { usageDocs: UsageDoc[] }) {
+  const [selectedSlug, setSelectedSlug] = useState(usageDocs[0]?.slug ?? '');
+  const selectedDoc = usageDocs.find((d) => d.slug === selectedSlug);
+
+  return (
+    <div className="flex flex-col md:flex-row gap-4">
+      {/* 左侧文档列表 */}
+      <div className="w-full md:w-[240px] shrink-0">
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] overflow-hidden">
+          {usageDocs.map((doc) => (
+            <button
+              key={doc.slug}
+              onClick={() => setSelectedSlug(doc.slug)}
+              className={`w-full text-left px-4 py-3 text-[14px] font-medium transition-colors duration-150 relative ${
+                selectedSlug === doc.slug
+                  ? 'text-[#0071E3] bg-[#f5f5f7] dark:bg-[#2c2c2e]'
+                  : 'text-[#1d1d1f] dark:text-[#f5f5f7] hover:bg-[#f5f5f7] dark:hover:bg-[#2c2c2e]'
+              }`}
+            >
+              {selectedSlug === doc.slug && (
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-[#0071E3] rounded-r-full" />
+              )}
+              {doc.title}
+            </button>
+          ))}
+          {usageDocs.length === 0 && (
+            <div className="px-4 py-6 text-center">
+              <p className="text-[13px] text-[#86868b] dark:text-[#6e6e73]">暂无使用指南</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 右侧文档内容 */}
+      <div className="flex-1 min-w-0">
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-6">
+          {selectedDoc ? (
+            <SimpleMarkdown content={selectedDoc.content} />
+          ) : (
+            <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无使用指南</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ===================== 主组件 ===================== */
 
+type ActiveTab = 'files' | 'guide';
+
+function viewKey(v: ViewState): string {
+  if (v.type === 'root') return 'root';
+  if (v.type === 'directory') return `dir-${v.dirIndex}`;
+  return `file-${v.dirIndex}-${v.fileIndex}`;
+}
+
 export function ResourceBrowser({ data }: { data: ResourceData }) {
+  const [activeTab, setActiveTab] = useState<ActiveTab>('files');
   const [view, setView] = useState<ViewState>({ type: 'root' });
-  const [prevKey, setPrevKey] = useState(0);
 
   const handleNavigate = (next: ViewState) => {
-    setPrevKey(k => k + 1);
     setView(next);
     if (typeof window !== 'undefined' && window.innerWidth < 768) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleBack = () => {
+    if (view.type === 'file') {
+      setView({ type: 'directory', dirIndex: view.dirIndex });
+    } else {
+      setView({ type: 'root' });
     }
   };
 
@@ -423,16 +501,20 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
       ? currentDir.files[view.fileIndex]
       : null;
 
-  // 统计信息
   const totalFiles = data.directories.reduce((sum, d) => sum + d.files.length, 0);
   const totalDirs = data.directories.length;
+
+  const tabs: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
+    { id: 'files', label: '文件浏览', icon: <FolderOpen className="w-4 h-4" /> },
+    { id: 'guide', label: '使用指南', icon: <BookOpen className="w-4 h-4" /> },
+  ];
 
   return (
     <div className="bg-[#f5f5f7] dark:bg-black min-h-screen pt-24 pb-16">
       <div className="max-w-[900px] mx-auto px-4 sm:px-6">
 
-        {/* ===== 头部区域：标题 + 面包屑紧凑排列 ===== */}
-        <div className="mb-6">
+        {/* ===== 头部区域 ===== */}
+        <div className="mb-5">
           <div className="flex items-end justify-between gap-4 flex-wrap">
             <div>
               <h1 className="text-[28px] sm:text-[32px] font-semibold tracking-tight leading-[1.1] text-[#1d1d1f] dark:text-white">
@@ -450,66 +532,87 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
           </div>
         </div>
 
-        {/* ===== 面包屑导航 ===== */}
-        <div className="mb-4 flex items-center min-h-[28px] px-1">
-          <Breadcrumb
-            view={view}
-            directories={data.directories}
-            onNavigate={handleNavigate}
-          />
+        {/* ===== Tab 栏 ===== */}
+        <div className="flex items-center justify-center mb-5">
+          <div className="flex items-center gap-1 bg-white dark:bg-[#1c1c1e] rounded-xl p-1 border border-[#d2d2d7] dark:border-[#3a3a3c]">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? 'bg-[#0071E3] text-white shadow-sm'
+                    : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-white hover:bg-[#f5f5f7] dark:hover:bg-[#2c2c2e]'
+                }`}
+              >
+                {tab.icon}
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* ===== 主内容区（带切换动画）===== */}
-        {data.directories.length > 0 || data.readme ? (
-          <AnimatePresence mode="wait">
+        {/* ===== Tab 内容 ===== */}
+        <AnimatePresence mode="wait" initial={false}>
+          {activeTab === 'files' ? (
             <motion.div
-              key={prevKey}
-              initial={{ opacity: 0, y: 6 }}
+              key={`files-${viewKey(view)}`}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.22, ease: appleEase }}
+              transition={{ duration: 0.18, ease: appleEase }}
             >
-              {view.type === 'root' && (
-                <RootView data={data} onNavigate={handleNavigate} />
+              {/* 返回按钮 + 面包屑（非根目录时显示在列表上方） */}
+              {view.type !== 'root' && (
+                <div className="mb-4 flex items-center gap-2 flex-wrap">
+                  <button
+                    onClick={handleBack}
+                    className="flex items-center gap-1 text-[13px] font-medium text-[#0071E3] hover:underline underline-offset-2 transition-colors"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5 rotate-180" />
+                    返回上级
+                  </button>
+                  <Breadcrumb
+                    view={view}
+                    directories={data.directories}
+                    onNavigate={handleNavigate}
+                  />
+                </div>
               )}
-              {view.type === 'directory' && currentDir && (
-                <DirectoryView
-                  dir={currentDir}
-                  dirIndex={view.dirIndex}
-                  onNavigate={handleNavigate}
-                />
-              )}
-              {view.type === 'file' && currentFile && (
-                <FileView file={currentFile} />
+              {data.directories.length > 0 || data.readme ? (
+                <>
+                  {view.type === 'root' && (
+                    <RootView data={data} onNavigate={handleNavigate} />
+                  )}
+                  {view.type === 'directory' && currentDir && (
+                    <DirectoryView
+                      dir={currentDir}
+                      dirIndex={view.dirIndex}
+                      onNavigate={handleNavigate}
+                    />
+                  )}
+                  {view.type === 'file' && currentFile && (
+                    <FileView file={currentFile} />
+                  )}
+                </>
+              ) : (
+                <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-20 text-center">
+                  <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无资源文件</p>
+                </div>
               )}
             </motion.div>
-          </AnimatePresence>
-        ) : (
-          <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-20 text-center">
-            <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无资源文件</p>
-          </div>
-        )}
-
-        {/* ===== 底部信息栏 ===== */}
-        <div className="mt-10 pt-8 border-t border-[#d2d2d7] dark:border-[#3a3a3c]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <p className="text-[13px] text-[#86868b] dark:text-[#6e6e73] leading-relaxed">
-                所有资源均经过安全审计，可直接用于生产环境。
-              </p>
-              <p className="text-[12px] text-[#c7c7cc] dark:text-[#48484a] mt-1">
-                向 <code className="font-mono">public/resources/</code> 添加文件即可自动展示
-              </p>
-            </div>
-            <a
-              href="/docs"
-              className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0071E3] hover:underline underline-offset-2 transition-colors shrink-0"
+          ) : (
+            <motion.div
+              key="guide-tab"
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.18, ease: appleEase }}
             >
-              查看文档
-              <ChevronRight className="w-3 h-3" />
-            </a>
-          </div>
-        </div>
+              <UsageGuideView usageDocs={data.usageDocs} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
