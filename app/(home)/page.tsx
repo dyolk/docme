@@ -184,36 +184,72 @@ export default async function HomePage() {
       </section>
 
       {/* ===== DEVSECOPS CATEGORIES ===== */}
-      <section className="apple-section">
-        <div className="max-w-[1120px] mx-auto px-6">
+      <section className="py-[120px] max-md:py-[80px] overflow-hidden">
+        <div className="max-w-[1120px] mx-auto px-6 mb-12">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="apple-section-title">覆盖 DevSecOps 全链路</h2>
-              <p className="apple-section-subtitle mt-4 max-w-[560px] mx-auto">
-                从基础设施到应用交付，每个环节都有标准可循
-              </p>
-            </div>
+            <h2 className="apple-section-title text-center">覆盖 DevSecOps 全链路</h2>
+            <p className="apple-section-subtitle text-center mt-4 max-w-[560px] mx-auto">
+              从基础设施到应用层，全方位安全防护
+            </p>
           </ScrollReveal>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((cat, i) => (
-              <HoverLiftCard key={cat.title} delay={i * 0.08}>
-                <div className="p-8 h-full flex flex-col">
-                  <div className="w-12 h-12 rounded-[14px] bg-[var(--apple-blue)]/10 flex items-center justify-center mb-5">
-                    <cat.icon className="size-6 text-[var(--apple-blue)]" />
+        {/* 无限滚动容器 */}
+        <div className="group relative">
+          <div className="flex gap-6 w-max animate-scroll-left hover:[animation-play-state:paused]">
+            {/* 第一组卡片 */}
+            {categories.map((cat, i) => {
+              const gradientClasses = [
+                'bg-gradient-to-br from-[#1a1a2e] to-[#16213e]',
+                'bg-gradient-to-br from-[#0f3460] to-[#533483]',
+                'bg-gradient-to-br from-[#326fa8] to-[#4834d4]',
+                'bg-gradient-to-br from-[#00b4d8] to-[#0077b6]',
+                'bg-gradient-to-br from-[#e63946] to-[#a8201a]',
+                'bg-gradient-to-br from-[#2d6a4f] to-[#1b4332]',
+              ];
+              return (
+                <Link
+                  key={cat.title}
+                  href={cat.href}
+                  className={`flex-none w-[300px] p-8 rounded-[20px] ${gradientClasses[i]} text-white transition-transform duration-300 hover:scale-[1.02]`}
+                >
+                  <div className="w-14 h-14 rounded-[16px] bg-white/15 flex items-center justify-center mb-5 backdrop-blur-sm">
+                    <cat.icon className="size-7 text-white" />
                   </div>
-                  <h3 className="apple-card-title">{cat.title}</h3>
-                  <p className="apple-card-desc mt-2 flex-1">{cat.desc}</p>
-                  <Link
-                    href={cat.href}
-                    className="apple-link mt-5 inline-flex items-center"
-                  >
-                    查看详情
-                  </Link>
-                </div>
-              </HoverLiftCard>
-            ))}
+                  <h3 className="text-xl font-semibold mb-2">{cat.title}</h3>
+                  <p className="text-sm opacity-80 leading-relaxed">{cat.desc}</p>
+                </Link>
+              );
+            })}
+            {/* 复制一组实现无缝循环 */}
+            {categories.map((cat, i) => {
+              const gradientClasses = [
+                'bg-gradient-to-br from-[#1a1a2e] to-[#16213e]',
+                'bg-gradient-to-br from-[#0f3460] to-[#533483]',
+                'bg-gradient-to-br from-[#326fa8] to-[#4834d4]',
+                'bg-gradient-to-br from-[#00b4d8] to-[#0077b6]',
+                'bg-gradient-to-br from-[#e63946] to-[#a8201a]',
+                'bg-gradient-to-br from-[#2d6a4f] to-[#1b4332]',
+              ];
+              return (
+                <Link
+                  key={`dup-${cat.title}`}
+                  href={cat.href}
+                  className={`flex-none w-[300px] p-8 rounded-[20px] ${gradientClasses[i]} text-white transition-transform duration-300 hover:scale-[1.02]`}
+                >
+                  <div className="w-14 h-14 rounded-[16px] bg-white/15 flex items-center justify-center mb-5 backdrop-blur-sm">
+                    <cat.icon className="size-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{cat.title}</h3>
+                  <p className="text-sm opacity-80 leading-relaxed">{cat.desc}</p>
+                </Link>
+              );
+            })}
           </div>
+
+          {/* 左右渐隐遮罩 */}
+          <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white dark:from-black to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white dark:from-black to-transparent pointer-events-none" />
         </div>
       </section>
 

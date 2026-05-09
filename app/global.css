@@ -292,6 +292,15 @@ html {
   animation: float 6s ease-in-out infinite;
 }
 
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 30s linear infinite;
+}
+
 /* ── Section 交替背景 ───────────────────────────────── */
 .apple-section {
   padding: 5rem 1.5rem;
