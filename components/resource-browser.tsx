@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Folder,
   FileText,
-  ChevronRight,
   BookOpen,
   FolderOpen,
 } from 'lucide-react';
@@ -18,12 +17,15 @@ export interface ResourceFile {
   size: string;
   rawSize: number;
   content: string;
+  lastUpdated: string;
 }
 
 export interface ResourceDirectory {
   name: string;
   readme: string;
   files: ResourceFile[];
+  lastUpdated: string;
+  children?: ResourceDirectory[];
 }
 
 export interface UsageDoc {
@@ -37,14 +39,85 @@ export interface ResourceData {
   readme: string;
   directories: ResourceDirectory[];
   usageDocs: UsageDoc[];
+  lastUpdated: string;
 }
 
 type ViewState =
   | { type: 'root' }
-  | { type: 'directory'; dirIndex: number }
-  | { type: 'file'; dirIndex: number; fileIndex: number };
+  | { type: 'directory'; path: number[] }
+  | { type: 'file'; path: number[]; fileIndex: number };
 
 const appleEase = [0.25, 0.1, 0.25, 1] as const;
+
+/* ===================== 辅助函数 ===================== */
+
+function getDirectoryByPath(directories: ResourceDirectory[], path: number[]): ResourceDirectory | null {
+  if (path.length === 0) return null;
+  let current = directories[path[0]];
+  for (let i = 1; i < path.length; i++) {
+    if (!current?.children) return null;
+    current = current.children[path[i]];
+  }
+  return current ?? null;
+}
+
+function parseHash(hash: string, directories: ResourceDirectory[]): ViewState {
+  if (!hash || hash === '#/' || hash === '#') return { type: 'root' };
+
+  const segments = hash.replace(/^#/, '').split('/').filter(Boolean);
+  if (segments.length === 0) return { type: 'root' };
+
+  let path: number[] = [];
+  let currentLevel = directories;
+
+  for (let i = 0; i < segments.length; i++) {
+    const dirIndex = currentLevel.findIndex((d) => d.name === segments[i]);
+    if (dirIndex === -1) {
+      if (path.length === 0) return { type: 'root' };
+
+      const dir = getDirectoryByPath(directories, path);
+      if (!dir) return { type: 'root' };
+
+      const fileIndex = dir.files.findIndex((f) => f.fullName === segments.slice(i).join('/'));
+      if (fileIndex !== -1) {
+        return { type: 'file', path: [...path], fileIndex };
+      }
+      return { type: 'root' };
+    }
+    path.push(dirIndex);
+    currentLevel = currentLevel[dirIndex].children ?? [];
+  }
+
+  return { type: 'directory', path };
+}
+
+function viewStateToHash(view: ViewState, directories: ResourceDirectory[]): string {
+  if (view.type === 'root') return '#/';
+
+  const names: string[] = [];
+  let currentDirs = directories;
+  for (let i = 0; i < view.path.length; i++) {
+    const dir = currentDirs[view.path[i]];
+    if (!dir) break;
+    names.push(dir.name);
+    currentDirs = dir.children ?? [];
+  }
+
+  if (view.type === 'directory') {
+    return '#/' + names.join('/');
+  }
+
+  const dir = getDirectoryByPath(directories, view.path);
+  const file = dir?.files[view.fileIndex];
+  if (!file) return '#/' + names.join('/');
+  return '#/' + [...names, file.fullName].join('/');
+}
+
+function viewKey(v: ViewState): string {
+  if (v.type === 'root') return 'root';
+  if (v.type === 'directory') return `dir-${v.path.join('-')}`;
+  return `file-${v.path.join('-')}-${v.fileIndex}`;
+}
 
 /* ===================== README 简单渲染器 ===================== */
 
@@ -131,23 +204,27 @@ function Breadcrumb({
 }) {
   const segments: { label: string; action: () => void; clickable: boolean }[] = [
     {
-      label: 'resources',
+      label: '$HOME',
       action: () => onNavigate({ type: 'root' }),
       clickable: view.type !== 'root',
     },
   ];
 
   if (view.type === 'directory' || view.type === 'file') {
-    const dirName = directories[view.dirIndex]?.name ?? '';
-    segments.push({
-      label: dirName,
-      action: () => onNavigate({ type: 'directory', dirIndex: view.dirIndex }),
-      clickable: view.type === 'file',
-    });
+    for (let i = 0; i < view.path.length; i++) {
+      const partialPath = view.path.slice(0, i + 1);
+      const dir = getDirectoryByPath(directories, partialPath);
+      segments.push({
+        label: dir?.name ?? '',
+        action: () => onNavigate({ type: 'directory', path: partialPath }),
+        clickable: view.type === 'file' || i < view.path.length - 1,
+      });
+    }
   }
 
   if (view.type === 'file') {
-    const file = directories[view.dirIndex]?.files[view.fileIndex];
+    const dir = getDirectoryByPath(directories, view.path);
+    const file = dir?.files[view.fileIndex];
     if (file) {
       segments.push({
         label: file.fullName,
@@ -202,23 +279,27 @@ function FileRow({
       onClick={onClick}
       className="w-full flex items-center gap-3 px-4 py-3 border-b border-[#e5e5e5] dark:border-[#2c2c2e] last:border-b-0 hover:bg-[#f5f5f7] dark:hover:bg-[#2c2c2e] transition-colors duration-150 text-left group"
     >
-      <div className="shrink-0">{icon}</div>
-      <div className="flex-1 min-w-0 flex items-center gap-3">
+      {/* 左列：icon + name */}
+      <div className="shrink-0 flex items-center gap-3 min-w-0 max-w-[200px] sm:max-w-[240px]">
+        {icon}
         <span className="truncate font-medium text-[14px] text-[#1d1d1f] dark:text-[#f5f5f7] group-hover:text-[#0071E3] dark:group-hover:text-[#0a84ff] transition-colors duration-150">
           {name}
         </span>
-        {meta && (
-          <span className="hidden sm:block text-[13px] text-[#86868b] dark:text-[#6e6e73] truncate">
-            {meta}
-          </span>
-        )}
       </div>
+
+      {/* 中列：meta，左对齐，flex-1 */}
+      {meta && (
+        <span className="hidden sm:block flex-1 text-left text-[13px] text-[#86868b] dark:text-[#6e6e73] ml-2">
+          {meta}
+        </span>
+      )}
+
+      {/* 右列：rightMeta，右对齐 */}
       {rightMeta && (
-        <span className="shrink-0 text-[12px] text-[#86868b] dark:text-[#6e6e73] ml-2">
+        <span className="shrink-0 text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[90px]">
           {rightMeta}
         </span>
       )}
-      <ChevronRight className="w-3.5 h-3.5 text-[#c7c7cc] dark:text-[#48484a] shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
     </button>
   );
 }
@@ -241,9 +322,9 @@ function RootView({
             key={dir.name}
             icon={<Folder className="w-[18px] h-[18px] text-[#0071E3]" />}
             name={dir.name}
-            meta={dir.readme ? dir.readme.split('\n').find(l => l.trim() && !l.startsWith('#'))?.trim().slice(0, 60) : undefined}
-            rightMeta={dir.files.length > 0 ? `${dir.files.length} files` : undefined}
-            onClick={() => onNavigate({ type: 'directory', dirIndex })}
+            meta={dir.readme ? dir.readme.split('\n').find(l => l.trim() && !l.startsWith('#'))?.trim().slice(0, 80) : undefined}
+            rightMeta={dir.lastUpdated}
+            onClick={() => onNavigate({ type: 'directory', path: [dirIndex] })}
           />
         ))}
         {/* README.md 行 */}
@@ -284,19 +365,21 @@ function RootView({
 
 function DirectoryView({
   dir,
-  dirIndex,
+  path,
   onNavigate,
 }: {
   dir: ResourceDirectory;
-  dirIndex: number;
+  path: number[];
   onNavigate: (v: ViewState) => void;
 }) {
+  const hasContent = dir.files.length > 0 || (dir.children?.length ?? 0) > 0 || !!dir.readme;
+
   return (
     <div>
       {/* 文件表格 */}
-      {dir.files.length > 0 && (
+      {hasContent && (
         <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] overflow-hidden mb-6">
-          {/* 有 readme 时也显示 README 行 */}
+          {/* README 行 */}
           {dir.readme && (
             <FileRow
               icon={<FileText className="w-[18px] h-[18px] text-[#86868b] dark:text-[#6e6e73]" />}
@@ -309,6 +392,20 @@ function DirectoryView({
               onClick={() => {}}
             />
           )}
+
+          {/* 子目录 */}
+          {dir.children?.map((child, childIndex) => (
+            <FileRow
+              key={child.name}
+              icon={<Folder className="w-[18px] h-[18px] text-[#0071E3]" />}
+              name={child.name}
+              meta={child.readme ? child.readme.split('\n').find(l => l.trim() && !l.startsWith('#'))?.trim().slice(0, 80) : undefined}
+              rightMeta={child.lastUpdated}
+              onClick={() => onNavigate({ type: 'directory', path: [...path, childIndex] })}
+            />
+          ))}
+
+          {/* 文件 */}
           {dir.files.map((file, fileIndex) => {
             const lastDot = file.fullName.lastIndexOf('.');
             const base = lastDot > 0 ? file.fullName.slice(0, lastDot) : file.fullName;
@@ -323,8 +420,9 @@ function DirectoryView({
                     {ext && <span className="text-[#86868b] dark:text-[#6e6e73] font-normal">{ext}</span>}
                   </span>
                 }
-                rightMeta={file.size}
-                onClick={() => onNavigate({ type: 'file', dirIndex, fileIndex })}
+                meta={file.size}
+                rightMeta={file.lastUpdated}
+                onClick={() => onNavigate({ type: 'file', path, fileIndex })}
               />
             );
           })}
@@ -345,7 +443,7 @@ function DirectoryView({
       )}
 
       {/* 空目录提示 */}
-      {dir.files.length === 0 && !dir.readme && (
+      {!hasContent && (
         <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-16 text-center">
           <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">此目录为空</p>
         </div>
@@ -468,15 +566,32 @@ function UsageGuideView({ usageDocs }: { usageDocs: UsageDoc[] }) {
 
 type ActiveTab = 'files' | 'guide';
 
-function viewKey(v: ViewState): string {
-  if (v.type === 'root') return 'root';
-  if (v.type === 'directory') return `dir-${v.dirIndex}`;
-  return `file-${v.dirIndex}-${v.fileIndex}`;
-}
-
 export function ResourceBrowser({ data }: { data: ResourceData }) {
   const [activeTab, setActiveTab] = useState<ActiveTab>('files');
-  const [view, setView] = useState<ViewState>({ type: 'root' });
+  const [view, setView] = useState<ViewState>(() => {
+    if (typeof window !== 'undefined') {
+      return parseHash(window.location.hash, data.directories);
+    }
+    return { type: 'root' };
+  });
+
+  // 监听 hashchange
+  useEffect(() => {
+    const handleHashChange = () => {
+      setView(parseHash(window.location.hash, data.directories));
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, [data.directories]);
+
+  // 状态变化时更新 hash
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const newHash = viewStateToHash(view, data.directories);
+    if (window.location.hash !== newHash) {
+      window.location.hash = newHash;
+    }
+  }, [view, data.directories]);
 
   const handleNavigate = (next: ViewState) => {
     setView(next);
@@ -485,24 +600,15 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
     }
   };
 
-  const handleBack = () => {
-    if (view.type === 'file') {
-      setView({ type: 'directory', dirIndex: view.dirIndex });
-    } else {
-      setView({ type: 'root' });
-    }
-  };
-
   const currentDir =
-    view.type !== 'root' ? data.directories[view.dirIndex] : null;
+    view.type !== 'root' ? getDirectoryByPath(data.directories, view.path) : null;
 
   const currentFile =
     view.type === 'file' && currentDir
       ? currentDir.files[view.fileIndex]
       : null;
 
-  const totalFiles = data.directories.reduce((sum, d) => sum + d.files.length, 0);
-  const totalDirs = data.directories.length;
+
 
   const tabs: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
     { id: 'files', label: '文件浏览', icon: <FolderOpen className="w-4 h-4" /> },
@@ -524,10 +630,8 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
                 精选的配置模板与安全工具脚本
               </p>
             </div>
-            <div className="text-[12px] text-[#86868b] dark:text-[#6e6e73] flex items-center gap-3">
-              <span>{totalDirs} 个目录</span>
-              <span className="w-px h-3 bg-[#d2d2d7] dark:bg-[#3a3a3c]"></span>
-              <span>{totalFiles} 个文件</span>
+            <div className="text-[12px] text-[#86868b] dark:text-[#6e6e73]">
+              最近更新: {data.lastUpdated}
             </div>
           </div>
         </div>
@@ -562,16 +666,9 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18, ease: appleEase }}
             >
-              {/* 返回按钮 + 面包屑（非根目录时显示在列表上方） */}
+              {/* 面包屑导航（非根目录时显示在列表上方） */}
               {view.type !== 'root' && (
-                <div className="mb-4 flex items-center gap-2 flex-wrap">
-                  <button
-                    onClick={handleBack}
-                    className="flex items-center gap-1 text-[13px] font-medium text-[#0071E3] hover:underline underline-offset-2 transition-colors"
-                  >
-                    <ChevronRight className="w-3.5 h-3.5 rotate-180" />
-                    返回上级
-                  </button>
+                <div className="mb-4">
                   <Breadcrumb
                     view={view}
                     directories={data.directories}
@@ -587,7 +684,7 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
                   {view.type === 'directory' && currentDir && (
                     <DirectoryView
                       dir={currentDir}
-                      dirIndex={view.dirIndex}
+                      path={view.path}
                       onNavigate={handleNavigate}
                     />
                   )}
