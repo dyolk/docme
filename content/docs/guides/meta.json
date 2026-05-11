@@ -1,9 +1,0 @@
-{
-  "title": "使用指南",
-  "description": "文档编写与部署",
-  "icon": "Compass",
-  "root": true,
-  "color": "hsl(30, 100%, 50%)",
-  "defaultOpen": false,
-  "pages": ["index", "writing-docs", "deployment"]
-}
