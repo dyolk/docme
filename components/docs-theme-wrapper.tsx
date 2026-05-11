@@ -10,7 +10,7 @@ interface DocsThemeWrapperProps {
 
 export function DocsThemeWrapper({ children, colors }: DocsThemeWrapperProps) {
   const pathname = usePathname();
-  const section = pathname?.includes('/guides') ? 'guides' : 'getting-started';
+  const section = pathname?.match(/^\/docs\/([^/]+)/)?.[1] ?? '(start)';
   const primaryColor = colors[section];
 
   const style: CSSProperties | undefined = primaryColor
