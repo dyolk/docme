@@ -92,12 +92,24 @@ export function Footer() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
             <span>© {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</span>
             <span className="hidden sm:inline text-[var(--apple-border)]">|</span>
-            <span>京ICP备XXXXXXXX号-1</span>
+            <a
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[var(--apple-text)] transition-colors duration-300"
+            >
+              京ICP备XXXXXXXX号-1
+            </a>
             <span className="hidden sm:inline text-[var(--apple-border)]">|</span>
-            <span className="inline-flex items-center gap-1">
+            <a
+              href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=XXXXXXXXXXX"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 hover:text-[var(--apple-text)] transition-colors duration-300"
+            >
               <Image src="/images/beian.png" alt="备案" width={14} height={14} className="opacity-70" />
               京公网安备XXXXXXXXXXX号
-            </span>
+            </a>
           </div>
         </div>
       </div>
