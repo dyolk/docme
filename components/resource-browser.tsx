@@ -266,12 +266,14 @@ function FileRow({
   name,
   meta,
   rightMeta,
+  rightMeta2,
   onClick,
 }: {
   icon: React.ReactNode;
   name: React.ReactNode;
   meta?: string;
   rightMeta?: string;
+  rightMeta2?: string;
   onClick: () => void;
 }) {
   return (
@@ -280,26 +282,36 @@ function FileRow({
       className="w-full flex items-center gap-3 px-4 py-3 border-b border-[#e5e5e5] dark:border-[#2c2c2e] last:border-b-0 hover:bg-[#f5f5f7] dark:hover:bg-[#2c2c2e] transition-colors duration-150 text-left group"
     >
       {/* 左列：icon + name */}
-      <div className="shrink-0 flex items-center gap-3 min-w-0 max-w-[200px] sm:max-w-[240px]">
+      <div className="shrink-0 flex items-center gap-3 min-w-0 w-[160px] sm:w-[200px]">
         {icon}
         <span className="truncate font-medium text-[14px] text-[#1d1d1f] dark:text-[#f5f5f7] group-hover:text-[#0071E3] dark:group-hover:text-[#0a84ff] transition-colors duration-150">
           {name}
         </span>
       </div>
 
-      {/* 中列：meta，左对齐，flex-1 */}
+      {/* 中列：meta，容器居中，文字左对齐 */}
       {meta && (
-        <span className="hidden sm:block flex-1 text-left text-[13px] text-[#86868b] dark:text-[#6e6e73] ml-2">
-          {meta}
-        </span>
+        <div className="hidden sm:flex flex-1 justify-center min-w-0 px-2">
+          <span className="text-left text-[13px] text-[#86868b] dark:text-[#6e6e73] truncate w-full max-w-[360px]">
+            {meta}
+          </span>
+        </div>
       )}
+      {!meta && <div className="hidden sm:block flex-1" />}
 
-      {/* 右列：rightMeta，右对齐 */}
-      {rightMeta && (
-        <span className="shrink-0 text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[90px]">
-          {rightMeta}
-        </span>
-      )}
+      {/* 右列：rightMeta + rightMeta2，固定宽度对齐 */}
+      <div className="shrink-0 flex items-center justify-end gap-3 w-[180px]">
+        {rightMeta && (
+          <span className="text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[90px]">
+            {rightMeta}
+          </span>
+        )}
+        {rightMeta2 && (
+          <span className="text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[70px]">
+            {rightMeta2}
+          </span>
+        )}
+      </div>
     </button>
   );
 }
@@ -420,8 +432,8 @@ function DirectoryView({
                     {ext && <span className="text-[#86868b] dark:text-[#6e6e73] font-normal">{ext}</span>}
                   </span>
                 }
-                meta={file.size}
                 rightMeta={file.lastUpdated}
+                rightMeta2={file.size}
                 onClick={() => onNavigate({ type: 'file', path, fileIndex })}
               />
             );
