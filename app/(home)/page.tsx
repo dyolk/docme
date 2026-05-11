@@ -1,33 +1,26 @@
 import Link from 'next/link';
 import { Footer } from '@/components/footer';
-import {
-  ScrollReveal,
-  HoverLiftCard,
-} from '@/components/apple-animations';
+import { ScrollReveal } from '@/components/apple-animations';
+import { FeatureCarousel } from '@/components/feature-carousel';
 import { HeroSection } from '@/components/hero-section';
 import { readdirSync } from 'fs';
 import { join } from 'path';
 
 import {
   ArrowRight,
-  Search,
   FileText,
   Calculator,
-  GitBranch,
-  GitCommit,
   Globe,
   Server,
   Terminal,
   Activity,
   Cloud,
-  Bug,
   ShieldCheck,
   Shield,
   Box,
   Network,
   Code,
   ClipboardCheck,
-  ListChecks,
   BookOpen,
 } from 'lucide-react';
 import { blogSource } from '@/lib/blog-source';
@@ -58,44 +51,7 @@ async function getChecklistCount(): Promise<number> {
 
 /* ── Feature Data ────────────────────────────── */
 
-const features = [
-  {
-    icon: ListChecks,
-    title: '安全检查清单',
-    desc: '逐项排查，滴水不漏。',
-    href: '/docs',
-  },
-  {
-    icon: Bug,
-    title: 'CVE 漏洞库',
-    desc: '已知威胁，尽在掌握。',
-    href: '/docs',
-  },
-  {
-    icon: BookOpen,
-    title: '最佳实践指南',
-    desc: '前人铺路，后人无忧。',
-    href: '/docs',
-  },
-  {
-    icon: Search,
-    title: '全文搜索',
-    desc: '所想即所得。',
-    href: '/docs',
-  },
-  {
-    icon: GitCommit,
-    title: '持续更新',
-    desc: '与威胁赛跑，永不停歇。',
-    href: '/docs',
-  },
-  {
-    icon: GitBranch,
-    title: '开源协作',
-    desc: '众人拾柴，安全无界。',
-    href: '/docs',
-  },
-];
+// Features are now defined in FeatureCarousel component
 
 const categories = [
   {
@@ -158,33 +114,14 @@ export default async function HomePage() {
       <section className="apple-section apple-section-alt">
         <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="apple-section-title">为安全而生。</h2>
-              <p className="apple-section-subtitle mt-4 max-w-[520px] mx-auto">
-                沉淀知识，守护每一行代码。
-              </p>
+            <div className="mb-14">
+              <h2 className="text-[40px] sm:text-[56px] font-bold tracking-tight leading-[1.05] text-[#1d1d1f] dark:text-[#f5f5f7]">
+                为安全而生，<br />好处多多。
+              </h2>
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, i) => (
-              <HoverLiftCard key={feature.title} delay={i * 0.08}>
-                <div className="p-8 h-full flex flex-col">
-                  <div className="w-12 h-12 rounded-[14px] bg-[var(--apple-blue)]/10 flex items-center justify-center mb-5">
-                    <feature.icon className="size-6 text-[var(--apple-blue)]" />
-                  </div>
-                  <h3 className="apple-card-title">{feature.title}</h3>
-                  <p className="apple-card-desc mt-2 flex-1">{feature.desc}</p>
-                  <Link
-                    href={feature.href}
-                    className="apple-link mt-5 inline-flex items-center"
-                  >
-                    了解更多
-                  </Link>
-                </div>
-              </HoverLiftCard>
-            ))}
-          </div>
+          <FeatureCarousel />
         </div>
       </section>
 

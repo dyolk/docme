@@ -697,14 +697,10 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
         {/* ===== Tab 内容 ===== */}
         <AnimatePresence mode="wait" initial={false}>
           {activeTab === 'files' ? (
-            <motion.div
-              key={`files-${viewKey(view)}`}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.18, ease: appleEase }}
+            <div
+              key="files-tab"
             >
-              {/* 面包屑导航（非根目录时显示在列表上方） */}
+              {/* 面包屑导航（非根目录时显示在列表上方，不参与子视图动画） */}
               {view.type !== 'root' && (
                 <div className="mb-4">
                   <Breadcrumb
@@ -714,28 +710,40 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
                   />
                 </div>
               )}
-              {data.directories.length > 0 || data.readme ? (
-                <>
-                  {view.type === 'root' && (
-                    <RootView data={data} onNavigate={handleNavigate} />
+
+              {/* 只有内容区域做动画 */}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={viewKey(view)}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.18, ease: appleEase }}
+                >
+                  {data.directories.length > 0 || data.readme ? (
+                    <>
+                      {view.type === 'root' && (
+                        <RootView data={data} onNavigate={handleNavigate} />
+                      )}
+                      {view.type === 'directory' && currentDir && (
+                        <DirectoryView
+                          dir={currentDir}
+                          path={view.path}
+                          onNavigate={handleNavigate}
+                        />
+                      )}
+                      {view.type === 'file' && currentFile && (
+                        <FileView file={currentFile} />
+                      )}
+                    </>
+                  ) : (
+                    <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-20 text-center">
+                      <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无资源文件</p>
+                    </div>
                   )}
-                  {view.type === 'directory' && currentDir && (
-                    <DirectoryView
-                      dir={currentDir}
-                      path={view.path}
-                      onNavigate={handleNavigate}
-                    />
-                  )}
-                  {view.type === 'file' && currentFile && (
-                    <FileView file={currentFile} />
-                  )}
-                </>
-              ) : (
-                <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-20 text-center">
-                  <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无资源文件</p>
-                </div>
-              )}
-            </motion.div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           ) : (
             <motion.div
               key="guide-tab"

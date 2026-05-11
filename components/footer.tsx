@@ -18,6 +18,7 @@ export function Footer() {
         { label: '博客', href: '/blog' },
         { label: '更新日志', href: '/changelog' },
         { label: '路线图', href: '/roadmap' },
+        { label: '友链', href: '/links' },
       ],
     },
     {
@@ -71,6 +72,7 @@ export function Footer() {
             </div>
           ))}
         </div>
+
 
         <div className="space-y-2 text-xs text-[var(--apple-text-secondary)]">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">

@@ -1,0 +1,40 @@
+---
+title: "Kubernetes 版本更新总览"
+order: 0
+---
+
+# Kubernetes 版本更新总览
+
+本节持续追踪 Kubernetes 的版本发布动态、重大特性变更以及废弃 API 的迁移指引，帮助运维和开发团队及时掌握上游演进方向，提前规划升级策略。
+
+## 发布节奏
+
+Kubernetes 社区采用**每年 3 个 minor 版本**的发布节奏，大致时间线如下：
+
+| 版本号 | 预计发布窗口 |
+|--------|-------------|
+| v1.x.0 | 每年 4 月 左右 |
+| v1.y.0 | 每年 8 月 左右 |
+| v1.z.0 | 每年 12 月 左右 |
+
+每个 minor 版本在进入正式发布（GA）后，会经历约 1 年的补丁支持周期。patch 版本按需发布，主要修复安全漏洞和关键回归问题。
+
+## 支持策略
+
+Kubernetes 官方社区维护**最近 3 个 minor 版本**的活跃支持：
+
+- **Active**：接收所有 bugfix 和安全补丁
+- **Maintenance**：仅接收关键安全补丁
+- **End of Life (EOL)**：不再提供任何补丁支持
+
+> 建议生产环境始终运行受支持版本范围内的最新 patch，以降低安全风险。
+
+## 版本导航
+
+- [Kubernetes 1.32 更新](/releases/kubernetes/v1-32) — 2024年12月发布，代号 Penelope
+
+## 相关资源
+
+- [Kubernetes 官方发布说明](https://kubernetes.io/releases/)
+- [Kubernetes 废弃策略](https://kubernetes.io/docs/reference/using-api/deprecation-policy/)
+- [Kubernetes 升级工具 kubeadm](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/)

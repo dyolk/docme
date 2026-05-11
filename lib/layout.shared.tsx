@@ -23,6 +23,11 @@ export function baseOptions(): BaseLayoutProps {
         url: '/resources',
         active: 'nested-url',
       },
+      {
+        text: '版本追踪',
+        url: '/releases',
+        active: 'nested-url',
+      },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };

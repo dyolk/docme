@@ -1,0 +1,63 @@
+---
+title: "Helm 版本更新总览"
+order: 0
+---
+
+# Helm 版本更新总览
+
+本节跟踪 [Helm](https://helm.sh) —— Kubernetes 的包管理工具 —— 的版本发布、重大变更以及与 Kubernetes 各版本的兼容性信息，帮助 Chart 维护者和集群管理员在升级时避免兼容性陷阱。
+
+## Helm 与 Kubernetes 版本兼容性
+
+Helm 的版本策略与 Kubernetes 保持紧密对齐。以下表格列出主流 Helm 版本所支持的 Kubernetes 版本范围：
+
+| Helm 版本 | 支持的 Kubernetes 版本 | 发布日期 | 维护状态 |
+|-----------|----------------------|---------|---------|
+| Helm 3.17.x | 1.28 – 1.32 | 2025-01 | 活跃维护 |
+| Helm 3.16.x | 1.27 – 1.31 | 2024-09 | 活跃维护 |
+| Helm 3.15.x | 1.27 – 1.30 | 2024-05 | 安全补丁 |
+| Helm 3.14.x | 1.26 – 1.29 | 2024-01 | 已停止维护 |
+| Helm 3.13.x | 1.25 – 1.28 | 2023-09 | 已停止维护 |
+| Helm 3.12.x | 1.24 – 1.27 | 2023-05 | 已停止维护 |
+
+> **推荐做法**：Helm 客户端版本应尽可能接近或略高于目标 Kubernetes 集群版本，以充分利用最新的 API 支持和安全修复。
+
+## 版本发布节奏
+
+Helm 社区采用以下发布模式：
+
+- **Minor 版本**：约每 3-4 个月发布一次，包含新特性和非破坏性改进
+- **Patch 版本**：按需发布，用于修复安全漏洞、回归问题以及 Helm Hub 索引更新
+- **RC 版本**：在正式 GA 前 2-4 周发布候选版本，供社区测试
+
+## 常见升级注意事项
+
+1. **Chart API 版本兼容性**
+   - `v1` Chart 格式在所有 Helm 3.x 版本中兼容
+   - `v2` Chart 格式（引入 `dependencies` 和 `type` 字段）需要 Helm >= 3.0
+
+2. **CRD 管理策略**
+   - Helm 3 起，CRD 默认仅会在 `helm install` 时创建，**不会**在 `helm upgrade` 时自动更新
+   - 升级 Chart 中的 CRD 时，需手动执行 `kubectl apply -f crds/` 或使用专门的 CRD 管理工具
+
+3. **仓库索引格式**
+   - Helm 3.8+ 要求仓库索引使用 HTTPS（可通过 `--insecure-skip-tls-verify` 绕过，但不建议）
+   - 旧版 Chart 仓库（基于 GitHub Pages 等）需确认 `index.yaml` 格式符合当前版本要求
+
+4. **OCI 注册表支持**
+   - Helm 3.8 起 OCI 注册表支持进入 GA
+   - 建议新 Chart 优先推送至 OCI 兼容的注册表（Harbor、Docker Hub、ACR 等）
+
+## 即将关注的版本
+
+| 版本 | 预计发布 | 重点内容 |
+|------|---------|---------|
+| Helm 3.18 | 2025 年 Q2 | 增强 OCI 支持、改进 `helm template` 输出 |
+| Helm 3.19 | 2025 年 Q4 | 待定（关注 KEP 与社区路线图） |
+
+## 相关资源
+
+- [Helm 官方文档](https://helm.sh/docs/)
+- [Helm 发行说明](https://github.com/helm/helm/releases)
+- [Artifact Hub — Chart 仓库](https://artifacthub.io/)
+- [Helm 与 Kubernetes 兼容性矩阵](https://helm.sh/docs/topics/version_skew/)

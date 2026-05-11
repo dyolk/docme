@@ -1,0 +1,80 @@
+---
+title: "Docker 兼容性矩阵"
+order: 1
+date: "2025-03-01"
+---
+
+# Docker 兼容性矩阵
+
+本文档汇总 Docker Engine、Docker Compose 与常见操作系统之间的版本兼容关系，便于在升级或部署前快速查证。
+
+## Docker Engine 与 Docker Compose 版本对应
+
+以下表格列出主流 Engine 版本所集成的 Compose 插件版本及推荐的 Compose 文件格式版本：
+
+| Docker Engine | Docker Compose (插件) | Compose 文件格式 | 发布时间 |
+|---------------|----------------------|------------------|---------|
+| 27.5.x | 2.32.x | 3.8 | 2025-01 |
+| 27.4.x | 2.31.x | 3.8 | 2024-12 |
+| 27.3.x | 2.29.x | 3.8 | 2024-09 |
+| 27.2.x | 2.28.x | 3.8 | 2024-08 |
+| 27.1.x | 2.27.x | 3.8 | 2024-07 |
+| 27.0.x | 2.27.x | 3.8 | 2024-06 |
+| 26.1.x | 2.27.x | 3.8 | 2024-04 |
+| 26.0.x | 2.26.x | 3.8 | 2024-03 |
+| 25.0.x | 2.24.x | 3.8 | 2024-01 |
+
+> Compose 文件格式 3.8 为当前推荐版本，兼容绝大多数 Engine 25.x 及以上版本。
+
+## Docker Engine 与操作系统支持矩阵
+
+| 操作系统 | 最低内核版本 | 支持的 Engine 版本范围 | 备注 |
+|---------|-------------|----------------------|------|
+| Ubuntu 24.04 LTS | 6.8 | 25.0.x – 最新 | 官方推荐发行版，长期支持 |
+| Ubuntu 22.04 LTS | 5.15 | 24.0.x – 最新 | 主流生产环境版本 |
+| RHEL 9 / Rocky 9 | 5.14 | 25.0.x – 最新 | 需启用 `container-tools` 模块 |
+| RHEL 8 / Rocky 8 | 4.18 | 24.0.x – 27.x | cgroups v2 支持从 8.6 起 |
+| Debian 12 (Bookworm) | 6.1 | 25.0.x – 最新 | 稳定版，适合服务器部署 |
+| Debian 11 (Bullseye) | 5.10 | 24.0.x – 27.x | 即将进入维护末期 |
+| CentOS 7 | 3.10 | 20.10.x – 24.0.x | 已 EOL，建议迁移至 Rocky/Alma |
+| Windows Server 2022 | N/A | 25.0.x – 最新 | 仅支持 Windows 容器 |
+| macOS (Docker Desktop) | N/A | 随 Desktop 捆绑 | 使用 Linux 虚拟机运行 Engine |
+
+## Docker Compose V1 vs V2 差异说明
+
+| 特性 | Compose V1 (`docker-compose`) | Compose V2 (`docker compose`) |
+|------|------------------------------|-------------------------------|
+| 实现语言 | Python | Go（作为 Engine 插件） |
+| 安装方式 | 独立二进制 / pip | Engine 内置插件 |
+| 命令格式 | `docker-compose up` | `docker compose up` |
+| 构建引擎 | 旧版 BuildKit 支持有限 | 原生 BuildKit，性能更优 |
+| 兼容性 | 已停止维护（2023年 EOL） | 当前唯一推荐版本 |
+| 并行构建 | 有限 | 显著提升 |
+
+> **重要**：Compose V1 已于 2023 年 7 月停止维护，所有环境应迁移至 V2。
+
+## Docker Desktop 版本与 Engine 版本对应关系
+
+| Docker Desktop | 捆绑 Engine | 捆绑 Compose | 发布时间 |
+|---------------|-------------|-------------|---------|
+| 4.38 | 27.5.1 | 2.32.4 | 2025-01 |
+| 4.37 | 27.4.0 | 2.31.0 | 2024-12 |
+| 4.36 | 27.3.1 | 2.29.7 | 2024-10 |
+| 4.35 | 27.3.1 | 2.29.7 | 2024-09 |
+| 4.34 | 27.2.0 | 2.29.2 | 2024-08 |
+| 4.33 | 27.1.1 | 2.28.1 | 2024-07 |
+| 4.32 | 27.0.3 | 2.28.1 | 2024-06 |
+
+## 升级检查清单
+
+- [ ] 确认目标 Engine 版本支持当前操作系统及内核版本
+- [ ] 检查 Compose 文件格式版本是否需要调整
+- [ ] 验证 Swarm 集群中各节点版本一致性（建议差异不超过 1 个 minor）
+- [ ] 测试 BuildKit 兼容性（如使用自定义 Dockerfile 语法前端）
+- [ ] 备份 `/etc/docker/daemon.json` 及网络、卷配置
+
+## 参考资源
+
+- [Docker Engine 发行说明](https://docs.docker.com/engine/release-notes/)
+- [Docker Compose 迁移指南](https://docs.docker.com/compose/migrate/)
+- [Docker Desktop 发行说明](https://docs.docker.com/desktop/release-notes/)

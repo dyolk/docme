@@ -1,0 +1,12 @@
+{
+  "title": "Helm",
+  "icon": "Anchor",
+  "description": "Helm 包管理器版本追踪与 Kubernetes 兼容性",
+  "order": 3,
+  "logo": "/images/logo-helm.svg",
+  "logoWhite": "/images/logo-helm-white.svg",
+  "color": "#0F1689",
+  "repo": "helm/helm",
+  "latestVersion": "v3.16.0",
+  "trackedVersions": ["概览"]
+}

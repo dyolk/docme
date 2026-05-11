@@ -1,0 +1,12 @@
+{
+  "title": "Docker",
+  "icon": "Container",
+  "description": "Docker Engine 与 Docker Compose 版本追踪及兼容性矩阵",
+  "order": 2,
+  "logo": "/images/logo-docker.svg",
+  "logoWhite": "/images/logo-docker-white.svg",
+  "color": "#2496ED",
+  "repo": "moby/moby",
+  "latestVersion": "v27.0.0",
+  "trackedVersions": ["兼容性矩阵"]
+}

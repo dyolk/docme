@@ -1,0 +1,12 @@
+{
+  "title": "Kubernetes",
+  "icon": "Ship",
+  "description": "Kubernetes 版本发布追踪与废弃 API 记录",
+  "order": 1,
+  "logo": "/images/logo-kubernetes.svg",
+  "logoWhite": "/images/logo-kubernetes-white.svg",
+  "color": "#326CE5",
+  "repo": "kubernetes/kubernetes",
+  "latestVersion": "v1.32.0",
+  "trackedVersions": ["v1.32"]
+}
