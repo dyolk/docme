@@ -1,0 +1,9 @@
+{
+  "title": "快速入门",
+  "description": "快速入门指南",
+  "icon": "Compass",
+  "root": true,
+  "color": "hsl(30, 100%, 50%)",
+  "defaultOpen": false,
+  "pages": ["index"]
+}

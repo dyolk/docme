@@ -48,7 +48,7 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 1.0 }}
           className="flex gap-4 justify-center mt-10"
         >
-          <Link href="/docs/getting-started/installation" className="inline-flex">
+          <Link href="/docs" className="inline-flex">
             <Button variant="primary" size="lg" className="rounded-full">
               开始探索
             </Button>
