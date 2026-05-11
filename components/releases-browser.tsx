@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Plus, X } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Plus, X, ChevronDown } from 'lucide-react';
 
 /* ===================== 类型定义 ===================== */
 
@@ -421,8 +421,12 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
   );
 
   const [viewState, setViewState] = useState<ViewState>({ type: 'projects' });
-  const [clickedProject, setClickedProject] = useState<string | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [versionDropdownOpen, setVersionDropdownOpen] = useState(false);
+  const versionDropdownRef = useRef<HTMLDivElement>(null);
+
+  const [activeTab, setActiveTab] = useState<'matrix' | 'releases'>('matrix');
+  const [selectedVersion, setSelectedVersion] = useState<string>('');
 
   // 首次挂载时从 URL 同步状态（只运行一次）
   useEffect(() => {
@@ -444,6 +448,17 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
     return () => window.removeEventListener('popstate', handlePopState);
   }, [projects]);
 
+  // 点击外部关闭版本下拉
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (versionDropdownRef.current && !versionDropdownRef.current.contains(e.target as Node)) {
+        setVersionDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // 状态变化时更新 query string
   useEffect(() => {
     if (!isHydrated || typeof window === 'undefined') return;
@@ -457,13 +472,9 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
     }
   }, [viewState, isHydrated]);
 
-  // 点击卡片过渡动画
+  // 点击卡片进入详情
   const handleCardClick = (slug: string) => {
-    setClickedProject(slug);
-    setTimeout(() => {
-      enterProject(slug);
-      setClickedProject(null);
-    }, 500);
+    enterProject(slug);
   };
 
   // 进入详情视图
@@ -517,40 +528,54 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
       ? currentDocs.find((d) => d.slug === viewState.docSlug)
       : undefined;
 
-  const referenceLinks = currentDoc ? extractReferenceLinks(currentDoc.content) : [];
+  const matrixDocs = useMemo(
+    () => currentDocs.filter((d) => d.slug === 'index'),
+    [currentDocs]
+  );
+
+  const releaseDocs = useMemo(
+    () => currentDocs.filter((d) => d.slug !== 'index'),
+    [currentDocs]
+  );
+
+  const activeDocContent = useMemo(() => {
+    if (activeTab === 'matrix') {
+      return matrixDocs.map((d) => d.content).join('\n\n');
+    }
+    const doc = releaseDocs.find((d) => d.slug === selectedVersion);
+    return doc?.content ?? '';
+  }, [activeTab, matrixDocs, releaseDocs, selectedVersion]);
+
+  const activeReferenceLinks = useMemo(() => {
+    return extractReferenceLinks(activeDocContent);
+  }, [activeDocContent]);
+
+  // 切换项目时重置 tab 和版本选择
+  useEffect(() => {
+    if (currentProject) {
+      setActiveTab('matrix');
+      const rDocs = currentProject.docs
+        .filter((d) => d.slug !== 'index')
+        .sort((a, b) => a.order - b.order);
+      setSelectedVersion(rDocs[0]?.slug ?? '');
+    }
+  }, [currentProject?.slug]);
+
+  // 从 URL/历史恢复时同步 tab 状态
+  useEffect(() => {
+    if (viewState.type !== 'detail') return;
+    const docSlug = viewState.docSlug;
+    if (docSlug === 'index') {
+      setActiveTab('matrix');
+    } else if (docSlug) {
+      setActiveTab('releases');
+      setSelectedVersion(docSlug);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewState.type === 'detail' ? viewState.projectSlug : '', viewState.type === 'detail' ? viewState.docSlug : '']);
 
   return (
     <div className="bg-[#f5f5f7] dark:bg-black min-h-screen pt-24 pb-16">
-      {/* 点击全屏过渡层 */}
-      <AnimatePresence>
-        {clickedProject && (() => {
-          const project = projects.find(p => p.slug === clickedProject);
-          return (
-            <motion.div
-              key="transition-overlay"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: appleEase }}
-              className="fixed inset-0 z-50 flex items-center justify-center"
-              style={{ backgroundColor: project?.color ?? '#0071E3' }}
-            >
-              <motion.div
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.1, ease: appleEase }}
-              >
-                {project?.logo ? (
-                  <img src={project?.logoWhite || project?.logo} alt="" className="w-32 h-32 object-contain" />
-                ) : (
-                  <div className="w-24 h-24 rounded-2xl bg-white/20" />
-                )}
-              </motion.div>
-            </motion.div>
-          );
-        })()}
-      </AnimatePresence>
-
       <div className="max-w-[1000px] mx-auto px-4 sm:px-6">
 
         {/* ===== 头部区域 ===== */}
@@ -653,23 +678,46 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
                   <X className="size-4 text-[#1d1d1f] dark:text-[#f5f5f7]" />
                 </button>
 
-                {/* Tab 栏 - 居中 pill 风格 */}
-                {currentDocs.length > 0 && (
+                {/* Tab 栏 - 固定两个 pill */}
+                {(matrixDocs.length > 0 || releaseDocs.length > 0) && (
                   <div className="flex justify-center">
-                    <div className="inline-flex items-center gap-0.5 bg-[#f5f5f7] dark:bg-[#2c2c2e] rounded-full p-1 overflow-x-auto max-w-full scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                      {currentDocs.map((doc) => (
+                    <div className="inline-flex items-center gap-0.5 bg-[#f5f5f7] dark:bg-[#2c2c2e] rounded-full p-1">
+                      {matrixDocs.length > 0 && (
                         <button
-                          key={doc.slug}
-                          onClick={() => switchDoc(doc.slug)}
-                          className={`shrink-0 whitespace-nowrap px-5 py-2 rounded-full text-[13px] font-medium transition-all duration-200 ${
-                            currentDoc?.slug === doc.slug
+                          onClick={() => {
+                            setActiveTab('matrix');
+                            const target = matrixDocs[0]?.slug;
+                            if (target && viewState.type === 'detail') {
+                              setViewState({ ...viewState, docSlug: target });
+                            }
+                          }}
+                          className={`px-5 py-2 rounded-full text-[13px] font-medium transition-all duration-200 ${
+                            activeTab === 'matrix'
                               ? 'bg-white dark:bg-[#3a3a3c] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-sm'
                               : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7]'
                           }`}
                         >
-                          {doc.title}
+                          支持矩阵
                         </button>
-                      ))}
+                      )}
+                      {releaseDocs.length > 0 && (
+                        <button
+                          onClick={() => {
+                            setActiveTab('releases');
+                            const target = selectedVersion || releaseDocs[0]?.slug;
+                            if (target && viewState.type === 'detail') {
+                              setViewState({ ...viewState, docSlug: target });
+                            }
+                          }}
+                          className={`px-5 py-2 rounded-full text-[13px] font-medium transition-all duration-200 ${
+                            activeTab === 'releases'
+                              ? 'bg-white dark:bg-[#3a3a3c] text-[#1d1d1f] dark:text-[#f5f5f7] shadow-sm'
+                              : 'text-[#86868b] dark:text-[#a1a1a6] hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7]'
+                          }`}
+                        >
+                          版本更新
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
@@ -688,53 +736,116 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
               {/* 文档内容区 */}
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
-                  key={currentDoc?.slug ?? 'empty'}
+                  key={`${activeTab}-${activeTab === 'releases' ? selectedVersion : 'matrix'}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.15, ease: appleEase }}
                   className="px-6 sm:px-10 py-8"
                 >
-                  {currentDoc ? (
-                    <>
-                      <SimpleMarkdown content={currentDoc.content} onLinkClick={handleLinkClick} />
-
-                      {/* 参考来源 */}
-                      {referenceLinks.length > 0 && (
-                        <div className="mt-10 pt-7 border-t border-[#e5e5e5] dark:border-[#2c2c2e]">
-                          <h3 className="text-[14px] font-semibold text-[#1d1d1f] dark:text-white mb-4">
-                            参考来源
-                          </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {referenceLinks.map((link, idx) => (
-                              <button
-                                key={idx}
-                                onClick={() => window.open(link.url, '_blank')}
-                                className="group inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-[#f5f5f7] dark:bg-[#2c2c2e] border border-[#e5e5e5] dark:border-[#3a3a3c] hover:border-[#0071E3]/30 dark:hover:border-[#0071E3]/30 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer min-w-0"
-                              >
-                                {/* 域名首字母圆圈 */}
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0071E3]/10 to-[#0071E3]/5 flex items-center justify-center shrink-0">
-                                  <span className="text-[12px] font-bold text-[#0071E3]">
-                                    {getDomainInitial(link.url)}
-                                  </span>
-                                </div>
-                                <div className="text-left min-w-0">
-                                  <div className="text-[13px] font-medium text-[#1d1d1f] dark:text-white truncate">
-                                    {link.text}
-                                  </div>
-                                  <div className="text-[11px] text-[#86868b] dark:text-[#6e6e73] truncate">
-                                    {getDomain(link.url)}
-                                  </div>
-                                </div>
-                                <ExternalLink className="w-3.5 h-3.5 text-[#86868b] dark:text-[#a1a1a6] group-hover:text-[#0071E3] shrink-0 ml-auto" />
-                              </button>
-                            ))}
-                          </div>
-                        </div>
+                  {/* 支持矩阵 Tab */}
+                  {activeTab === 'matrix' && (
+                    <div>
+                      {matrixDocs.length > 0 ? (
+                        <>
+                          {matrixDocs.map((doc) => (
+                            <div key={doc.slug}>
+                              <SimpleMarkdown content={doc.content} onLinkClick={handleLinkClick} />
+                            </div>
+                          ))}
+                        </>
+                      ) : (
+                        <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无支持矩阵数据</p>
                       )}
-                    </>
-                  ) : (
-                    <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">请选择文档</p>
+                    </div>
+                  )}
+
+                  {/* 版本更新 Tab */}
+                  {activeTab === 'releases' && (
+                    <div>
+                      {releaseDocs.length > 0 ? (
+                        <>
+                          {/* 版本下拉选择器 */}
+                          <div className="mb-6 relative" ref={versionDropdownRef}>
+                            <button
+                              onClick={() => setVersionDropdownOpen((prev) => !prev)}
+                              className="px-4 py-2.5 rounded-xl bg-[#f5f5f7] dark:bg-[#2c2c2e] text-[14px] font-medium cursor-pointer inline-flex items-center gap-2 text-[#1d1d1f] dark:text-[#f5f5f7] hover:bg-[#e8e8ed] dark:hover:bg-[#3a3a3c] transition-colors"
+                            >
+                              {releaseDocs.find((d) => d.slug === selectedVersion)?.title ?? '选择版本'}
+                              <ChevronDown className={`w-4 h-4 text-[#86868b] dark:text-[#a1a1a6] transition-transform duration-200 ${versionDropdownOpen ? 'rotate-180' : ''}`} />
+                            </button>
+                            {versionDropdownOpen && (
+                              <div className="absolute z-50 mt-2 rounded-xl bg-white dark:bg-[#2c2c2e] shadow-lg border border-[#e5e5e5] dark:border-[#3a3a3c] overflow-hidden min-w-[180px]">
+                                {releaseDocs.map((doc) => (
+                                  <button
+                                    key={doc.slug}
+                                    onClick={() => {
+                                      setSelectedVersion(doc.slug);
+                                      if (viewState.type === 'detail') {
+                                        setViewState({ ...viewState, docSlug: doc.slug });
+                                      }
+                                      setVersionDropdownOpen(false);
+                                    }}
+                                    className={`w-full text-left px-4 py-2.5 text-[14px] cursor-pointer transition-colors ${
+                                      selectedVersion === doc.slug
+                                        ? 'bg-[#f5f5f7] dark:bg-[#3a3a3c] text-[#1d1d1f] dark:text-white font-medium'
+                                        : 'text-[#424245] dark:text-[#a1a1a6] hover:bg-[#f5f5f7] dark:hover:bg-[#3a3a3c]'
+                                    }`}
+                                  >
+                                    {doc.title}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* 选中版本的内容 */}
+                          {(() => {
+                            const doc = releaseDocs.find((d) => d.slug === selectedVersion);
+                            if (!doc) {
+                              return <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">请选择版本</p>;
+                            }
+                            return <SimpleMarkdown content={doc.content} onLinkClick={handleLinkClick} />;
+                          })()}
+                        </>
+                      ) : (
+                        <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无版本更新数据</p>
+                      )}
+                    </div>
+                  )}
+
+                  {/* 参考来源 */}
+                  {activeReferenceLinks.length > 0 && (
+                    <div className="mt-10 pt-7 border-t border-[#e5e5e5] dark:border-[#2c2c2e]">
+                      <h3 className="text-[14px] font-semibold text-[#1d1d1f] dark:text-white mb-4">
+                        参考来源
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {activeReferenceLinks.map((link, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => window.open(link.url, '_blank')}
+                            className="group inline-flex items-center gap-3 px-4 py-3 rounded-xl bg-[#f5f5f7] dark:bg-[#2c2c2e] border border-[#e5e5e5] dark:border-[#3a3a3c] hover:border-[#0071E3]/30 dark:hover:border-[#0071E3]/30 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-pointer min-w-0"
+                          >
+                            {/* 域名首字母圆圈 */}
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0071E3]/10 to-[#0071E3]/5 flex items-center justify-center shrink-0">
+                              <span className="text-[12px] font-bold text-[#0071E3]">
+                                {getDomainInitial(link.url)}
+                              </span>
+                            </div>
+                            <div className="text-left min-w-0">
+                              <div className="text-[13px] font-medium text-[#1d1d1f] dark:text-white truncate">
+                                {link.text}
+                              </div>
+                              <div className="text-[11px] text-[#86868b] dark:text-[#6e6e73] truncate">
+                                {getDomain(link.url)}
+                              </div>
+                            </div>
+                            <ExternalLink className="w-3.5 h-3.5 text-[#86868b] dark:text-[#a1a1a6] group-hover:text-[#0071E3] shrink-0 ml-auto" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </motion.div>
               </AnimatePresence>

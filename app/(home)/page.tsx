@@ -129,21 +129,25 @@ export default async function HomePage() {
       <section className="py-[120px] max-md:py-[80px] bg-[#f5f5f7] dark:bg-[#111111]">
         <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
-            <h2 className="apple-section-title text-center">从代码到云端，一路护航。</h2>
-            <p className="apple-section-subtitle text-center mt-4 max-w-[560px] mx-auto">
-              每一环，都固若金汤。
-            </p>
+            <div className="mb-14">
+              <h2 className="text-[40px] sm:text-[56px] font-bold tracking-tight leading-[1.05] text-[#1d1d1f] dark:text-[#f5f5f7]">
+                从代码到云端，<br />一路护航。
+              </h2>
+              <p className="mt-4 text-[1.0625rem] text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed max-w-[560px]">
+                每一环，都固若金汤。
+              </p>
+            </div>
           </ScrollReveal>
 
-          <div className="mt-16 grid grid-cols-3 gap-5 max-md:grid-cols-1">
+          <div className="grid grid-cols-3 gap-5 max-md:grid-cols-1">
             {categories.map((cat, i) => (
               <ScrollReveal key={cat.title} delay={i * 0.08}>
                 <Link
                   href={cat.href}
-                  className="group block bg-white dark:bg-[#1d1d1f] rounded-[20px] p-8 h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                  className="group block bg-white dark:bg-[#1d1d1f] rounded-[20px] p-8 h-full transition-colors duration-300"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-[#0071E3]/10 dark:bg-[#0071E3]/20 flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110">
-                    <cat.icon className="w-6 h-6 text-[#0071E3]" />
+                  <div className="w-12 h-12 rounded-2xl bg-[#1d1d1f]/10 dark:bg-[#f5f5f7]/10 flex items-center justify-center mb-6">
+                    <cat.icon className="w-6 h-6 text-[#1d1d1f] dark:text-[#f5f5f7]" />
                   </div>
                   <h3 className="text-xl font-semibold text-[#1d1d1f] dark:text-white mb-3">{cat.title}</h3>
                   <p className="text-[15px] text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed">{cat.description}</p>
@@ -155,31 +159,29 @@ export default async function HomePage() {
       </section>
 
       {/* ===== HIGHLIGHT ===== */}
-      <section className="apple-section bg-[#1d1d1f] dark:bg-black text-white">
+      <section className="py-[120px] max-md:py-[80px]">
         <div className="max-w-[1120px] mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <ScrollReveal>
               <div>
-                <h2 className="text-[clamp(2rem,4vw,3rem)] font-semibold tracking-tight leading-[1.1] text-white">
-                  不止于文档。
-                  <br />
-                  远不止于此。
+                <h2 className="text-[40px] sm:text-[56px] font-bold tracking-tight leading-[1.05] text-[#1d1d1f] dark:text-[#f5f5f7]">
+                  不止于文档。<br />远不止于此。
                 </h2>
-                <p className="mt-6 text-[1.0625rem] text-[#a1a1a6] leading-relaxed max-w-[480px]">
+                <p className="mt-6 text-[1.0625rem] text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed max-w-[480px]">
                   每一页，都是实战。
                 </p>
-                <div className="mt-8 flex flex-wrap gap-6">
+                <div className="mt-8 flex flex-wrap gap-8">
                   <div>
-                    <div className="text-3xl font-semibold text-white">{checklistCount || '0'}</div>
-                    <div className="text-sm text-[#a1a1a6] mt-1">安全清单</div>
+                    <div className="text-3xl font-semibold text-[#1d1d1f] dark:text-white">{checklistCount || '0'}</div>
+                    <div className="text-sm text-[#6e6e73] dark:text-[#a1a1a6] mt-1">安全清单</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-semibold text-white">{cveCount || '0'}</div>
-                    <div className="text-sm text-[#a1a1a6] mt-1">漏洞收录</div>
+                    <div className="text-3xl font-semibold text-[#1d1d1f] dark:text-white">{cveCount || '0'}</div>
+                    <div className="text-sm text-[#6e6e73] dark:text-[#a1a1a6] mt-1">漏洞收录</div>
                   </div>
                   <div>
-                    <div className="text-3xl font-semibold text-white">6</div>
-                    <div className="text-sm text-[#a1a1a6] mt-1">安全领域</div>
+                    <div className="text-3xl font-semibold text-[#1d1d1f] dark:text-white">6</div>
+                    <div className="text-sm text-[#6e6e73] dark:text-[#a1a1a6] mt-1">安全领域</div>
                   </div>
                 </div>
               </div>
@@ -196,10 +198,10 @@ export default async function HomePage() {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-4 p-4 rounded-[14px] bg-white/5 border border-white/10"
+                    className="flex items-center gap-4 p-4 rounded-[20px] bg-[#f5f5f7] dark:bg-[#1c1c1e]"
                   >
-                    <item.icon className="size-5 text-[#0071e3] shrink-0" />
-                    <span className="text-[1.0625rem] text-[#f5f5f7]">{item.text}</span>
+                    <item.icon className="size-5 text-[#1d1d1f] dark:text-[#f5f5f7] shrink-0" />
+                    <span className="text-[1.0625rem] text-[#1d1d1f] dark:text-[#f5f5f7]">{item.text}</span>
                   </div>
                 ))}
               </div>

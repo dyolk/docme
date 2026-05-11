@@ -19,13 +19,15 @@ export default async function BlogPage() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Header */}
-      <section className="pt-32 sm:pt-40 pb-16 sm:pb-20">
-        <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-black">
+      {/* Page Header */}
+      <section className="pt-32 sm:pt-40 pb-12 sm:pb-16">
+        <div className="max-w-[1000px] mx-auto px-6">
           <ScrollReveal>
-            <h1 className="apple-display-1 mb-6">博客</h1>
-            <p className="apple-body-lg text-[var(--apple-text-secondary)] max-w-xl mx-auto">
+            <h1 className="text-[40px] sm:text-[56px] font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] leading-[1.05] mb-4">
+              博客
+            </h1>
+            <p className="text-[17px] text-[#6e6e73] dark:text-[#a1a1a6]">
               最新的技术分享与更新
             </p>
           </ScrollReveal>
@@ -33,31 +35,55 @@ export default async function BlogPage() {
       </section>
 
       {/* Blog Grid */}
-      <section className="pb-20 sm:pb-28">
-        <div className="max-w-[1120px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-24 sm:pb-32">
+        <div className="max-w-[1000px] mx-auto px-6">
           <FadeInStagger
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            staggerDelay={0.1}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            staggerDelay={0.08}
           >
             {sorted.map((page, index) => (
               <FadeInStaggerItem key={page.url}>
-                <Link href={page.url} className="block h-full">
-                  <AppleCard delay={index * 0.1} className="h-full overflow-hidden">
+                <Link href={page.url} className="block h-full group">
+                  <AppleCard
+                    delay={index * 0.08}
+                    className="h-full overflow-hidden bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] border-0 shadow-none"
+                  >
                     {page.data.cover && (
-                      <img
-                        src={page.data.cover}
-                        alt={page.data.title}
-                        className="w-full h-[200px] object-cover"
-                      />
+                      <div className="overflow-hidden">
+                        <img
+                          src={page.data.cover}
+                          alt={page.data.title}
+                          className="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
                     )}
-                    <div className="p-8 h-full flex flex-col">
+                    <div className="p-8 flex flex-col gap-4">
+                      {/* Date */}
+                      {page.data.date && (
+                        <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b] font-medium tracking-wide">
+                          {page.data.date}
+                        </span>
+                      )}
+
+                      {/* Title */}
+                      <h2 className="text-[22px] font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] leading-snug">
+                        {page.data.title}
+                      </h2>
+
+                      {/* Description */}
+                      {page.data.description && (
+                        <p className="text-[15px] text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed line-clamp-3">
+                          {page.data.description}
+                        </p>
+                      )}
+
                       {/* Tags */}
-                      {page.data.tags && page.data.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-4">
+                      {page.data.tags && (page.data.tags as string[]).length > 0 && (
+                        <div className="flex flex-wrap gap-2 pt-1">
                           {(page.data.tags as string[]).map((tag: string) => (
                             <span
                               key={tag}
-                              className="text-xs px-3 py-1 rounded-full bg-[var(--apple-bg-tertiary)] text-[var(--apple-text-secondary)]"
+                              className="text-[12px] px-3 py-1 rounded-full bg-white dark:bg-[#2c2c2e] text-[#6e6e73] dark:text-[#a1a1a6]"
                             >
                               {tag}
                             </span>
@@ -65,24 +91,12 @@ export default async function BlogPage() {
                         </div>
                       )}
 
-                      {/* Title */}
-                      <h2 className="apple-headline mb-3">
-                        {page.data.title}
-                      </h2>
-
-                      {/* Description */}
-                      <p className="apple-body line-clamp-3 mb-6 flex-1">
-                        {page.data.description}
-                      </p>
-
-                      {/* Meta */}
-                      <div className="flex items-center gap-3 apple-caption text-[var(--apple-text-secondary)]">
-                        {page.data.author && <span>{page.data.author}</span>}
-                        {page.data.author && page.data.date && (
-                          <span>·</span>
-                        )}
-                        {page.data.date && <span>{page.data.date}</span>}
-                      </div>
+                      {/* Author */}
+                      {page.data.author && (
+                        <p className="text-[13px] text-[#6e6e73] dark:text-[#86868b] pt-1">
+                          {page.data.author}
+                        </p>
+                      )}
                     </div>
                   </AppleCard>
                 </Link>

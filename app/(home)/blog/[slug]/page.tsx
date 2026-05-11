@@ -30,97 +30,111 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
     .slice(0, 3);
 
   return (
-    <div className="py-20 px-6">
-      <div className="max-w-[720px] mx-auto">
-        {/* Back link */}
-        <Link
-          href="/blog"
-          className="text-[var(--apple-blue)] text-base inline-flex items-center gap-1 mb-8 hover:underline transition-colors"
-        >
-          <ArrowLeft size={16} />
-          返回博客
-        </Link>
-
-        {/* Hero Cover */}
-        {page.data.cover && (
-          <div className="relative w-full h-[360px] mb-12 rounded-2xl overflow-hidden">
-            <img
-              src={page.data.cover}
-              alt={page.data.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          </div>
-        )}
-
-        {/* Article Header */}
-        <header className="text-center mb-12">
-          {/* Tags */}
-          {page.data.tags && page.data.tags.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2 mb-5">
-              {page.data.tags.map((tag: string) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-[10px] font-medium"
-                >
-                  <Tag size={10} />
-                  {tag}
-                </span>
-              ))}
+    <div className="py-12 sm:py-20 px-6 bg-white dark:bg-black min-h-screen">
+      <div className="max-w-[1000px] mx-auto">
+        {/* Main Panel */}
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-[24px] shadow-xl overflow-hidden">
+          {/* Cover */}
+          {page.data.cover && (
+            <div className="relative w-full h-[360px] sm:h-[420px] overflow-hidden">
+              <img
+                src={page.data.cover}
+                alt={page.data.title}
+                className="w-full h-full object-cover"
+              />
             </div>
           )}
 
-          {/* Title */}
-          <h1 className="apple-display-1 mb-5">
-            {page.data.title}
-          </h1>
+          <div className="p-8 sm:p-12 lg:p-16">
+            {/* Back link */}
+            <Link
+              href="/blog"
+              className="text-[#0071e3] text-[15px] inline-flex items-center gap-1.5 mb-8 hover:underline transition-colors"
+            >
+              <ArrowLeft size={16} />
+              返回博客
+            </Link>
 
-          {/* Meta */}
-          <p className="apple-caption">
-            {[
-              page.data.author,
-              page.data.date,
-              `阅读时间约 ${readingTime} 分钟`,
-            ]
-              .filter(Boolean)
-              .join(' · ')}
-          </p>
-        </header>
+            {/* Article Header */}
+            <header className="mb-10 sm:mb-14">
+              {/* Tags */}
+              {page.data.tags && page.data.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {page.data.tags.map((tag: string) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#f5f5f7] dark:bg-[#2c2c2e] text-[#6e6e73] dark:text-[#a1a1a6] text-[12px] font-medium"
+                    >
+                      <Tag size={10} />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
 
-        {/* Article Content */}
-        <article className="leading-[1.75]">
-          <DocsBody>
-            <MDX components={getMDXComponents()} />
-          </DocsBody>
-        </article>
+              {/* Title */}
+              <h1 className="text-[32px] sm:text-[40px] font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] leading-[1.1] mb-6">
+                {page.data.title}
+              </h1>
+
+              {/* Meta */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                {page.data.author && (
+                  <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b]">
+                    {page.data.author}
+                  </span>
+                )}
+                {page.data.date && (
+                  <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b]">
+                    {page.data.date}
+                  </span>
+                )}
+                <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b]">
+                  阅读时间约 {readingTime} 分钟
+                </span>
+              </div>
+            </header>
+
+            {/* Article Content */}
+            <article className="leading-[1.75]">
+              <DocsBody>
+                <MDX components={getMDXComponents()} />
+              </DocsBody>
+            </article>
+          </div>
+        </div>
 
         {/* 相关推荐 */}
         {relatedPosts.length > 0 && (
-          <section className="mt-20 pt-16 border-t border-[#d2d2d7] dark:border-[#424245]">
-            <h2 className="text-2xl font-semibold text-[#1d1d1f] dark:text-white mb-8">
+          <section className="mt-12 sm:mt-16">
+            <h2 className="text-[28px] sm:text-[32px] font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] mb-8">
               更多文章。
             </h2>
-            <div className="grid grid-cols-3 gap-5 max-md:grid-cols-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {relatedPosts.map((post) => (
-                <Link key={post.url} href={post.url} className="group">
-                  <div className="bg-white dark:bg-[#1d1d1f] rounded-[20px] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <Link key={post.url} href={post.url} className="group block h-full">
+                  <div className="bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] overflow-hidden h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                     {post.data.cover && (
-                      <div className="h-[160px] overflow-hidden">
+                      <div className="h-[180px] overflow-hidden">
                         <img
                           src={post.data.cover}
                           alt={post.data.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
                     )}
-                    <div className="p-5">
-                      <h3 className="text-base font-semibold text-[#1d1d1f] dark:text-white mb-2 line-clamp-2">
+                    <div className="p-6 sm:p-8">
+                      {post.data.date && (
+                        <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b] font-medium tracking-wide block mb-2">
+                          {post.data.date}
+                        </span>
+                      )}
+                      <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-[#f5f5f7] mb-2 line-clamp-2">
                         {post.data.title}
                       </h3>
-                      <p className="text-sm text-[#6e6e73] line-clamp-2 mb-3">
+                      <p className="text-[15px] text-[#6e6e73] dark:text-[#a1a1a6] line-clamp-2">
                         {post.data.description}
                       </p>
-                      <span className="text-xs text-[#6e6e73]">{post.data.date}</span>
                     </div>
                   </div>
                 </Link>
@@ -130,10 +144,10 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
         )}
 
         {/* Bottom Back Link */}
-        <div className="mt-16 pt-8 border-t border-[var(--apple-border)] text-center">
+        <div className="mt-12 sm:mt-16 text-center pb-8">
           <Link
             href="/blog"
-            className="text-[var(--apple-blue)] text-base inline-flex items-center gap-1 hover:underline transition-colors"
+            className="text-[#0071e3] text-[15px] inline-flex items-center gap-1.5 hover:underline transition-colors"
           >
             <ArrowLeft size={16} />
             返回博客

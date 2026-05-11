@@ -1,28 +1,29 @@
 import { ScrollText, Copyright, CheckCircle, AlertCircle } from 'lucide-react';
 import { Footer } from '@/components/footer';
+import type { LucideIcon } from 'lucide-react';
 
 export const metadata = {
   title: '开源协议',
 };
 
-const licenseSections = [
+const licenseSections: { icon: LucideIcon; title: string; content: string }[] = [
   {
-    icon: <ScrollText className="size-5 text-[var(--accent)]" />,
+    icon: ScrollText,
     title: '开源协议说明',
     content: '本项目采用 MIT 开源协议。MIT 协议是一种宽松的开源软件许可协议，它赋予您极大的自由度来使用、修改和分发本软件。我们致力于开源社区的发展，相信开放协作能够推动技术创新和知识共享。',
   },
   {
-    icon: <CheckCircle className="size-5 text-[var(--accent)]" />,
+    icon: CheckCircle,
     title: '使用许可',
     content: '根据 MIT 协议，您可以自由地：将软件用于任何目的，包括商业用途；研究软件的工作原理并对其进行修改；分发软件的副本；以及公开发布修改后的版本。这些权利的唯一条件是，您必须在所有副本或实质性部分中包含上述版权声明和本许可声明。',
   },
   {
-    icon: <Copyright className="size-5 text-[var(--accent)]" />,
+    icon: Copyright,
     title: '版权声明',
     content: '本软件及其相关文档文件的版权归原始作者所有。我们感谢每一位贡献者的辛勤付出。如果您在自己的项目中使用了本软件，我们感谢您给予适当的致谢，但这并非强制要求。所有商标和注册商标均为其各自所有者的财产。',
   },
   {
-    icon: <AlertCircle className="size-5 text-[var(--accent)]" />,
+    icon: AlertCircle,
     title: '免责条款',
     content: '本软件按"现状"提供，不附带任何形式的担保，无论是明示的还是暗示的，包括但不限于对适销性、特定用途适用性和非侵权性的担保。在任何情况下，作者或版权持有人均不对因本软件或本软件的使用或其他交易而产生的任何索赔、损害或其他责任承担责任，无论是在合同、侵权或其他行为中。',
   },
@@ -31,34 +32,41 @@ const licenseSections = [
 export default function LicensePage() {
   return (
     <>
-      <main className="apple-section">
-        <div className="max-w-[720px] mx-auto">
-          <h1 className="apple-display-1 text-center mb-6">开源协议</h1>
-          <p className="apple-body-lg text-center mb-16">
+      <main className="bg-white dark:bg-black min-h-screen">
+        <div className="max-w-[1000px] mx-auto px-6 pt-24 pb-20">
+          <h1 className="text-[40px] sm:text-[56px] font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] mb-4">
+            开源协议。
+          </h1>
+          <p className="text-[15px] text-[#86868b] leading-relaxed mb-16">
             本项目基于 MIT 协议开源，您可以自由使用、修改和分发。
           </p>
 
-          <div className="space-y-12">
-            {licenseSections.map((section) => (
-              <section key={section.title}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
-                    {section.icon}
+          <div className="bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] p-8 sm:p-12 space-y-12">
+            {licenseSections.map((section) => {
+              const Icon = section.icon;
+              return (
+                <section key={section.title}>
+                  <div className="flex items-center gap-4 mb-4">
+                    <Icon className="size-8 stroke-[1.5] text-[#424245] dark:text-[#a1a1a6]" />
+                    <h2 className="text-[22px] font-bold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                      {section.title}
+                    </h2>
                   </div>
-                  <h2 className="apple-headline">{section.title}</h2>
-                </div>
-                <p className="apple-body">{section.content}</p>
-              </section>
-            ))}
+                  <p className="text-[15px] text-[#86868b] leading-relaxed">
+                    {section.content}
+                  </p>
+                </section>
+              );
+            })}
 
             <section>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0">
-                  <ScrollText className="size-5 text-[var(--accent)]" />
-                </div>
-                <h2 className="apple-headline">MIT 协议内容</h2>
+              <div className="flex items-center gap-4 mb-4">
+                <ScrollText className="size-8 stroke-[1.5] text-[#424245] dark:text-[#a1a1a6]" />
+                <h2 className="text-[22px] font-bold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                  MIT 协议内容
+                </h2>
               </div>
-              <div className="rounded-xl bg-[var(--surface-secondary)]/60 border border-[var(--border)] p-5 sm:p-6 font-mono text-xs sm:text-sm text-[var(--muted)] leading-relaxed overflow-x-auto">
+              <div className="bg-white dark:bg-[#0a0a0a] rounded-xl p-5 sm:p-6 font-mono text-xs sm:text-sm text-[#86868b] leading-relaxed overflow-x-auto">
                 <p className="mb-2">MIT License</p>
                 <p className="mb-4">Copyright (c) {new Date().getFullYear()} My App</p>
                 <p className="mb-4">
@@ -86,13 +94,13 @@ export default function LicensePage() {
             </section>
 
             <section className="pt-6">
-              <p className="apple-body text-center">
+              <p className="text-[15px] text-[#86868b] leading-relaxed text-center">
                 完整的协议文本和项目源码可在
                 <a
                   href="https://github.com/fuma-nama/fumadocs"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="apple-link mx-1"
+                  className="text-[#0066cc] dark:text-[#2997ff] hover:underline mx-1"
                 >
                   GitHub
                 </a>

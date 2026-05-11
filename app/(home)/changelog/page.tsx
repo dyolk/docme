@@ -2,7 +2,6 @@
 
 import { Footer } from '@/components/footer';
 import {
-  AppleCard,
   FadeInStagger,
   FadeInStaggerItem,
   HeroStagger,
@@ -158,81 +157,69 @@ function VersionCard({
 
   return (
     <FadeInStaggerItem>
-      <AppleCard delay={index * 0.1} className="relative overflow-hidden">
-        <div className="p-8 sm:p-10">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="inline-flex items-center gap-2">
-                <Tag className="size-4" style={{ color: '#0071e3' }} />
-                <span
-                  className="font-mono text-xl font-semibold"
-                  style={{ color: '#1d1d1f' }}
-                >
-                  {entry.version}
-                </span>
-              </div>
-              {isLatest && (
-                <span
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border"
-                  style={{
-                    color: '#0071e3',
-                    background: 'rgba(0,113,227,0.08)',
-                    borderColor: 'rgba(0,113,227,0.2)',
-                  }}
-                >
-                  <ArrowUpCircle className="size-3" />
-                  最新
-                </span>
-              )}
+      <div className="bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] p-8 sm:p-10">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="inline-flex items-center gap-2">
+              <Tag className="size-4 text-[#0071e3]" />
+              <span className="font-mono text-xl font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">
+                {entry.version}
+              </span>
             </div>
-            <div
-              className="inline-flex items-center gap-1.5 text-sm"
-              style={{ color: '#6e6e73' }}
-            >
-              <Calendar className="size-3.5" />
-              {formatted}
-            </div>
+            {isLatest && (
+              <span
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border"
+                style={{
+                  color: '#0071e3',
+                  background: 'rgba(0,113,227,0.08)',
+                  borderColor: 'rgba(0,113,227,0.2)',
+                }}
+              >
+                <ArrowUpCircle className="size-3" />
+                最新
+              </span>
+            )}
           </div>
-
-          {/* Title */}
-          <h2 className="apple-headline mb-3">{entry.title}</h2>
-
-          {/* Description */}
-          <p
-            className="leading-relaxed mb-8"
-            style={{ color: '#6e6e73', fontSize: '19px', lineHeight: 1.5 }}
-          >
-            {entry.description}
-          </p>
-
-          {/* Change Sections */}
-          <div className="space-y-6">
-            {entry.changes.map((change, ci) => (
-              <div key={ci}>
-                <div className="flex items-center gap-2 mb-3">
-                  <ChangeTypeBadge type={change.type} />
-                </div>
-                <ul className="space-y-2.5">
-                  {change.items.map((item, ii) => (
-                    <li
-                      key={ii}
-                      className="flex items-start gap-3 text-base leading-relaxed"
-                      style={{ color: '#1d1d1f' }}
-                    >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
-                        style={{ background: TYPE_META[change.type].color }}
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="inline-flex items-center gap-1.5 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">
+            <Calendar className="size-3.5" />
+            {formatted}
           </div>
         </div>
-      </AppleCard>
+
+        {/* Title */}
+        <h2 className="apple-headline mb-3">{entry.title}</h2>
+
+        {/* Description */}
+        <p className="text-[19px] leading-[1.5] text-[#6e6e73] dark:text-[#a1a1a6] mb-8">
+          {entry.description}
+        </p>
+
+        {/* Change Sections */}
+        <div className="space-y-6">
+          {entry.changes.map((change, ci) => (
+            <div key={ci}>
+              <div className="flex items-center gap-2 mb-3">
+                <ChangeTypeBadge type={change.type} />
+              </div>
+              <ul className="space-y-2.5">
+                {change.items.map((item, ii) => (
+                  <li
+                    key={ii}
+                    className="flex items-start gap-3 text-base leading-relaxed text-[#1d1d1f] dark:text-[#f5f5f7]"
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full mt-2 shrink-0"
+                      style={{ background: TYPE_META[change.type].color }}
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
     </FadeInStaggerItem>
   );
 }
@@ -241,22 +228,18 @@ function VersionCard({
 
 export default function ChangelogPage() {
   return (
-    <>
+    <div className="bg-white dark:bg-black min-h-screen">
       {/* Hero */}
-      <section
-        className="relative overflow-hidden"
-        style={{ background: '#ffffff', padding: '120px 1.5rem 80px' }}
-      >
-        <div className="max-w-[1120px] mx-auto text-center">
+      <section className="pt-[100px] pb-16 px-6">
+        <div className="max-w-[1000px] mx-auto">
           <HeroStagger>
             <HeroStaggerItem>
-              <h1 className="apple-display-1 mb-6">更新日志</h1>
+              <h1 className="text-[40px] sm:text-[56px] font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] leading-[1.05] mb-5">
+                更新日志。
+              </h1>
             </HeroStaggerItem>
             <HeroStaggerItem>
-              <p
-                className="apple-body-lg max-w-[680px] mx-auto"
-                style={{ fontSize: '19px', lineHeight: 1.5 }}
-              >
+              <p className="text-[19px] leading-relaxed text-[#6e6e73] dark:text-[#a1a1a6] max-w-[560px]">
                 追踪 DocME 的每一次迭代与成长。
               </p>
             </HeroStaggerItem>
@@ -265,11 +248,9 @@ export default function ChangelogPage() {
       </section>
 
       {/* Changelog Cards */}
-      <section
-        style={{ background: '#f5f5f7', padding: '120px 1.5rem' }}
-      >
-        <div className="max-w-[800px] mx-auto">
-          <FadeInStagger staggerDelay={0.15} className="space-y-8">
+      <section className="pb-24 px-6">
+        <div className="max-w-[1000px] mx-auto">
+          <FadeInStagger staggerDelay={0.15} className="space-y-6">
             {changelogData.map((entry, index) => (
               <VersionCard
                 key={entry.version}
@@ -283,6 +264,6 @@ export default function ChangelogPage() {
       </section>
 
       <Footer />
-    </>
+    </div>
   );
 }

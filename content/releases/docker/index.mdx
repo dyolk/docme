@@ -1,7 +1,38 @@
 ---
-title: "Docker 兼容性矩阵"
-order: 1
-date: "2025-03-01"
+title: "Docker 版本总览与兼容性矩阵"
+order: 0
+---
+
+# Docker 版本更新总览
+
+本节聚焦 Docker 生态的核心版本演进，覆盖 **Docker Engine**、**Docker Compose** 以及 **Docker Desktop** 的发布节奏与兼容性要点，帮助团队在进行容器化基础设施升级时做出可靠决策。
+
+## 发布节奏概览
+
+| 组件 | 发布周期 | 说明 |
+|------|---------|------|
+| Docker Engine | 约每 2 个月一个 minor 版本 | 社区版（CE）按里程碑发布，企业版（EE）滞后约 1 个月 |
+| Docker Compose | 随 Engine 或独立发布 | V2 作为 Engine 插件发布，版本号与 Engine 部分解耦 |
+| Docker Desktop | 约每 1-2 个月一个版本 | 同时更新 Engine、Compose、BuildKit 及 GUI 组件 |
+
+## 版本支持策略
+
+- **Docker Engine**：当前版本与上 2 个 minor 版本接收安全补丁
+- **Docker Compose V2**：跟随 Engine 支持周期
+- **Docker Desktop**：通常仅支持最新版本，历史版本按需维护
+
+## 升级建议
+
+1. 生产环境的 Engine 版本应尽量保持在社区支持的窗口内
+2. 升级前查阅下方 Docker 兼容性矩阵，确认 Compose 文件格式与操作系统内核版本匹配
+3. 涉及 Swarm 模式的集群，需逐节点滚动升级，并验证 Raft 一致性
+
+## 相关资源
+
+- [Docker Engine 发布说明](https://docs.docker.com/engine/release-notes/)
+- [Docker Compose 发布说明](https://docs.docker.com/compose/releases/release-notes/)
+- [Docker Desktop 发布说明](https://docs.docker.com/desktop/release-notes/)
+
 ---
 
 # Docker 兼容性矩阵

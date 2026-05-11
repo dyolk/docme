@@ -49,10 +49,11 @@ async function scanReleases(): Promise<ReleasesData> {
         // meta.json 不存在则使用默认值
       }
 
-      // 扫描 MDX 文件
+      // 扫描 MDX 文件（顶层 + versions/ 子目录）
       const docs: ReleaseDoc[] = [];
       const files = readdirSync(projectPath, { withFileTypes: true });
 
+      // 扫描顶层 MDX
       for (const file of files) {
         if (!file.isFile() || !file.name.endsWith('.mdx')) continue;
 
@@ -76,6 +77,37 @@ async function scanReleases(): Promise<ReleasesData> {
           date: dateMatch?.[1],
           content: body.trim(),
         });
+      }
+
+      // 扫描 versions/ 子目录
+      const versionsPath = join(projectPath, 'versions');
+      try {
+        const versionFiles = readdirSync(versionsPath, { withFileTypes: true });
+        for (const file of versionFiles) {
+          if (!file.isFile() || !file.name.endsWith('.mdx')) continue;
+
+          const filePath = join(versionsPath, file.name);
+          const content = readFileSync(filePath, 'utf-8');
+          const slug = parse(file.name).name;
+
+          const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
+          const frontmatter = fmMatch?.[1] ?? '';
+          const body = fmMatch?.[2] ?? content;
+
+          const titleMatch = frontmatter.match(/^title:\s*["']?(.+?)["']?\s*$/m);
+          const orderMatch = frontmatter.match(/^order:\s*(\d+)\s*$/m);
+          const dateMatch = frontmatter.match(/^date:\s*["']?(.+?)["']?\s*$/m);
+
+          docs.push({
+            slug,
+            title: titleMatch?.[1] ?? slug,
+            order: parseInt(orderMatch?.[1] ?? '999', 10),
+            date: dateMatch?.[1],
+            content: body.trim(),
+          });
+        }
+      } catch {
+        // versions/ 目录不存在则跳过
       }
 
       docs.sort((a, b) => a.order - b.order);
