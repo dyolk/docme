@@ -72,9 +72,9 @@ function scanDirectory(dirPath: string, name: string): { dir: ResourceDirectory 
       dir: {
         name,
         readme,
-        files: resourceFiles,
+        files: resourceFiles.sort((a, b) => a.fullName.localeCompare(b.fullName)),
         lastUpdated: formatDate(dirLatestMtime),
-        children: children.length > 0 ? children : undefined,
+        children: children.length > 0 ? children.sort((a, b) => a.name.localeCompare(b.name)) : undefined,
       },
       mtime: dirLatestMtime,
     };
@@ -121,7 +121,7 @@ function scanResources(): Omit<ResourceData, 'usageDocs'> {
 
   return {
     readme: rootReadme,
-    directories,
+    directories: directories.sort((a, b) => a.name.localeCompare(b.name)),
     lastUpdated,
   };
 }

@@ -61,10 +61,15 @@ function getDirectoryByPath(directories: ResourceDirectory[], path: number[]): R
   return current ?? null;
 }
 
-function parseHash(hash: string, directories: ResourceDirectory[]): ViewState {
-  if (!hash || hash === '#/' || hash === '#') return { type: 'root' };
+const BASE_PATH = '/resources';
 
-  const segments = hash.replace(/^#/, '').split('/').filter(Boolean);
+function parseQuery(search: string, directories: ResourceDirectory[]): ViewState {
+  const params = new URLSearchParams(search);
+  const pathParam = params.get('path') ?? '';
+
+  if (!pathParam) return { type: 'root' };
+
+  const segments = pathParam.split('/').filter(Boolean);
   if (segments.length === 0) return { type: 'root' };
 
   let path: number[] = [];
@@ -91,8 +96,8 @@ function parseHash(hash: string, directories: ResourceDirectory[]): ViewState {
   return { type: 'directory', path };
 }
 
-function viewStateToHash(view: ViewState, directories: ResourceDirectory[]): string {
-  if (view.type === 'root') return '#/';
+function viewStateToQuery(view: ViewState, directories: ResourceDirectory[]): string {
+  if (view.type === 'root') return BASE_PATH;
 
   const names: string[] = [];
   let currentDirs = directories;
@@ -103,14 +108,16 @@ function viewStateToHash(view: ViewState, directories: ResourceDirectory[]): str
     currentDirs = dir.children ?? [];
   }
 
+  let pathParam = '';
   if (view.type === 'directory') {
-    return '#/' + names.join('/');
+    pathParam = names.join('/');
+  } else {
+    const dir = getDirectoryByPath(directories, view.path);
+    const file = dir?.files[view.fileIndex];
+    pathParam = file ? [...names, file.fullName].join('/') : names.join('/');
   }
 
-  const dir = getDirectoryByPath(directories, view.path);
-  const file = dir?.files[view.fileIndex];
-  if (!file) return '#/' + names.join('/');
-  return '#/' + [...names, file.fullName].join('/');
+  return pathParam ? `${BASE_PATH}?path=${encodeURIComponent(pathParam)}` : BASE_PATH;
 }
 
 function viewKey(v: ViewState): string {
@@ -299,18 +306,14 @@ function FileRow({
       )}
       {!meta && <div className="hidden sm:block flex-1" />}
 
-      {/* 右列：rightMeta + rightMeta2，固定宽度对齐 */}
-      <div className="shrink-0 flex items-center justify-end gap-3 w-[180px]">
-        {rightMeta && (
-          <span className="text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[90px]">
-            {rightMeta}
-          </span>
-        )}
-        {rightMeta2 && (
-          <span className="text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[70px]">
-            {rightMeta2}
-          </span>
-        )}
+      {/* 右列：rightMeta + rightMeta2，固定宽度对齐（始终占位） */}
+      <div className="shrink-0 flex items-center gap-3 w-[180px]">
+        <span className="text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[90px]">
+          {rightMeta || '\u00A0'}
+        </span>
+        <span className="text-[12px] text-[#86868b] dark:text-[#6e6e73] text-right w-[70px]">
+          {rightMeta2 || '\u00A0'}
+        </span>
       </div>
     </button>
   );
@@ -391,53 +394,75 @@ function DirectoryView({
       {/* 文件表格 */}
       {hasContent && (
         <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] overflow-hidden mb-6">
-          {/* README 行 */}
-          {dir.readme && (
-            <FileRow
-              icon={<FileText className="w-[18px] h-[18px] text-[#86868b] dark:text-[#6e6e73]" />}
-              name={
-                <span>
-                  README
-                  <span className="text-[#86868b] dark:text-[#6e6e73] font-normal">.md</span>
-                </span>
-              }
-              onClick={() => {}}
-            />
-          )}
-
           {/* 子目录 */}
           {dir.children?.map((child, childIndex) => (
             <FileRow
               key={child.name}
               icon={<Folder className="w-[18px] h-[18px] text-[#0071E3]" />}
               name={child.name}
-              meta={child.readme ? child.readme.split('\n').find(l => l.trim() && !l.startsWith('#'))?.trim().slice(0, 80) : undefined}
+              meta={child.readme ? child.readme.split('\n').find((l) => l.trim() && !l.startsWith('#'))?.trim().slice(0, 80) : undefined}
               rightMeta={child.lastUpdated}
               onClick={() => onNavigate({ type: 'directory', path: [...path, childIndex] })}
             />
           ))}
 
-          {/* 文件 */}
-          {dir.files.map((file, fileIndex) => {
-            const lastDot = file.fullName.lastIndexOf('.');
-            const base = lastDot > 0 ? file.fullName.slice(0, lastDot) : file.fullName;
-            const ext = lastDot > 0 ? file.fullName.slice(lastDot) : '';
-            return (
-              <FileRow
-                key={file.fullName}
-                icon={<FileText className="w-[18px] h-[18px] text-[#86868b] dark:text-[#6e6e73]" />}
-                name={
-                  <span>
-                    {base}
-                    {ext && <span className="text-[#86868b] dark:text-[#6e6e73] font-normal">{ext}</span>}
-                  </span>
-                }
-                rightMeta={file.lastUpdated}
-                rightMeta2={file.size}
-                onClick={() => onNavigate({ type: 'file', path, fileIndex })}
-              />
-            );
-          })}
+          {/* 文件（包含 README，按字母排序） */}
+          {(() => {
+            type FileItem =
+              | { kind: 'readme'; name: string }
+              | { kind: 'file'; file: ResourceFile; index: number };
+
+            const items: FileItem[] = [];
+            if (dir.readme) {
+              items.push({ kind: 'readme', name: 'README.md' });
+            }
+            dir.files.forEach((file, index) => {
+              items.push({ kind: 'file', file, index });
+            });
+            items.sort((a, b) => {
+              const nameA = a.kind === 'readme' ? a.name : a.file.fullName;
+              const nameB = b.kind === 'readme' ? b.name : b.file.fullName;
+              return nameA.localeCompare(nameB);
+            });
+
+            return items.map((item) => {
+              if (item.kind === 'readme') {
+                return (
+                  <FileRow
+                    key="README.md"
+                    icon={<FileText className="w-[18px] h-[18px] text-[#86868b] dark:text-[#6e6e73]" />}
+                    name={
+                      <span>
+                        README
+                        <span className="text-[#86868b] dark:text-[#6e6e73] font-normal">.md</span>
+                      </span>
+                    }
+                    onClick={() => {}}
+                  />
+                );
+              }
+              const file = item.file;
+              const fileIndex = item.index;
+              const lastDot = file.fullName.lastIndexOf('.');
+              const base = lastDot > 0 ? file.fullName.slice(0, lastDot) : file.fullName;
+              const ext = lastDot > 0 ? file.fullName.slice(lastDot) : '';
+              return (
+                <FileRow
+                  key={file.fullName}
+                  icon={<FileText className="w-[18px] h-[18px] text-[#86868b] dark:text-[#6e6e73]" />}
+                  name={
+                    <span>
+                      {base}
+                      {ext && <span className="text-[#86868b] dark:text-[#6e6e73] font-normal">{ext}</span>}
+                    </span>
+                  }
+                  rightMeta={file.lastUpdated}
+                  rightMeta2={file.size}
+                  onClick={() => onNavigate({ type: 'file', path, fileIndex })}
+                />
+              );
+            });
+          })()}
         </div>
       )}
 
@@ -580,28 +605,29 @@ type ActiveTab = 'files' | 'guide';
 
 export function ResourceBrowser({ data }: { data: ResourceData }) {
   const [activeTab, setActiveTab] = useState<ActiveTab>('files');
-  const [view, setView] = useState<ViewState>(() => {
-    if (typeof window !== 'undefined') {
-      return parseHash(window.location.hash, data.directories);
-    }
-    return { type: 'root' };
-  });
+  const [view, setView] = useState<ViewState>({ type: 'root' });
 
-  // 监听 hashchange
+  // 首次挂载时从 URL 同步状态（避免 SSR/客户端 hydration 不一致）
   useEffect(() => {
-    const handleHashChange = () => {
-      setView(parseHash(window.location.hash, data.directories));
-    };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    setView(parseQuery(window.location.search, data.directories));
   }, [data.directories]);
 
-  // 状态变化时更新 hash
+  // 监听 popstate（前进/后退按钮）
+  useEffect(() => {
+    const handlePopState = () => {
+      setView(parseQuery(window.location.search, data.directories));
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [data.directories]);
+
+  // 状态变化时更新 query string
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const newHash = viewStateToHash(view, data.directories);
-    if (window.location.hash !== newHash) {
-      window.location.hash = newHash;
+    const newUrl = viewStateToQuery(view, data.directories);
+    const currentUrl = window.location.pathname + window.location.search;
+    if (currentUrl !== newUrl) {
+      window.history.pushState(null, '', newUrl);
     }
   }, [view, data.directories]);
 
