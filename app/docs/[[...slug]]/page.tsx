@@ -44,7 +44,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
       tableOfContent={{
         header: (
           <div className="mb-4 pb-4 border-b border-[#d2d2d7]/30 dark:border-[#3a3a3c]/50">
-            <p className="flex items-center gap-1.5 text-[12px] font-medium text-[#86868b] dark:text-[#a1a1a6] mb-2 tracking-wide uppercase">
+            <p className="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-2">
               <Compass className="size-3.5" />
               快速导航
             </p>
@@ -78,7 +78,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
             <>
               {/* 最新博客 */}
               <div className="mt-4 pt-4 border-t border-[#d2d2d7]/30 dark:border-[#3a3a3c]/50">
-                <p className="flex items-center gap-1.5 text-[12px] font-medium text-[#86868b] dark:text-[#a1a1a6] mb-2.5 tracking-wide">
+                <p className="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-2.5">
                   <Newspaper className="size-3.5" />
                   最新博客
                 </p>
@@ -94,7 +94,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
               {/* 友链 */}
               {friendLinks.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-[#d2d2d7]/30 dark:border-[#3a3a3c]/50">
-                  <p className="flex items-center gap-1.5 text-[12px] font-medium text-[#86868b] dark:text-[#a1a1a6] mb-2.5 tracking-wide">
+                  <p className="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-2.5">
                     <Link2 className="size-3.5" />
                     友链
                   </p>
@@ -129,7 +129,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
           const friendLinks = (websitesData as { name: string; url: string; description: string; icon?: string }[]).slice(0, 4);
           return friendLinks.length > 0 ? (
             <div className="mt-3 pt-3 border-t border-[#d2d2d7]/30 dark:border-[#3a3a3c]/50">
-              <p className="flex items-center gap-1.5 text-[12px] font-medium text-[#86868b] dark:text-[#a1a1a6] mb-2 tracking-wide">
+              <p className="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-2">
                 <Link2 className="size-3.5" />
                 友链
               </p>
