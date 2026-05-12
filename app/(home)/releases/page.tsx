@@ -29,6 +29,18 @@ async function fetchLatestVersion(repo: string): Promise<string | null> {
   }
 }
 
+function parseMdxFrontmatter(content: string) {
+  const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
+  const frontmatter = fmMatch?.[1] ?? '';
+  const body = fmMatch?.[2] ?? content;
+  return {
+    title: frontmatter.match(/^title:\s*["']?(.+?)["']?\s*$/m)?.[1],
+    order: parseInt(frontmatter.match(/^order:\s*(\d+)\s*$/m)?.[1] ?? '999', 10),
+    date: frontmatter.match(/^date:\s*["']?(.+?)["']?\s*$/m)?.[1],
+    body: body.trim(),
+  };
+}
+
 async function scanReleases(): Promise<ReleasesData> {
   const releasesPath = join(process.cwd(), 'content', 'releases');
   const projects: ReleaseProject[] = [];
@@ -42,7 +54,7 @@ async function scanReleases(): Promise<ReleasesData> {
       const projectPath = join(releasesPath, entry.name);
 
       // 读取 meta.json
-      let meta = { title: entry.name, icon: 'FileText', description: '', order: 999, logo: '', logoWhite: '', color: '', repo: '', latestVersion: '', trackedVersions: [] as string[] };
+      let meta = { title: entry.name, description: '', order: 999, logo: '', repo: '', latestVersion: '', trackedVersions: [] as string[] };
       try {
         const metaContent = readFileSync(join(projectPath, 'meta.json'), 'utf-8');
         meta = { ...meta, ...JSON.parse(metaContent) };
@@ -62,21 +74,14 @@ async function scanReleases(): Promise<ReleasesData> {
         const content = readFileSync(filePath, 'utf-8');
         const slug = parse(file.name).name;
 
-        // 解析 frontmatter（简单正则）
-        const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
-        const frontmatter = fmMatch?.[1] ?? '';
-        const body = fmMatch?.[2] ?? content;
-
-        const titleMatch = frontmatter.match(/^title:\s*["']?(.+?)["']?\s*$/m);
-        const orderMatch = frontmatter.match(/^order:\s*(\d+)\s*$/m);
-        const dateMatch = frontmatter.match(/^date:\s*["']?(.+?)["']?\s*$/m);
+        const fm = parseMdxFrontmatter(content);
 
         docs.push({
           slug,
-          title: titleMatch?.[1] ?? slug,
-          order: parseInt(orderMatch?.[1] ?? '999', 10),
-          date: dateMatch?.[1],
-          content: body.trim(),
+          title: fm.title ?? slug,
+          order: fm.order,
+          date: fm.date,
+          content: fm.body,
         });
       }
 
@@ -91,20 +96,14 @@ async function scanReleases(): Promise<ReleasesData> {
           const content = readFileSync(filePath, 'utf-8');
           const slug = parse(file.name).name;
 
-          const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
-          const frontmatter = fmMatch?.[1] ?? '';
-          const body = fmMatch?.[2] ?? content;
-
-          const titleMatch = frontmatter.match(/^title:\s*["']?(.+?)["']?\s*$/m);
-          const orderMatch = frontmatter.match(/^order:\s*(\d+)\s*$/m);
-          const dateMatch = frontmatter.match(/^date:\s*["']?(.+?)["']?\s*$/m);
+          const fm = parseMdxFrontmatter(content);
 
           docs.push({
             slug,
-            title: titleMatch?.[1] ?? slug,
-            order: parseInt(orderMatch?.[1] ?? '999', 10),
-            date: dateMatch?.[1],
-            content: body.trim(),
+            title: fm.title ?? slug,
+            order: fm.order,
+            date: fm.date,
+            content: fm.body,
           });
         }
       } catch {
@@ -116,12 +115,9 @@ async function scanReleases(): Promise<ReleasesData> {
       const project: ReleaseProject = {
         slug: entry.name,
         title: meta.title,
-        icon: meta.icon,
         description: meta.description,
         order: meta.order,
         logo: meta.logo,
-        logoWhite: meta.logoWhite,
-        color: meta.color,
         latestVersion: meta.latestVersion,
         trackedVersions: meta.trackedVersions || [],
         docs,

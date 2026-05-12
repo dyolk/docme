@@ -557,9 +557,9 @@ function UsageGuideView({ usageDocs }: { usageDocs: UsageDoc[] }) {
   const selectedDoc = usageDocs.find((d) => d.slug === selectedSlug);
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
+    <div className="flex flex-col md:flex-row gap-4 md:items-start">
       {/* 左侧文档列表 */}
-      <div className="w-full md:w-[240px] shrink-0">
+      <div className="w-full md:w-[240px] shrink-0 md:sticky md:top-24 md:self-start">
         <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] overflow-hidden">
           {usageDocs.map((doc) => (
             <button
@@ -587,7 +587,7 @@ function UsageGuideView({ usageDocs }: { usageDocs: UsageDoc[] }) {
 
       {/* 右侧文档内容 */}
       <div className="flex-1 min-w-0">
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-6">
+        <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-6 md:max-h-[calc(100vh-100px)] md:overflow-y-auto scrollbar-hide">
           {selectedDoc ? (
             <SimpleMarkdown content={selectedDoc.content} />
           ) : (
@@ -700,16 +700,14 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
             <div
               key="files-tab"
             >
-              {/* 面包屑导航（非根目录时显示在列表上方，不参与子视图动画） */}
-              {view.type !== 'root' && (
-                <div className="mb-4">
-                  <Breadcrumb
-                    view={view}
-                    directories={data.directories}
-                    onNavigate={handleNavigate}
-                  />
-                </div>
-              )}
+              {/* 面包屑导航（始终显示，根目录时 $HOME 不可点击） */}
+              <div className="mb-4">
+                <Breadcrumb
+                  view={view}
+                  directories={data.directories}
+                  onNavigate={handleNavigate}
+                />
+              </div>
 
               {/* 只有内容区域做动画 */}
               <AnimatePresence mode="wait" initial={false}>

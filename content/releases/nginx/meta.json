@@ -1,0 +1,9 @@
+{
+  "title": "Nginx",
+  "description": "Nginx Web 服务器版本追踪与配置兼容性",
+  "order": 4,
+  "logo": "/images/logo-nginx.svg",
+  "repo": "nginx/nginx",
+  "latestVersion": "v1.27.0",
+  "trackedVersions": ["概览"]
+}

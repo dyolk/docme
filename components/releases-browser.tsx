@@ -18,12 +18,9 @@ export interface ReleaseDoc {
 export interface ReleaseProject {
   slug: string;         // 目录名，如 "kubernetes"
   title: string;        // 来自 meta.json 的 title
-  icon: string;         // 来自 meta.json 的 icon（Lucide 图标名）
   description: string;  // 来自 meta.json 的 description
   order: number;        // 排序
   logo?: string;        // Logo SVG 图片路径
-  logoWhite?: string;   // 白色 Logo SVG 图片路径
-  color?: string;       // 项目主题色
   latestVersion?: string;     // 最新版本号
   trackedVersions?: string[]; // 已追踪版本列表
   docs: ReleaseDoc[];   // 该项目下的所有文档

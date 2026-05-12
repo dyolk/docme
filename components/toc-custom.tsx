@@ -4,7 +4,7 @@ import { useTOCItems, TOCScrollArea } from "fumadocs-ui/components/toc";
 import { TOCItems, TOCEmpty } from "fumadocs-ui/components/toc/default";
 import { TOCItem as PrimitiveTOCItem } from "fumadocs-core/toc";
 import { I18nLabel } from "fumadocs-ui/contexts/i18n";
-import { cn } from "./cn";
+import { cn } from "@/lib/cn";
 import { Text } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import type { TOCItemType } from "fumadocs-core/toc";
