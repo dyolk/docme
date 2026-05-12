@@ -425,11 +425,11 @@ section[data-footnotes] h2#footnote-label::before,
 
 /* 侧边栏背景：纯白/纯黑，更干净 */
 #nd-sidebar {
-  background: #ffffff !important;
+  background: #f9f9fb !important;
 }
 
 .dark #nd-sidebar {
-  background: #000000 !important;
+  background: #0a0a0a !important;
 }
 
 /* 侧边栏导航项：圆角 + 柔和 hover/active 背景色 */
@@ -441,7 +441,7 @@ section[data-footnotes] h2#footnote-label::before,
 
 #nd-sidebar a:hover,
 #nd-sidebar button:hover {
-  background: #f5f5f7 !important;
+  background: #ededf0 !important;
 }
 
 .dark #nd-sidebar a:hover,
@@ -451,7 +451,7 @@ section[data-footnotes] h2#footnote-label::before,
 
 #nd-sidebar a[data-active="true"],
 #nd-sidebar button[data-active="true"] {
-  background: #f5f5f7 !important;
+  background: #e8e8ed !important;
   color: #1d1d1f !important;
   font-weight: 600 !important;
 }
@@ -473,12 +473,24 @@ section[data-footnotes] h2#footnote-label::before,
   border-radius: 10px !important;
 }
 
+/* 侧边栏主题切换器背景适配 */
+#nd-sidebar [data-theme-toggle],
+#nd-sidebar [role="group"] {
+  background: transparent !important;
+}
+
 /* Docs 主内容区背景 - 白色面板，在灰色页面上形成卡片效果 */
 #nd-docs-layout {
   background: #ffffff !important;
   --color-fd-card: #ffffff;
   --color-fd-muted: #f5f5f7;
   --color-fd-overlay: transparent;
+}
+
+/* 文档正文区域：fumadocs 默认 prose font-size 1rem(16px) 偏大，调整为 0.875rem(14px) */
+#nd-docs-layout .prose {
+  font-size: 0.875rem;
+  line-height: 1.7142857;
 }
 
 .dark #nd-docs-layout {
@@ -624,7 +636,7 @@ nav[aria-label="breadcrumb"] a:hover {
 }
 
 /* Footer 区域：隐藏 Fumadocs 内置 footer，使用自定义 Footer 组件 */
-#nd-docs-layout footer {
+#nd-docs-layout footer:not(.custom-docs-footer) {
   display: none !important;
 }
 

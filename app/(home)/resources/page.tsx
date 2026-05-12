@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { join, parse } from 'path';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Footer } from '@/components/footer';
 import {
   ResourceBrowser,
@@ -179,7 +180,9 @@ export default function ResourcesPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#f5f5f7] dark:bg-black">
       <main className="flex-1">
-        <ResourceBrowser data={data} />
+        <Suspense>
+          <ResourceBrowser data={data} />
+        </Suspense>
       </main>
       <Footer />
     </div>
