@@ -41,7 +41,7 @@ export function TextRevealByWord({
 }
 
 /**
- * GradientFlowText - 渐变流动文字
+ * GradientFlowText - 渐变流动文字（呼吸感节奏）
  */
 export function GradientFlowText({
   children,
@@ -55,7 +55,7 @@ export function GradientFlowText({
       className={`bg-gradient-to-r from-[#0071E3] via-[#00C7FF] to-[#0071E3] bg-clip-text text-transparent ${className}`}
       style={{ backgroundSize: '200% auto' }}
       animate={{ backgroundPosition: ['0% center', '200% center'] }}
-      transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+      transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
     >
       {children}
     </motion.span>
