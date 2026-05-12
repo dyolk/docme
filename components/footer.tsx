@@ -92,7 +92,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
-            <span>© {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</span>
+            <span>Copyright © {new Date().getFullYear()} dyolk. co,ltd. All rights reserved.</span>
             <span className="hidden sm:inline text-[var(--apple-border)]">|</span>
             <a
               href="https://beian.miit.gov.cn/"

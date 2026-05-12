@@ -439,58 +439,72 @@ section[data-footnotes] h2#footnote-label::before,
   border-radius: 10px !important;
 }
 
-/* Docs 主内容区背景 */
+/* Docs 主内容区背景 - 白色面板，在灰色页面上形成卡片效果 */
 #nd-docs-layout {
   background: #ffffff !important;
+  --color-fd-card: #ffffff;
+  --color-fd-muted: #f5f5f7;
+  --color-fd-overlay: transparent;
 }
 
 .dark #nd-docs-layout {
   background: #000000 !important;
+  --color-fd-card: #000000;
+  --color-fd-muted: #1c1c1e;
+  --color-fd-overlay: transparent;
 }
 
-/* Docs 顶部导航栏 */
-#nd-docs-layout nav,
-#nd-docs-layout [data-transparent="false"] {
+/* 移除了 DocsNav 后，--fd-docs-row-1 恢复默认值 0px，无需手动偏移 */
+
+/* Docs 内部导航栏（移动端子导航）背景匹配白色页面 */
+#nd-subnav {
   background: rgba(255, 255, 255, 0.8) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
 }
 
-.dark #nd-docs-layout nav,
-.dark #nd-docs-layout [data-transparent="false"] {
+.dark #nd-subnav {
   background: rgba(0, 0, 0, 0.8) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-/* TOC 目录导航 */
-#nd-toc {
-  border-radius: 12px !important;
+/* 侧边栏头部区域（标题 + 搜索）Apple 风格 */
+#nd-sidebar > div:first-child {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
 }
 
-#nd-toc a {
-  border-radius: 8px !important;
-  transition: background-color 0.2s ease !important;
+.dark #nd-sidebar > div:first-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
-#nd-toc a:hover {
+/* 侧边栏搜索框 Apple 风格 */
+#nd-sidebar input[type="search"],
+#nd-sidebar [data-nd-search] {
+  border-radius: 10px !important;
   background: #f5f5f7 !important;
+  border: none !important;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.dark #nd-toc a:hover {
+#nd-sidebar input[type="search"]:focus,
+#nd-sidebar [data-nd-search]:focus-within {
+  background: #ffffff !important;
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.3) !important;
+}
+
+.dark #nd-sidebar input[type="search"],
+.dark #nd-sidebar [data-nd-search] {
   background: #1c1c1e !important;
 }
 
-#nd-toc a[data-active="true"] {
-  background: #f5f5f7 !important;
-  color: #1d1d1f !important;
-  font-weight: 600 !important;
+.dark #nd-sidebar input[type="search"]:focus,
+.dark #nd-sidebar [data-nd-search]:focus-within {
+  background: #000000 !important;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.3) !important;
 }
 
-.dark #nd-toc a[data-active="true"] {
-  background: #1c1c1e !important;
-  color: #f5f5f7 !important;
-}
+/* 文档正文区域 - 背景由 #nd-docs-layout 白色提供 */
 
 /* 代码块：更大圆角 */
 pre {
@@ -575,13 +589,9 @@ nav[aria-label="breadcrumb"] a:hover {
   border-radius: 16px !important;
 }
 
-/* Footer 区域 */
+/* Footer 区域：隐藏 Fumadocs 内置 footer，使用自定义 Footer 组件 */
 #nd-docs-layout footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
-}
-
-.dark #nd-docs-layout footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: none !important;
 }
 
 /* 卡片组件圆角统一 */
@@ -597,4 +607,361 @@ nav[aria-label="breadcrumb"] a:hover {
 
 .dark #nd-docs-layout hr {
   border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── 首页导航栏（HomeLayout）融入页面风格 ─────────── */
+
+/* 导航栏：白色毛玻璃背景，与页面自然过渡 */
+#nd-home-layout #nd-nav {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.dark #nd-home-layout #nd-nav {
+  background: rgba(0, 0, 0, 0.72) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 导航链接：深色文字 */
+#nd-home-layout #nd-nav a,
+#nd-home-layout #nd-nav button {
+  color: #1d1d1f !important;
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.dark #nd-home-layout #nd-nav a,
+.dark #nd-home-layout #nd-nav button {
+  color: #f5f5f7 !important;
+}
+
+/* 导航链接 hover：柔和圆角背景色 */
+#nd-home-layout #nd-nav a:hover,
+#nd-home-layout #nd-nav button:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #1d1d1f !important;
+}
+
+.dark #nd-home-layout #nd-nav a:hover,
+.dark #nd-home-layout #nd-nav button:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #f5f5f7 !important;
+}
+
+/* 导航链接 active 状态 */
+#nd-home-layout #nd-nav a[data-active="true"],
+#nd-home-layout #nd-nav button[data-active="true"] {
+  background: rgba(0, 0, 0, 0.06) !important;
+  color: #1d1d1f !important;
+  font-weight: 600 !important;
+}
+
+.dark #nd-home-layout #nd-nav a[data-active="true"],
+.dark #nd-home-layout #nd-nav button[data-active="true"] {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #f5f5f7 !important;
+}
+
+/* ── Team MDX 介绍区域样式 ─────────────────────────── */
+.team-mdx-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--apple-text);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.team-mdx-content h2:first-child {
+  margin-top: 0;
+}
+
+.team-mdx-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--apple-text);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.team-mdx-content p {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--apple-text-secondary);
+  margin-bottom: 1rem;
+}
+
+.team-mdx-content ul,
+.team-mdx-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.team-mdx-content ul {
+  list-style-type: disc;
+}
+
+.team-mdx-content ol {
+  list-style-type: decimal;
+}
+
+.team-mdx-content li {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--apple-text-secondary);
+  margin-bottom: 0.375rem;
+}
+
+.team-mdx-content strong {
+  font-weight: 600;
+  color: var(--apple-text);
+}
+
+.team-mdx-content a {
+  color: var(--apple-blue);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.team-mdx-content a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.team-mdx-content code {
+  font-size: 0.875rem;
+  background: var(--apple-bg-secondary);
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+}
+
+.team-mdx-content pre {
+  border-radius: 16px !important;
+}
+
+.team-mdx-content blockquote {
+  border-left: 3px solid var(--apple-blue);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  color: var(--apple-text-secondary);
+  font-style: italic;
+}
+
+.team-mdx-content hr {
+  border: none;
+  border-top: 1px solid var(--apple-border);
+  margin: 2rem 0;
+}
+
+/* 导航栏标题（DocME）颜色与内边距，与导航链接 cover 样式一致 */
+#nd-home-layout #nd-nav .font-semibold {
+  color: #1d1d1f !important;
+  padding: 0.5rem !important;
+}
+
+.dark #nd-home-layout #nd-nav .font-semibold {
+  color: #f5f5f7 !important;
+  padding: 0.5rem !important;
+}
+
+/* 导航栏内 SVG 图标颜色跟随文字 */
+#nd-home-layout #nd-nav svg {
+  color: #1d1d1f !important;
+}
+
+.dark #nd-home-layout #nd-nav svg {
+  color: #f5f5f7 !important;
+}
+
+/* Docs 侧边栏标题（DocME）cover 样式：与首页导航链接风格一致 */
+#nd-sidebar .font-medium.me-auto {
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  color: #1d1d1f !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.dark #nd-sidebar .font-medium.me-auto {
+  color: #f5f5f7 !important;
+}
+
+#nd-sidebar .font-medium.me-auto:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.dark #nd-sidebar .font-medium.me-auto:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Docs 移动端顶部导航标题内边距 */
+#nd-subnav .font-semibold {
+  padding: 0.5rem !important;
+}
+
+/* ── Hero 绿色脉冲状态点 ───────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.4);
+  }
+}
+
+.hero-pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 6px 2px rgba(52, 211, 153, 0.4);
+  animation: pulse-dot 2s ease-in-out infinite;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.dark .hero-pulse-dot {
+  background: #4ade80;
+  box-shadow: 0 0 6px 2px rgba(74, 222, 128, 0.4);
+}
+
+/* ── Hero 蓝色科技按钮 ─────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 12px 2px rgba(59, 130, 246, 0.3),
+                0 0 4px 0 rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px 6px rgba(59, 130, 246, 0.45),
+                0 0 8px 0 rgba(59, 130, 246, 0.3);
+  }
+}
+
+.hero-btn-tech {
+  position: relative;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #1d4ed8 100%);
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite, glow-pulse 3s ease-in-out infinite;
+  color: #ffffff !important;
+  border: 1px solid rgba(96, 165, 250, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.hero-btn-tech:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 24px 8px rgba(59, 130, 246, 0.5),
+              0 0 10px 0 rgba(59, 130, 246, 0.35);
+}
+
+.hero-btn-tech::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: btn-sweep 3s ease-in-out infinite;
+}
+
+@keyframes btn-sweep {
+  0% {
+    left: -60%;
+  }
+  40%, 100% {
+    left: 140%;
+  }
+}
+
+.dark .hero-btn-tech {
+  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #2563eb 100%);
+  background-size: 200% 100%;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+}
+
+.dark .hero-btn-tech:hover {
+  box-shadow: 0 0 28px 10px rgba(59, 130, 246, 0.55),
+              0 0 12px 0 rgba(59, 130, 246, 0.4);
+}
+
+/* ── TOC 波浪形层级缩进 ─────────────────────────────── */
+
+/* ── 搜索结果竖线样式 ─────────────────────────────── */
+/* fumadocs 搜索结果中层级指示竖线（div[role=none]）
+   默认使用 bg-fd-border，在 Apple 风格下过于明显 */
+[role="dialog"] button > div[role="none"] {
+  opacity: 0.45 !important;
+}
+.dark [role="dialog"] button > div[role="none"] {
+  opacity: 0.35 !important;
+}
+
+/* 基础样式：移除默认 padding，改用 data-depth 控制 */
+#nd-toc .toc-item {
+  padding-inline-start: 0.75rem;
+  padding-inline-end: 0;
+  border-radius: 6px;
+  position: relative;
+}
+
+/* 层级递进缩进：h2 → h5 波浪形效果 */
+#nd-toc .toc-item[data-depth="2"] {
+  padding-inline-start: 0.75rem;
+  font-weight: 500;
+  font-size: 0.8125rem;
+}
+
+#nd-toc .toc-item[data-depth="3"] {
+  padding-inline-start: 1.375rem;
+  font-size: 0.8125rem;
+}
+
+#nd-toc .toc-item[data-depth="4"] {
+  padding-inline-start: 2rem;
+  font-size: 0.75rem;
+  opacity: 0.92;
+}
+
+#nd-toc .toc-item[data-depth="5"] {
+  padding-inline-start: 2.625rem;
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+/* Active 状态强化 */
+#nd-toc .toc-item[data-active="true"] {
+  font-weight: 600;
+  opacity: 1;
+}
+
+/* Hover 背景 */
+#nd-toc .toc-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+}
+
+.dark #nd-toc .toc-item:hover {
+  background: rgba(255, 255, 255, 0.04);
 }

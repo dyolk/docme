@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "zhangsan",
+    "name": "张三",
+    "role": "安全工程师",
+    "avatar": "/images/team/g.jpg",
+    "bio": "专注于云原生安全与 DevSecOps 领域"
+  }
+]

@@ -46,6 +46,16 @@ export const blog = defineDocs({
   },
 });
 
+export const team = defineDocs({
+  dir: 'content/team',
+  docs: {
+    schema: pageSchema,
+  },
+  meta: {
+    schema: metaSchema,
+  },
+});
+
 export default defineConfig({
   plugins: [lastModified()],
   mdxOptions: {

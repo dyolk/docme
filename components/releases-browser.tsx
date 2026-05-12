@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Plus, X, ChevronDown } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 
 /* ===================== 类型定义 ===================== */
 
@@ -422,31 +423,41 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
 
   const [viewState, setViewState] = useState<ViewState>({ type: 'projects' });
   const [isHydrated, setIsHydrated] = useState(false);
+  const searchParams = useSearchParams();
   const [versionDropdownOpen, setVersionDropdownOpen] = useState(false);
   const versionDropdownRef = useRef<HTMLDivElement>(null);
+  const [activeProject, setActiveProject] = useState<ReleaseProject | null>(null);
 
   const [activeTab, setActiveTab] = useState<'matrix' | 'releases'>('matrix');
   const [selectedVersion, setSelectedVersion] = useState<string>('');
 
-  // 首次挂载时从 URL 同步状态（只运行一次）
+  // 从 URL 查询参数同步状态（首次挂载 + 外部导航如搜索结果点击）
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const parsed = parseFromURL(window.location.search, projects);
-    setViewState(parsed);
+    const projectSlug = searchParams.get('project');
+    const docSlug = searchParams.get('doc');
+
+    if (projectSlug) {
+      const project = projects.find((p) => p.slug === projectSlug);
+      if (project) {
+        const validDocSlug = docSlug && project.docs.some((d) => d.slug === docSlug)
+          ? docSlug
+          : project.docs[0]?.slug ?? '';
+        setViewState(prev => {
+          if (prev.type === 'detail' && prev.projectSlug === projectSlug && prev.docSlug === validDocSlug) {
+            return prev;
+          }
+          return { type: 'detail', projectSlug, docSlug: validDocSlug };
+        });
+      } else {
+        setViewState(prev => prev.type === 'projects' ? prev : { type: 'projects' });
+      }
+    } else {
+      setViewState(prev => prev.type === 'projects' ? prev : { type: 'projects' });
+    }
+
     setIsHydrated(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // 监听 popstate（前进/后退按钮）
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const handlePopState = () => {
-      const parsed = parseFromURL(window.location.search, projects);
-      setViewState(parsed);
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, [projects]);
+  }, [searchParams]);
 
   // 点击外部关闭版本下拉
   useEffect(() => {
@@ -459,22 +470,32 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 状态变化时更新 query string
+  // 状态变化时更新 URL（使用 pushState 避免触发 Next.js 路由更新，打破无限循环）
   useEffect(() => {
     if (!isHydrated || typeof window === 'undefined') return;
     const newUrl =
       viewState.type === 'projects'
         ? BASE_PATH
         : buildQuery(viewState.projectSlug, viewState.docSlug);
-    const currentUrl = window.location.pathname + window.location.search;
-    if (currentUrl !== newUrl) {
-      window.history.pushState(null, '', newUrl);
+    const currentFullPath = window.location.pathname + window.location.search;
+    if (currentFullPath !== newUrl) {
+      window.history.pushState({}, '', newUrl);
     }
   }, [viewState, isHydrated]);
 
-  // 点击卡片进入详情
-  const handleCardClick = (slug: string) => {
-    enterProject(slug);
+  // 监听浏览器前进/后退，同步 viewState
+  useEffect(() => {
+    const handlePopState = () => {
+      const newState = parseFromURL(window.location.search, projects);
+      setViewState(newState);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [projects]);
+
+  // 点击卡片打开 Modal
+  const handleCardClick = (project: ReleaseProject) => {
+    setActiveProject(project);
   };
 
   // 进入详情视图
@@ -605,10 +626,9 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {projects.map((project) => (
-                    <button
+                    <div
                       key={project.slug}
-                      onClick={() => handleCardClick(project.slug)}
-                      className="group text-left bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] cursor-pointer relative h-[360px] sm:h-[400px] hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                      className="group text-left bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] relative h-[360px] sm:h-[400px] transition-all duration-300"
                     >
                       {/* 文字内容区 */}
                       <div className="relative z-10 p-8 flex flex-col">
@@ -648,17 +668,90 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
                       )}
 
                       {/* 右下角 + 按钮 */}
-                      <div className="absolute bottom-6 right-6 z-10 w-9 h-9 rounded-full bg-[#1d1d1f] dark:bg-[#f5f5f7] flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <button
+                        onClick={() => handleCardClick(project)}
+                        className="absolute bottom-6 right-6 z-10 w-9 h-9 rounded-full bg-[#1d1d1f] dark:bg-[#f5f5f7] flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"
+                      >
                         <Plus className="size-5 text-white dark:text-[#1d1d1f]" />
-                      </div>
-                    </button>
+                      </button>
+                    </div>
                   ))}
                 </div>
               )}
             </motion.div>
           )}
+        </AnimatePresence>
 
-          {/* ===== 项目详情视图 ===== */}
+        {/* ===== 项目 Modal 弹窗 ===== */}
+        <AnimatePresence>
+          {activeProject && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              onClick={() => setActiveProject(null)}
+            >
+              {/* 背景遮罩 */}
+              <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+
+              {/* 弹窗卡片 */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                onClick={(e) => e.stopPropagation()}
+                className="relative bg-white dark:bg-[#1c1c1e] rounded-[20px] shadow-2xl max-w-[560px] w-full p-10 sm:p-12"
+              >
+                {/* 关闭按钮 */}
+                <button
+                  onClick={() => setActiveProject(null)}
+                  className="absolute top-5 right-5 w-8 h-8 rounded-full bg-[#e8e8ed] dark:bg-[#3a3a3c] flex items-center justify-center hover:bg-[#d2d2d7] dark:hover:bg-[#48484a] transition-colors"
+                >
+                  <X className="size-4 text-[#1d1d1f] dark:text-[#f5f5f7]" />
+                </button>
+
+                {/* 小标签 */}
+                <p className="text-[13px] text-[#86868b] dark:text-[#a1a1a6] font-medium mb-4">
+                  {activeProject.title}
+                </p>
+
+                {/* 大标题 */}
+                <h2 className="text-[28px] sm:text-[36px] font-bold text-[#1d1d1f] dark:text-[#f5f5f7] leading-tight mb-5">
+                  {activeProject.description}
+                </h2>
+
+                {/* 版本信息 */}
+                <div className="text-[15px] text-[#86868b] dark:text-[#a1a1a6] leading-relaxed mb-8 space-y-1">
+                  {activeProject.latestVersion && <p>最新版本: {activeProject.latestVersion}</p>}
+                  {activeProject.trackedVersions && activeProject.trackedVersions.length > 0 && (
+                    <p>已追踪: {activeProject.trackedVersions.join('、')}</p>
+                  )}
+                </div>
+
+                {/* 进一步了解 链接 */}
+                <button
+                  onClick={() => {
+                    const slug = activeProject.slug;
+                    setActiveProject(null);
+                    enterProject(slug);
+                  }}
+                  className="text-[#0071E3] text-[15px] font-medium hover:underline inline-flex items-center gap-1 cursor-pointer"
+                >
+                  进一步了解
+                  <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* ===== 项目详情视图 ===== */}
+        <AnimatePresence mode="wait" initial={false}>
           {viewState.type === 'detail' && currentProject && (
             <motion.div
               key={`detail-${viewState.projectSlug}`}

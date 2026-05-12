@@ -24,6 +24,17 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { blogSource } from '@/lib/blog-source';
+import teamData from '@/content/team.json';
+
+interface TeamMember {
+  slug: string;
+  name: string;
+  role: string;
+  avatar?: string;
+  bio: string;
+}
+
+const team: TeamMember[] = teamData;
 
 /* ── CVE Counter ─────────────────────────────── */
 
@@ -222,7 +233,7 @@ export default async function HomePage() {
           <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-6 px-6">
             {blogs.map((blog) => (
               <Link key={blog.url} href={blog.url} className="flex-none w-[340px] snap-start group">
-                <div className="rounded-[20px] overflow-hidden bg-white dark:bg-[#1d1d1f] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 h-[420px] flex flex-col">
+                <div className="rounded-[20px] overflow-hidden bg-white dark:bg-[#1d1d1f] shadow-lg hover:shadow-lg transition-shadow duration-300 h-[420px] flex flex-col">
                   {/* 封面图 */}
                   <div className="h-[200px] relative overflow-hidden bg-gradient-to-br from-[#0071E3] to-[#00C7FF]">
                     {blog.data.cover && (
@@ -231,13 +242,51 @@ export default async function HomePage() {
                   </div>
                   {/* 内容 */}
                   <div className="p-6 flex-1 flex flex-col">
-                    {blog.data.tags?.[0] && (
-                      <span className="text-xs font-medium text-[#0071E3] mb-2">{blog.data.tags[0]}</span>
+                    {blog.data.tags && blog.data.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {blog.data.tags.map((tag: string) => (
+                          <span key={tag} className="text-xs font-medium text-[#0071E3] bg-[#0071E3]/10 px-2 py-0.5 rounded-full">{tag}</span>
+                        ))}
+                      </div>
                     )}
                     <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-white mb-2 line-clamp-2">{blog.data.title}</h3>
                     <p className="text-sm text-[#6e6e73] flex-1 line-clamp-3">{blog.data.description}</p>
                     <span className="text-xs text-[#6e6e73] mt-4">{blog.data.date}</span>
                   </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== TEAM ===== */}
+      <section className="py-20 sm:py-28">
+        <div className="max-w-[1120px] mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="text-[40px] sm:text-[56px] font-bold tracking-tight leading-[1.05] text-[#1d1d1f] dark:text-[#f5f5f7]">
+              我们的团队
+            </h2>
+            <p className="text-[17px] sm:text-[19px] text-[#6e6e73] dark:text-[#a1a1a6] mt-4 max-w-[560px]">
+              热爱安全，持续分享。
+            </p>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-14">
+            {team.map((member) => (
+              <Link key={member.slug} href={`/team/${member.slug}`} className="group">
+                <div className="bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] p-6 text-center hover:shadow-md transition-shadow duration-300">
+                  <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden bg-[#e8e8ed] dark:bg-[#3a3a3c]">
+                    {member.avatar ? (
+                      <img src={member.avatar} alt={member.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-[24px] font-bold text-[#86868b]">
+                        {member.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="text-[16px] font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">{member.name}</h3>
+                  <p className="text-[13px] text-[#86868b] dark:text-[#a1a1a6] mt-1">{member.role}</p>
                 </div>
               </Link>
             ))}

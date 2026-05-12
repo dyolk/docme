@@ -19,7 +19,10 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <Chip color="accent" variant="soft" className="mb-6">
-            开源 · 免费 · 共建
+            <span className="flex items-center gap-1.5">
+              <span className="hero-pulse-dot" />
+              开源 · 免费 · 共建
+            </span>
           </Chip>
         </motion.div>
 
@@ -49,7 +52,7 @@ export function HeroSection() {
           className="flex gap-4 justify-center mt-10"
         >
           <Link href="/docs" className="inline-flex">
-            <Button variant="primary" size="lg" className="rounded-full">
+            <Button variant="primary" size="lg" className="rounded-full hero-btn-tech">
               开始探索
             </Button>
           </Link>

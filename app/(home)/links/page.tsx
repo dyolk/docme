@@ -36,7 +36,7 @@ export default function LinksPage() {
               href={site.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] p-6 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col"
+              className="group bg-[#f5f5f7] dark:bg-[#1c1c1e] rounded-[20px] p-6 hover:shadow-md transition-shadow duration-300 flex flex-col"
             >
               {/* 图标 */}
               <div className="w-12 h-12 rounded-xl bg-white dark:bg-[#2c2c2e] flex items-center justify-center mb-4 overflow-hidden">

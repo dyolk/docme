@@ -119,7 +119,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
                         <img
                           src={post.data.cover}
                           alt={post.data.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         />
                       </div>
                     )}

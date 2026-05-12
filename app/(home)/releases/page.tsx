@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join, parse } from 'path';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Footer } from '@/components/footer';
 import {
   ReleasesBrowser,
@@ -150,7 +151,9 @@ export default async function ReleasesPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#f5f5f7] dark:bg-black">
       <main className="flex-1">
-        <ReleasesBrowser data={data} />
+        <Suspense>
+          <ReleasesBrowser data={data} />
+        </Suspense>
       </main>
       <Footer />
     </div>

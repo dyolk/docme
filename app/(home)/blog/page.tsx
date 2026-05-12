@@ -22,7 +22,7 @@ export default async function BlogPage() {
     <div className="flex flex-col min-h-screen bg-white dark:bg-black">
       {/* Page Header */}
       <section className="pt-32 sm:pt-40 pb-12 sm:pb-16">
-        <div className="max-w-[1000px] mx-auto px-6">
+        <div className="max-w-[1200px] mx-auto px-6">
           <ScrollReveal>
             <h1 className="text-[40px] sm:text-[56px] font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] leading-[1.05] mb-4">
               博客
@@ -36,9 +36,9 @@ export default async function BlogPage() {
 
       {/* Blog Grid */}
       <section className="pb-24 sm:pb-32">
-        <div className="max-w-[1000px] mx-auto px-6">
+        <div className="max-w-[1200px] mx-auto px-6">
           <FadeInStagger
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
             staggerDelay={0.08}
           >
             {sorted.map((page, index) => (
@@ -53,11 +53,11 @@ export default async function BlogPage() {
                         <img
                           src={page.data.cover}
                           alt={page.data.title}
-                          className="w-full h-[220px] object-cover transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-[160px] object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                         />
                       </div>
                     )}
-                    <div className="p-8 flex flex-col gap-4">
+                    <div className="p-6 flex flex-col gap-3">
                       {/* Date */}
                       {page.data.date && (
                         <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b] font-medium tracking-wide">

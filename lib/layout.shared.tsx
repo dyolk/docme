@@ -33,7 +33,7 @@ export function baseOptions(): BaseLayoutProps {
   };
 }
 
-/** 仅用于 docs 子路由的 layout 选项（无导航链接） */
+/** docs 子路由的 layout 选项 */
 export function docsOptions(): BaseLayoutProps {
   return {
     nav: {

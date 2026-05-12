@@ -1,10 +1,13 @@
-import { source } from '@/lib/source';
-import { createFromSource } from 'fumadocs-core/search/server';
+import { createSearchAPI } from 'fumadocs-core/search/server';
 import { createTokenizer } from '@orama/tokenizers/mandarin';
+import { buildSearchIndexes } from '@/lib/search-index';
 
 export const revalidate = false;
 
-export const { staticGET: GET } = createFromSource(source, {
-  // https://docs.orama.com/docs/orama-js/supported-languages
-  tokenizer: createTokenizer(),
+export const { staticGET: GET } = createSearchAPI('advanced', {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  indexes: buildSearchIndexes as any,
+  components: {
+    tokenizer: createTokenizer(),
+  },
 });
