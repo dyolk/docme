@@ -33,50 +33,29 @@ interface ChangelogEntry {
 
 const changelogData: ChangelogEntry[] = [
   {
-    version: 'v1.2.0',
-    date: '2025-03-15',
-    title: 'Apple 风格全站改版',
+    version: 'v1.1.0',
+    date: '2025-05-12',
+    title: '重大更新与优化',
     description:
-      '全新 Apple 风格设计语言，更精致的排版、更流畅的动画和更优雅的用户体验。',
+      'DocME 问题修复与优化',
     changes: [
       {
-        type: 'feature',
+        type: 'fix',
         items: [
-          'Apple 风格全站 UI 改版',
-          'Layout Tabs 组件支持',
-          'Mermaid 图表渲染支持',
+          '修复搜索功能不能完全索引'
         ],
       },
       {
         type: 'improvement',
-        items: ['动画性能优化', '暗色模式色彩校准'],
-      },
-    ],
-  },
-  {
-    version: 'v1.1.0',
-    date: '2025-02-20',
-    title: '搜索与内容增强',
-    description:
-      '大幅提升搜索体验，新增数学公式和 RSS Feed 支持，让文档站点更加专业。',
-    changes: [
-      {
-        type: 'feature',
         items: [
-          '全文搜索中文分词支持',
-          'KaTeX 数学公式渲染',
-          'RSS Feed 自动生成',
+          '优化整体风格'
         ],
-      },
-      {
-        type: 'fix',
-        items: ['修复移动端搜索框样式异常'],
-      },
+      }
     ],
   },
   {
     version: 'v1.0.0',
-    date: '2025-01-10',
+    date: '2025-05-09',
     title: '项目正式发布',
     description:
       'DocME 正式问世。基于 Next.js 和 Fumadocs 构建的现代化文档框架，让创建精美文档站点变得前所未有的简单。',
@@ -88,6 +67,8 @@ const changelogData: ChangelogEntry[] = [
           'MDX 文档内容支持',
           '自动生成目录导航',
           '博客系统上线',
+          '资源功能上线',
+          '版本追踪功能上线'
         ],
       },
     ],
