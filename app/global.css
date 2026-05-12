@@ -658,6 +658,176 @@ nav[aria-label="breadcrumb"] a:hover {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
+/* ── 苹果风格导航下拉面板 ───────────────────────────── */
+
+/* 下拉面板：全宽毛玻璃背景 */
+#nd-home-layout [data-radix-navigation-menu-viewport] {
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(25px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden;
+  width: 100vw !important;
+  left: 0 !important;
+  margin-left: calc(-50vw + 50%) !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-viewport] {
+  background: rgba(28, 28, 30, 0.98) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 下拉面板底部细边线 */
+#nd-home-layout [data-radix-navigation-menu-viewport]::after {
+  content: '' !important;
+  display: block !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-viewport]::after {
+  border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* 覆盖默认动画为苹果风格流畅展开 */
+#nd-home-layout [data-radix-navigation-menu-viewport][data-state="open"] {
+  animation: apple-menu-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+#nd-home-layout [data-radix-navigation-menu-viewport][data-state="closed"] {
+  animation: apple-menu-out 0.25s cubic-bezier(0.25, 0.1, 0.25, 1) forwards !important;
+}
+
+@keyframes apple-menu-in {
+  from {
+    opacity: 0;
+    height: 0;
+  }
+  to {
+    opacity: 1;
+    height: var(--radix-navigation-menu-viewport-height);
+  }
+}
+
+@keyframes apple-menu-out {
+  from {
+    opacity: 1;
+    height: var(--radix-navigation-menu-viewport-height);
+  }
+  to {
+    opacity: 0;
+    height: 0;
+  }
+}
+
+/* 下拉面板内容网格布局 */
+#nd-home-layout [data-radix-navigation-menu-viewport] ul,
+#nd-home-layout [data-radix-navigation-menu-viewport] div ul {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+  gap: 12px !important;
+  padding: 20px 24px !important;
+  max-width: 980px !important;
+  margin: 0 auto !important;
+}
+
+/* 下拉面板中菜单项卡片 */
+#nd-home-layout [data-radix-navigation-menu-viewport] a {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  background: transparent !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-viewport] a {
+  border-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+#nd-home-layout [data-radix-navigation-menu-viewport] a:hover {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-2px) !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-viewport] a:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 菜单项标题文字 */
+#nd-home-layout [data-radix-navigation-menu-viewport] a p:first-of-type {
+  font-size: 0.9375rem !important;
+  font-weight: 600 !important;
+  color: #1d1d1f !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.3 !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-viewport] a p:first-of-type {
+  color: #f5f5f7 !important;
+}
+
+/* 菜单项描述文字 */
+#nd-home-layout [data-radix-navigation-menu-viewport] a p:last-of-type {
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.56) !important;
+  line-height: 1.5 !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-viewport] a p:last-of-type {
+  color: rgba(255, 255, 255, 0.56) !important;
+}
+
+/* 触发器（导航链接）样式 */
+#nd-home-layout [data-radix-navigation-menu-trigger] {
+  color: #1d1d1f !important;
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-trigger] {
+  color: #f5f5f7 !important;
+}
+
+#nd-home-layout [data-radix-navigation-menu-trigger]:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #1d1d1f !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-trigger]:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #f5f5f7 !important;
+}
+
+/* 下拉面板展开时导航栏底部边线加重 */
+#nd-home-layout #nd-nav:has([data-radix-navigation-menu-viewport][data-state="open"]) {
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark #nd-home-layout #nd-nav:has([data-radix-navigation-menu-viewport][data-state="open"]) {
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 触发器中的 ChevronDown 图标 */
+#nd-home-layout [data-radix-navigation-menu-trigger] svg {
+  color: #1d1d1f !important;
+  transition: transform 0.2s ease !important;
+}
+
+.dark #nd-home-layout [data-radix-navigation-menu-trigger] svg {
+  color: #f5f5f7 !important;
+}
+
+#nd-home-layout [data-radix-navigation-menu-trigger][data-state="open"] svg {
+  transform: rotate(180deg) !important;
+}
+
 /* 导航链接：深色文字 */
 #nd-home-layout #nd-nav a,
 #nd-home-layout #nd-nav button {

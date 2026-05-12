@@ -1,9 +1,9 @@
 {
   "title": "Docker",
-  "description": "Docker Engine 与 Docker Compose 版本追踪及兼容性矩阵",
+  "description": "Docker 版本追踪与 Docker Compose 的支持矩阵",
   "order": 2,
   "logo": "/images/logo-docker.svg",
   "repo": "moby/moby",
-  "latestVersion": "v27.0.0",
-  "trackedVersions": ["兼容性矩阵"]
+  "latestVersion": "v29.4.3",
+  "trackedVersions": ["N/A"]
 }

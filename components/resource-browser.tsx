@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Folder,
@@ -604,32 +605,58 @@ function UsageGuideView({ usageDocs }: { usageDocs: UsageDoc[] }) {
 type ActiveTab = 'files' | 'guide';
 
 export function ResourceBrowser({ data }: { data: ResourceData }) {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('files');
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('tab') === 'guide' ? 'guide' : 'files';
+    }
+    return 'files';
+  });
   const [view, setView] = useState<ViewState>({ type: 'root' });
+
+  // 响应 Next.js 客户端导航的 URL 参数变化
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    setActiveTab(tabParam === 'guide' ? 'guide' : 'files');
+  }, [searchParams]);
 
   // 首次挂载时从 URL 同步状态（避免 SSR/客户端 hydration 不一致）
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab');
+    if (tabParam === 'guide') setActiveTab('guide');
     setView(parseQuery(window.location.search, data.directories));
   }, [data.directories]);
 
   // 监听 popstate（前进/后退按钮）
   useEffect(() => {
     const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      setActiveTab(tabParam === 'guide' ? 'guide' : 'files');
       setView(parseQuery(window.location.search, data.directories));
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, [data.directories]);
 
-  // 状态变化时更新 query string
+  // 状态变化时更新 query string（合并 view 和 tab 参数）
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const newUrl = viewStateToQuery(view, data.directories);
+    const viewUrl = viewStateToQuery(view, data.directories);
+    const urlObj = new URL(viewUrl, window.location.origin);
+    if (activeTab === 'guide') {
+      urlObj.searchParams.set('tab', 'guide');
+    } else {
+      urlObj.searchParams.set('tab', 'files');
+    }
+    const newUrl = urlObj.pathname + urlObj.search;
     const currentUrl = window.location.pathname + window.location.search;
     if (currentUrl !== newUrl) {
       window.history.pushState(null, '', newUrl);
     }
-  }, [view, data.directories]);
+  }, [view, activeTab, data.directories]);
 
   const handleNavigate = (next: ViewState) => {
     setView(next);

@@ -33,6 +33,8 @@ function scanDirectory(dirPath: string, name: string): { dir: ResourceDirectory 
   const children: ResourceDirectory[] = [];
 
   for (const entry of entries) {
+    if (entry.name.startsWith('.')) continue;
+
     const entryPath = join(dirPath, entry.name);
 
     if (entry.isDirectory()) {
@@ -101,7 +103,7 @@ function scanResources(): Omit<ResourceData, 'usageDocs'> {
     const entries = readdirSync(resourcesPath, { withFileTypes: true });
 
     for (const entry of entries) {
-      if (!entry.isDirectory()) continue;
+      if (entry.name.startsWith('.') || !entry.isDirectory()) continue;
 
       const dirPath = join(resourcesPath, entry.name);
       const result = scanDirectory(dirPath, entry.name);

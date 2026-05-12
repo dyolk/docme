@@ -414,7 +414,7 @@ function buildQuery(projectSlug?: string, docSlug?: string): string {
 export function ReleasesBrowser({ data }: { data: ReleasesData }) {
   // 修复无限循环：使用 useMemo 缓存排序后的 projects
   const projects = useMemo(
-    () => [...data.projects].sort((a, b) => a.order - b.order),
+    () => [...data.projects].sort((a, b) => a.slug.localeCompare(b.slug)),
     [data.projects]
   );
 
@@ -538,7 +538,7 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
       : undefined;
 
   const currentDocs = currentProject
-    ? [...currentProject.docs].sort((a, b) => a.order - b.order)
+    ? [...currentProject.docs].sort((a, b) => b.order - a.order)
     : [];
 
   const currentDoc =
@@ -574,7 +574,7 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
       setActiveTab('matrix');
       const rDocs = currentProject.docs
         .filter((d) => d.slug !== 'index')
-        .sort((a, b) => a.order - b.order);
+        .sort((a, b) => b.order - a.order);
       setSelectedVersion(rDocs[0]?.slug ?? '');
     }
   }, [currentProject?.slug]);
@@ -641,12 +641,12 @@ export function ReleasesBrowser({ data }: { data: ReleasesData }) {
                         <div className="mt-4 flex flex-col gap-1">
                           {project.latestVersion && (
                             <p className="text-[14px] text-[#86868b] dark:text-[#a1a1a6]">
-                              最新版本 <span className="font-mono">{project.latestVersion}</span>
+                              最新版本：<span className="font-mono">{project.latestVersion}</span>
                             </p>
                           )}
                           {project.trackedVersions && project.trackedVersions.length > 0 && (
                             <p className="text-[14px] text-[#86868b] dark:text-[#a1a1a6]">
-                              已追踪 {project.trackedVersions.join('、')}
+                              已追踪：{project.trackedVersions.join('、')}
                             </p>
                           )}
                         </div>

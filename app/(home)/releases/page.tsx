@@ -15,6 +15,13 @@ export const metadata: Metadata = {
   description: '追踪开源项目的重大版本更新与兼容性变更。',
 };
 
+function normalizeVersion(version: string): string {
+  // 提取版本号中的数字部分，统一为 vX.Y.Z 格式
+  const match = version.match(/(\d+\.\d+(?:\.\d+)?)/);
+  if (match) return `v${match[1]}`;
+  return version;
+}
+
 async function fetchLatestVersion(repo: string): Promise<string | null> {
   try {
     const res = await fetch(`https://api.github.com/repos/${repo}/releases/latest`, {
@@ -110,7 +117,7 @@ async function scanReleases(): Promise<ReleasesData> {
         // versions/ 目录不存在则跳过
       }
 
-      docs.sort((a, b) => a.order - b.order);
+      docs.sort((a, b) => b.order - a.order);
 
       const project: ReleaseProject = {
         slug: entry.name,
@@ -127,8 +134,10 @@ async function scanReleases(): Promise<ReleasesData> {
       if (meta.repo) {
         const apiVersion = await fetchLatestVersion(meta.repo);
         if (apiVersion) {
-          project.latestVersion = apiVersion;
+          project.latestVersion = normalizeVersion(apiVersion);
         }
+      } else if (project.latestVersion) {
+        project.latestVersion = normalizeVersion(project.latestVersion);
       }
 
       projects.push(project);
@@ -137,7 +146,7 @@ async function scanReleases(): Promise<ReleasesData> {
     // 目录不存在返回空
   }
 
-  projects.sort((a, b) => a.order - b.order);
+  projects.sort((a, b) => b.order - a.order);
   return { projects };
 }
 
