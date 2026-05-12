@@ -4,15 +4,17 @@
 @import 'fumadocs-ui/css/preset.css';
 @import 'katex/dist/katex.css';
 
-/* ── Fumadocs 主题色覆盖为 Apple Blue ────────────────── */
+/* ── Fumadocs 主题色覆盖为 Apple 黑色系 ────────────── */
 :root {
-  --color-fd-primary: hsl(211, 100%, 45%); /* Apple Blue #0071E3 */
-  --color-fd-accent: hsla(211, 100%, 45%, 0.12);
+  --color-fd-primary: hsl(0, 0%, 10%); /* 接近 #1d1d1f */
+  --color-fd-accent: hsla(0, 0%, 10%, 0.08);
+  --color-fd-accent-foreground: hsl(0, 0%, 10%);
 }
 
 .dark {
-  --color-fd-primary: hsl(211, 100%, 50%); /* #007AFF */
-  --color-fd-accent: hsla(211, 100%, 50%, 0.12);
+  --color-fd-primary: hsl(0, 0%, 96%); /* 接近 #f5f5f7 */
+  --color-fd-accent: hsla(0, 0%, 96%, 0.08);
+  --color-fd-accent-foreground: hsl(0, 0%, 96%);
 }
 
 /* ── Tailwind Dark Mode (class strategy) ───────────── */
@@ -368,19 +370,231 @@ section[data-footnotes] h2#footnote-label::before,
 
 /* ── Theme-aware CSS variables (used across site) ───── */
 :root {
-  --accent: #2563eb;
-  --foreground: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
+  --accent: #1d1d1f;
+  --foreground: #1d1d1f;
+  --muted: #6e6e73;
+  --border: rgba(0, 0, 0, 0.08);
   --surface: #ffffff;
-  --surface-secondary: #f8fafc;
+  --surface-secondary: #f5f5f7;
 }
 
 .dark {
-  --accent: #3b82f6;
-  --foreground: #f8fafc;
-  --muted: #94a3b8;
-  --border: #1e293b;
-  --surface: #0a0a0a;
-  --surface-secondary: #141414;
+  --accent: #f5f5f7;
+  --foreground: #f5f5f7;
+  --muted: #a1a1a6;
+  --border: rgba(255, 255, 255, 0.1);
+  --surface: #000000;
+  --surface-secondary: #1c1c1e;
+}
+
+/* ── Docs 页面苹果风格覆盖 ─────────────────────────── */
+
+/* 侧边栏背景：纯白/纯黑，更干净 */
+#nd-sidebar {
+  background: #ffffff !important;
+}
+
+.dark #nd-sidebar {
+  background: #000000 !important;
+}
+
+/* 侧边栏导航项：圆角 + 柔和 hover/active 背景色 */
+#nd-sidebar a,
+#nd-sidebar button {
+  border-radius: 10px !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+#nd-sidebar a:hover,
+#nd-sidebar button:hover {
+  background: #f5f5f7 !important;
+}
+
+.dark #nd-sidebar a:hover,
+.dark #nd-sidebar button:hover {
+  background: #1c1c1e !important;
+}
+
+#nd-sidebar a[data-active="true"],
+#nd-sidebar button[data-active="true"] {
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  font-weight: 600 !important;
+}
+
+.dark #nd-sidebar a[data-active="true"],
+.dark #nd-sidebar button[data-active="true"] {
+  background: #1c1c1e !important;
+  color: #f5f5f7 !important;
+}
+
+/* 侧边栏 active 指示条：用圆角 pill 替代竖线 */
+#nd-sidebar a[data-active="true"]::before,
+#nd-sidebar button[data-active="true"]::before {
+  display: none !important;
+}
+
+/* 侧边栏分组标题 */
+#nd-sidebar [data-folder] > button {
+  border-radius: 10px !important;
+}
+
+/* Docs 主内容区背景 */
+#nd-docs-layout {
+  background: #ffffff !important;
+}
+
+.dark #nd-docs-layout {
+  background: #000000 !important;
+}
+
+/* Docs 顶部导航栏 */
+#nd-docs-layout nav,
+#nd-docs-layout [data-transparent="false"] {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.dark #nd-docs-layout nav,
+.dark #nd-docs-layout [data-transparent="false"] {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* TOC 目录导航 */
+#nd-toc {
+  border-radius: 12px !important;
+}
+
+#nd-toc a {
+  border-radius: 8px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+#nd-toc a:hover {
+  background: #f5f5f7 !important;
+}
+
+.dark #nd-toc a:hover {
+  background: #1c1c1e !important;
+}
+
+#nd-toc a[data-active="true"] {
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  font-weight: 600 !important;
+}
+
+.dark #nd-toc a[data-active="true"] {
+  background: #1c1c1e !important;
+  color: #f5f5f7 !important;
+}
+
+/* 代码块：更大圆角 */
+pre {
+  border-radius: 16px !important;
+}
+
+.dark pre {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+pre code {
+  border-radius: 16px !important;
+}
+
+/* 行内代码 */
+:not(pre) > code {
+  border-radius: 6px !important;
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  padding: 2px 6px !important;
+}
+
+.dark :not(pre) > code {
+  background: #1c1c1e !important;
+  color: #f5f5f7 !important;
+}
+
+/* Tabs 标签页：圆角卡片风格 */
+[data-orientation="horizontal"] [role="tablist"] {
+  gap: 4px !important;
+  border-radius: 12px !important;
+  background: #f5f5f7 !important;
+  padding: 4px !important;
+}
+
+.dark [data-orientation="horizontal"] [role="tablist"] {
+  background: #1c1c1e !important;
+}
+
+[role="tablist"] [role="tab"] {
+  border-radius: 10px !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+[role="tablist"] [role="tab"][data-state="active"] {
+  background: #ffffff !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+.dark [role="tablist"] [role="tab"][data-state="active"] {
+  background: #2c2c2e !important;
+  color: #f5f5f7 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Callout / Admonition：圆角卡片 */
+[data-type="callout"],
+[data-type="admonition"],
+[data-type="info"],
+[data-type="warning"],
+[data-type="error"] {
+  border-radius: 16px !important;
+}
+
+/* Breadcrumb：圆角优化 */
+nav[aria-label="breadcrumb"] a {
+  border-radius: 6px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+nav[aria-label="breadcrumb"] a:hover {
+  background: #f5f5f7 !important;
+}
+
+.dark nav[aria-label="breadcrumb"] a:hover {
+  background: #1c1c1e !important;
+}
+
+/* 搜索对话框圆角 */
+[role="dialog"] {
+  border-radius: 16px !important;
+}
+
+/* Footer 区域 */
+#nd-docs-layout footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.dark #nd-docs-layout footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 卡片组件圆角统一 */
+.xsearch-card,
+[data-card] {
+  border-radius: 16px !important;
+}
+
+/* Docs 页面分隔线颜色 */
+#nd-docs-layout hr {
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+.dark #nd-docs-layout hr {
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }

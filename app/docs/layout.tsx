@@ -17,7 +17,7 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
 
   return (
     <DocsThemeWrapper colors={sectionColors}>
-      <div className="glass-page-bg min-h-screen">
+      <div className="min-h-screen bg-white dark:bg-black">
         <DocsLayout
           tree={source.getPageTree()}
           {...docsOptions()}
