@@ -74,7 +74,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
             return dateB - dateA;
           });
           const latest = sorted.slice(0, 5);
-          const friendLinks = (websitesData as { name: string; url: string; description: string; icon?: string }[]).slice(0, 4);
+          const friendLinks = (websitesData as { name: string; url: string; description: string; icon?: string }[]).slice(0, 3);
 
           return (
             <>
@@ -128,7 +128,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
       }}
       tableOfContentPopover={{
         footer: (() => {
-          const friendLinks = (websitesData as { name: string; url: string; description: string; icon?: string }[]).slice(0, 4);
+          const friendLinks = (websitesData as { name: string; url: string; description: string; icon?: string }[]).slice(0, 3);
           return friendLinks.length > 0 ? (
             <div className="mt-3 pt-3 border-t border-[#d2d2d7]/30 dark:border-[#3a3a3c]/50">
               <p className="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-2">
