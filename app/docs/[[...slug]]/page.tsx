@@ -5,6 +5,7 @@ import {
   DocsDescription,
   DocsTitle,
   MarkdownCopyButton,
+  PageFooter,
   ViewOptionsPopover,
 } from 'fumadocs-ui/layouts/docs/page';
 import { notFound } from 'next/navigation';
@@ -19,6 +20,7 @@ import { CustomTOC } from '@/components/toc-custom';
 import { TOCProvider } from 'fumadocs-ui/components/toc';
 import { TOCPopover } from 'fumadocs-ui/layouts/docs/page/slots/toc';
 import websitesData from '@/content/useful-websites.json';
+import { Footer } from '@/components/footer';
 
 export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params;
@@ -149,6 +151,14 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
             </div>
           ) : undefined;
         })(),
+      }}
+      footer={{
+        component: (
+          <>
+            <PageFooter />
+            <Footer />
+          </>
+        ),
       }}
     >
       <DocsTitle>{page.data.title}</DocsTitle>

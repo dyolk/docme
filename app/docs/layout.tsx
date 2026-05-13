@@ -3,7 +3,6 @@ import { source } from '@/lib/source';
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { docsOptions } from '@/lib/layout.shared';
 import { DocsThemeWrapper } from '@/components/docs-theme-wrapper';
-import { Footer } from '@/components/footer';
 import { getSectionColors } from '@/lib/tab-colors';
 
 // 根据 tab URL 路径获取对应的颜色分组
@@ -47,7 +46,6 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
         >
           {children}
         </DocsLayout>
-        <Footer />
       </div>
     </DocsThemeWrapper>
   );
