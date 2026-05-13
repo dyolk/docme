@@ -353,6 +353,14 @@ function SimpleMarkdown({ content, onLinkClick }: { content: string; onLinkClick
       continue;
     }
 
+    // 分隔线（--- / *** / ___）
+    if (trimmed === '---' || trimmed === '***' || trimmed === '___') {
+      elements.push(
+        <hr key={key++} className="border-[#e5e5e5] dark:border-[#2c2c2e] my-6" />
+      );
+      continue;
+    }
+
     // 普通段落
     elements.push(
       <p key={key++} className="text-[15px] text-[#424245] dark:text-[#a1a1a6] leading-relaxed">
