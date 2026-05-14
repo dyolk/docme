@@ -1,0 +1,26 @@
+---
+title: 'K8s RBAC 详解'
+description: 'K8s 的 RBAC 机制讲解'
+id: k8s-rbac
+date: '2026-05-14'
+author: 'DevSecOps Team'
+tags: ['k8s', 'cloud-native']
+cover: '/images/k8s.jpeg'
+---
+
+# 什么是 RBAC
+
+Role-Based Access Control (RBAC) 是 Kubernetes 中用于控制用户和服务账户对 API 资源访问权限的核心机制。
+
+## 核心概念
+
+- **Role**: 定义对特定命名空间内资源的操作权限
+- **ClusterRole**: 定义对整个集群范围资源的操作权限
+- **RoleBinding**: 将 Role 绑定到用户或服务账户
+- **ClusterRoleBinding**: 将 ClusterRole 绑定到用户或服务账户
+
+## 最佳实践
+
+1. 遵循最小权限原则
+2. 使用命名空间级别的 Role 而非 ClusterRole（除非必要）
+3. 定期审计 RBAC 配置

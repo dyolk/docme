@@ -15,14 +15,14 @@ function getBlogMenuItems(): { text: string; url: string; description: string }[
       const filePath = join(blogPath, file);
       const content = readFileSync(filePath, 'utf-8');
 
-      // 解析 frontmatter（--- 之间的内容）
-      const fmMatch = content.match(/^---\n([\s\S]*?)\n---/);
+      // 解析 frontmatter（支持 \n 和 \r\n 换行）
+      const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
       if (!fmMatch) continue;
 
       const fm = fmMatch[1];
-      const titleMatch = fm.match(/^title:\s*['"]?(.*?)['"]?\s*$/m);
-      const dateMatch = fm.match(/^date:\s*['"]?(.*?)['"]?\s*$/m);
-      const idMatch = fm.match(/^id:\s*['"]?(.*?)['"]?\s*$/m);
+      const titleMatch = fm.match(/^title:\s*['"']?(.*?)['"']?\s*$/m);
+      const dateMatch = fm.match(/^date:\s*['"']?(.*?)['"']?\s*$/m);
+      const idMatch = fm.match(/^id:\s*['"']?(.*?)['"']?\s*$/m);
 
       const title = titleMatch?.[1]?.trim() || file.replace('.mdx', '');
       const date = dateMatch?.[1]?.trim() || '';
