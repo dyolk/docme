@@ -1,0 +1,11 @@
+{
+  "title": "CVE 详情文档",
+  "description": "CVE 漏洞修复手册",
+  "icon": "Compass",
+  "root": true,
+  "color": "hsl(0, 100%, 50%)",
+  "defaultOpen": false,
+  "pages": [
+    "index"
+  ]
+}

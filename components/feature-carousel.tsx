@@ -35,7 +35,7 @@ const features: Feature[] = [
     title: 'CVE 漏洞库',
     desc: '已知威胁，尽在掌握。',
     detail: '持续更新的 CVE 漏洞数据库，包含漏洞详情、影响范围、修复方案和缓解措施，让您第一时间掌握安全态势。',
-    href: '/docs',
+    href: '/docs/cve',
   },
   {
     icon: BookOpen,
