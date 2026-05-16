@@ -1,0 +1,111 @@
+---
+title: 'Cargo 脚本使用指南'
+description: 'Cargo 脚本使用指南'
+id: cargo-scripts
+date: '2026-05-16'
+author: 'DevSecOps Team'
+tags: ['rust', 'scripts']
+cover: '/images/rust.png'
+---
+
+Rust 作为一门强大的编程语言，但是脚本方面，大概率不会选择它，因为启动成本太高，对比 Python 的 `python script.py` 和 NodeJS 的 `node script.js` 来说，Rust 的使用体验差距明显。
+
+这个局面如今正在改变，cargo script 作为 Rust 2026 年度目标之一，已经进入稳定化轨道，允许将依赖声明和代码放在同一个 `.rs` 文件之中，直接用 `cargo` 运行，无需创建代码目录，无需手写 `Cargo.toml` 文件。
+
+## 使用方式
+
+cargo scripts 的核心设计非常简单：在一个 Rust 源文件的开头嵌入了一个简化的清单（manifest），用 `---` 分隔符将元数据和代码分开，示例如下：
+
+```rust
+#!/usr/bin/env cargo
+---
+[dependencies]
+serde_json = "1.0"
+reqwest = { version = "0.12", features = ["blocking"] }
+---
+
+use std::io::Read;
+
+fn main() {
+    let url = std::env::args().nth(1)
+        .unwarp_or_else(|| "https://api.github.com/repos/rust-lang/rust".into());
+
+    let mut resp = reqwest::blocking::get(&url).unwarp();
+    let mut body = String::new();
+
+    resp.read_to_string(&mut body).unwarp();
+
+    let json: serde_json::Value = serde_json::from_str(&body).unwarp();
+
+    println!("Repository: {}", json["full_name"]);
+    println!("Stars: {}", json["stargazers_count"]);
+    println!("Language: {}", json["language"]);
+}
+```
+
+保存为 `github_info.rs`，使用如下命令进行执行：
+
+```bash
+cargo github_info.rs
+```
+
+得益于 Shebang（Hashbang），也可以使用如下命令进行执行：
+
+```bash
+chmod +x github_info.rs
+
+./github_info.rs
+```
+
+## 语法设计
+
+整体分为三个部分：
+
+1. Shebang
+2. 嵌入式清单
+3. 正文内容
+
+嵌入式清单的格式如下：
+
+1. 以 `---` 开头和结尾的中间区域部分就是清单内容。
+2. 支持如下字段：
+    - `[dependencies]`：外部的依赖声明，语法和 `Cargo.toml` 完全一致
+    - `[workspace.dependencies]`：工作空间依赖
+    - `edition`：指定 Rust 版本，默认 2021
+    - `name`：包名（可选），默认从文件名推断
+    - `version`：版本号，默认：0.0.0
+
+正文部分：
+
+嵌入式清单背后就是正常的 Rust 代码，可以包含 `fn main()`，`mod` 声明、`use` 导入等，整个文件就是一个完整的 Rust 可执行包。
+
+## 如何启用
+
+cargo script 目前在 nightly 版本中可用，需要通过 `-Zscript` 标志启用：
+
+```bash
+rustup toolchain install nightly
+
+cargo +nightly -Zscript script.rs
+```
+
+或者通过默认配置启用：
+
+```bash
+vim ~/.cargo/config.toml
+
+# config.toml
+
+[unstable]
+script = true
+```
+
+启用后，`cargo script.rs` 和 `cargo run --manifest-path script.rs` 两种形式都可以使用。
+
+## 适用边界
+
+cargo script 并不是用于取代完整的 cargo 项目，有自己的适用边界：
+
+1. 仅支持单文件 bin 包：库包、多文件项目、workspace 成员等场景不在当前的设计范围内。
+2. 依赖解析每次都会执行
+3. 适合小型工具和原型
