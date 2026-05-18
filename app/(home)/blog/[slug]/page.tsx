@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, Tag } from 'lucide-react';
+import { calculateReadingTime, formatBlogDate } from '@/lib/shared';
+import { join } from 'path';
 
 export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
   const params = await props.params;
@@ -13,9 +15,11 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
   if (!page) notFound();
 
   const MDX = page.data.body;
-  const readingTime = Math.ceil(page.data.body.toString().length / 500);
+  const readingTime = calculateReadingTime(
+    join(process.cwd(), 'content', 'blog', `${page.path}`)
+  );
 
-  // 获取推荐文章
+  // 获取推荐文章（按日期降序，相同日期按标题排序）
   const allPosts = blogSource.getPages();
   const relatedPosts = allPosts
     .filter((p) => p.url !== page.url)
@@ -24,8 +28,12 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
       const aMatch = a.data.tags?.some((t: string) => page.data.tags?.includes(t)) ? 1 : 0;
       const bMatch = b.data.tags?.some((t: string) => page.data.tags?.includes(t)) ? 1 : 0;
       if (bMatch !== aMatch) return bMatch - aMatch;
-      // 否则按日期
-      return new Date(b.data.date || 0).getTime() - new Date(a.data.date || 0).getTime();
+      // 按日期降序
+      const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
+      const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
+      if (dateB !== dateA) return dateB - dateA;
+      // 相同日期按标题排序，确保顺序稳定
+      return (a.data.title || '').localeCompare(b.data.title || '');
     })
     .slice(0, 3);
 
@@ -86,7 +94,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
                 )}
                 {page.data.date && (
                   <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b]">
-                    {page.data.date}
+                    {formatBlogDate(page.data.date)}
                   </span>
                 )}
                 <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b]">
@@ -126,7 +134,7 @@ export default async function BlogPostPage(props: PageProps<'/blog/[slug]'>) {
                     <div className="p-6 sm:p-8">
                       {post.data.date && (
                         <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b] font-medium tracking-wide block mb-2">
-                          {post.data.date}
+                          {formatBlogDate(post.data.date)}
                         </span>
                       )}
                       <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-[#f5f5f7] mb-2 line-clamp-2">

@@ -1,4 +1,5 @@
 import { blogSource } from '@/lib/blog-source';
+import { formatBlogDate } from '@/lib/shared';
 import Link from 'next/link';
 import { Footer } from '@/components/footer';
 import {
@@ -11,11 +12,12 @@ import {
 export default async function BlogPage() {
   const pages = blogSource.getPages();
 
-  // Sort by date descending
+  // Sort by date descending, then by title for stable ordering
   const sorted = [...pages].sort((a, b) => {
     const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
     const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
-    return dateB - dateA;
+    if (dateB !== dateA) return dateB - dateA;
+    return (a.data.title || '').localeCompare(b.data.title || '');
   });
 
   return (
@@ -61,7 +63,7 @@ export default async function BlogPage() {
                       {/* Date */}
                       {page.data.date && (
                         <span className="text-[13px] text-[#6e6e73] dark:text-[#86868b] font-medium tracking-wide">
-                          {page.data.date}
+                          {formatBlogDate(page.data.date)}
                         </span>
                       )}
 

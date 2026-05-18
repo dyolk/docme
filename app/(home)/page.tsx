@@ -3,6 +3,7 @@ import { Footer } from '@/components/footer';
 import { ScrollReveal } from '@/components/apple-animations';
 import { FeatureCarousel } from '@/components/feature-carousel';
 import { HeroSection } from '@/components/hero-section';
+import { formatBlogDate } from '@/lib/shared';
 import { readdirSync } from 'fs';
 import { join } from 'path';
 
@@ -109,11 +110,12 @@ export default async function HomePage() {
   const cveCount = await getCveCount();
   const checklistCount = await getChecklistCount();
 
-  // 最新博客
+  // 最新博客（按日期降序，相同日期按标题排序）
   const blogs = blogSource.getPages().sort((a, b) => {
     const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
     const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
-    return dateB - dateA;
+    if (dateB !== dateA) return dateB - dateA;
+    return (a.data.title || '').localeCompare(b.data.title || '');
   }).slice(0, 6);
 
   return (
@@ -251,7 +253,7 @@ export default async function HomePage() {
                     )}
                     <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-white mb-2 line-clamp-2">{blog.data.title}</h3>
                     <p className="text-sm text-[#6e6e73] flex-1 line-clamp-3">{blog.data.description}</p>
-                    <span className="text-xs text-[#6e6e73] mt-4">{blog.data.date}</span>
+                    <span className="text-xs text-[#6e6e73] mt-4">{formatBlogDate(blog.data.date)}</span>
                   </div>
                 </div>
               </Link>

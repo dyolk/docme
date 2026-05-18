@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import { appName, gitConfig } from './shared';
+import { appName, formatBlogDate, gitConfig } from './shared';
 
 /** 从 content/blog/ 目录动态生成最新博客菜单项 */
 function getBlogMenuItems(): { text: string; url: string; description: string }[] {
@@ -34,7 +34,7 @@ function getBlogMenuItems(): { text: string; url: string; description: string }[
       items.push({
         text: title,
         url: `/blog/${slug}`,
-        description: date,
+        description: formatBlogDate(date),
         date,
       });
     }
@@ -43,7 +43,11 @@ function getBlogMenuItems(): { text: string; url: string; description: string }[
   }
 
   // 按日期降序排列（日期字符串 YYYY-MM-DD 可直接比较）
-  items.sort((a, b) => b.date.localeCompare(a.date));
+  items.sort((a, b) => {
+    const cmp = b.date.localeCompare(a.date);
+    if (cmp !== 0) return cmp;
+    return a.text.localeCompare(b.text);
+  });
 
   // 取最新 3 篇 + 末尾 "全部文章" 链接
   const latest = items.slice(0, 3).map(({ text, url, description }) => ({ text, url, description }));

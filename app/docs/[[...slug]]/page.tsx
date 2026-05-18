@@ -71,7 +71,8 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
           const sorted = [...pages].sort((a, b) => {
             const dateA = a.data.date ? new Date(a.data.date).getTime() : 0;
             const dateB = b.data.date ? new Date(b.data.date).getTime() : 0;
-            return dateB - dateA;
+            if (dateB !== dateA) return dateB - dateA;
+            return (a.data.title || '').localeCompare(b.data.title || '');
           });
           const latest = sorted.slice(0, 5);
           const friendLinks = (websitesData as { name: string; url: string; description: string; icon?: string }[]).slice(0, 3);

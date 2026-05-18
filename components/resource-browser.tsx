@@ -606,13 +606,7 @@ type ActiveTab = 'files' | 'guide';
 
 export function ResourceBrowser({ data }: { data: ResourceData }) {
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<ActiveTab>(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('tab') === 'guide' ? 'guide' : 'files';
-    }
-    return 'files';
-  });
+  const [activeTab, setActiveTab] = useState<ActiveTab>('files');
   const [view, setView] = useState<ViewState>({ type: 'root' });
 
   // 响应 Next.js 客户端导航的 URL 参数变化
