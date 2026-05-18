@@ -1,4 +1,0 @@
-[submodule "public/resources/helm"]
-	path = public/resources/helm
-	url = https://github.com/dyolk/OmniHub.git
-	branch = main
