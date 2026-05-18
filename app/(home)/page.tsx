@@ -224,39 +224,44 @@ export default async function HomePage() {
       </section>
 
       {/* ===== LATEST BLOGS ===== */}
-      <section className="py-[120px] max-md:py-[80px]">
+      <section className="py-[120px] max-md:py-[80px] bg-[#f5f5f7] dark:bg-[#111111]">
         <div className="max-w-[1120px] mx-auto px-6">
           <ScrollReveal>
-            <h2 className="apple-section-title text-center mb-4">新鲜出炉。</h2>
-            <p className="apple-section-subtitle text-center mb-12">最新洞察。</p>
+            <div className="mb-14">
+              <h2 className="text-[40px] sm:text-[56px] font-bold tracking-tight leading-[1.05] text-[#1d1d1f] dark:text-[#f5f5f7]">
+                新鲜出炉。
+              </h2>
+              <p className="mt-4 text-[1.0625rem] text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed max-w-[560px]">
+                最新洞察。
+              </p>
+            </div>
           </ScrollReveal>
 
-          {/* 横向滚动容器 */}
-          <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scrollbar-hide -mx-6 px-6">
-            {blogs.map((blog) => (
-              <Link key={blog.url} href={blog.url} className="flex-none w-[340px] snap-start group">
-                <div className="rounded-[20px] overflow-hidden bg-white dark:bg-[#1d1d1f] shadow-lg hover:shadow-lg transition-shadow duration-300 h-[420px] flex flex-col">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {blogs.map((blog, i) => (
+              <ScrollReveal key={blog.url} delay={i * 0.08}>
+                <Link href={blog.url} className="group block bg-white dark:bg-[#1d1d1f] rounded-[20px] overflow-hidden h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                   {/* 封面图 */}
-                  <div className="h-[200px] relative overflow-hidden bg-gradient-to-br from-[#0071E3] to-[#00C7FF]">
+                  <div className="h-[160px] relative overflow-hidden bg-gradient-to-br from-[#0071E3] to-[#00C7FF]">
                     {blog.data.cover && (
-                      <img src={blog.data.cover} alt={blog.data.title} className="w-full h-full object-cover" />
+                      <img src={blog.data.cover} alt={blog.data.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
                     )}
                   </div>
                   {/* 内容 */}
-                  <div className="p-6 flex-1 flex flex-col">
+                  <div className="p-6 flex flex-col">
                     {blog.data.tags && blog.data.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-2">
+                      <div className="flex flex-wrap gap-1.5 mb-3">
                         {blog.data.tags.map((tag: string) => (
                           <span key={tag} className="text-xs font-medium text-[#0071E3] bg-[#0071E3]/10 px-2 py-0.5 rounded-full">{tag}</span>
                         ))}
                       </div>
                     )}
                     <h3 className="text-lg font-semibold text-[#1d1d1f] dark:text-white mb-2 line-clamp-2">{blog.data.title}</h3>
-                    <p className="text-sm text-[#6e6e73] flex-1 line-clamp-3">{blog.data.description}</p>
-                    <span className="text-xs text-[#6e6e73] mt-4">{formatBlogDate(blog.data.date)}</span>
+                    <p className="text-[15px] text-[#6e6e73] dark:text-[#a1a1a6] leading-relaxed line-clamp-3 mb-4">{blog.data.description}</p>
+                    <span className="text-[13px] text-[#86868b] dark:text-[#6e6e73] mt-auto">{formatBlogDate(blog.data.date)}</span>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </ScrollReveal>
             ))}
           </div>
         </div>
