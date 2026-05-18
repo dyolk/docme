@@ -43,7 +43,7 @@ async function getCveCount(): Promise<number> {
   try {
     const cveDir = join(process.cwd(), 'content', 'docs', 'cve');
     const files = readdirSync(cveDir, { withFileTypes: true });
-    return files.filter((f) => f.isFile() && (f.name.endsWith('.mdx') || f.name.endsWith('.md'))).length - 2;
+    return files.filter((f) => f.isFile() && f.name.endsWith('.mdx') && f.name.toLowerCase().startsWith('cve-')).length;
   } catch {
     return 0;
   }

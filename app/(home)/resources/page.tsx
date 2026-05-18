@@ -7,8 +7,10 @@ import {
   ResourceBrowser,
   type ResourceData,
   type ResourceDirectory,
-  type UsageDoc,
 } from '@/components/resource-browser';
+import { UsageGuideClientView } from '@/components/usage-guide-client-view';
+import { getMDXComponents } from '@/components/mdx';
+import { usageSource } from '@/lib/usage-source';
 
 export const metadata: Metadata = {
   title: '资源库',
@@ -129,59 +131,34 @@ function scanResources(): Omit<ResourceData, 'usageDocs'> {
   };
 }
 
-function scanUsageDocs(): UsageDoc[] {
-  const usagePath = join(process.cwd(), 'content', 'usage');
-  const docs: UsageDoc[] = [];
-
-  try {
-    const entries = readdirSync(usagePath, { withFileTypes: true });
-
-    for (const entry of entries) {
-      if (!entry.isFile() || !entry.name.endsWith('.mdx')) continue;
-
-      const filePath = join(usagePath, entry.name);
-      const content = readFileSync(filePath, 'utf-8');
-      const slug = parse(entry.name).name;
-
-      // 解析 frontmatter（简单正则，不引入新依赖）
-      const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---\s*\n?([\s\S]*)$/);
-      const frontmatter = fmMatch?.[1] ?? '';
-      const body = fmMatch?.[2] ?? content;
-
-      const titleMatch = frontmatter.match(/^title:\s*["']?(.+?)["']?\s*$/m);
-      const orderMatch = frontmatter.match(/^order:\s*(\d+)\s*$/m);
-
-      const title = titleMatch?.[1] ?? slug;
-      const order = parseInt(orderMatch?.[1] ?? '999', 10);
-
-      docs.push({
-        slug,
-        title,
-        content: body.trim(),
-        order,
-      });
-    }
-  } catch {
-    // 目录不存在时返回空
-  }
-
-  return docs.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
-}
-
-export default function ResourcesPage() {
+export default async function ResourcesPage() {
   const resourceData = scanResources();
-  const usageDocs = scanUsageDocs();
 
+  // 使用 fumadocs 编译后的 usage docs
+  const usagePages = usageSource.getPages().sort((a, b) => {
+    const orderA = (a.data as { order?: number }).order ?? 999;
+    const orderB = (b.data as { order?: number }).order ?? 999;
+    return orderA - orderB;
+  });
+
+  const guideDocs = usagePages.map((page) => ({
+    slug: page.path,
+    title: page.data.title,
+    content: <page.data.body components={getMDXComponents()} />,
+    order: (page.data as { order?: number }).order ?? 999,
+  }));
+
+  // ResourceBrowser 内部 fallback 需要字符串类型的 usageDocs
   const data: ResourceData = {
     ...resourceData,
-    usageDocs,
+    usageDocs: [],
   };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f5f5f7] dark:bg-black">
       <main className="flex-1">
         <Suspense>
-          <ResourceBrowser data={data} />
+          <ResourceBrowser data={data} guideContent={<UsageGuideClientView docs={guideDocs} />} />
         </Suspense>
       </main>
       <Footer />

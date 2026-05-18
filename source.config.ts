@@ -56,6 +56,21 @@ export const team = defineDocs({
   },
 });
 
+export const usage = defineDocs({
+  dir: 'content/usage',
+  docs: {
+    schema: pageSchema.extend({
+      order: z.number().optional(),
+    }),
+    postprocess: {
+      includeProcessedMarkdown: true,
+    },
+  },
+  meta: {
+    schema: metaSchema,
+  },
+});
+
 export default defineConfig({
   plugins: [lastModified()],
   mdxOptions: {

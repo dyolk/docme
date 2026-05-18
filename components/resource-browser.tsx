@@ -9,6 +9,7 @@ import {
   BookOpen,
   FolderOpen,
 } from 'lucide-react';
+import { getMDXComponents } from '@/components/mdx';
 
 /* ===================== 类型定义 ===================== */
 
@@ -32,7 +33,8 @@ export interface ResourceDirectory {
 export interface UsageDoc {
   slug: string;
   title: string;
-  content: string;
+  content?: string | React.ReactNode;
+  body?: React.ComponentType<any>;
   order?: number;
 }
 
@@ -590,7 +592,13 @@ function UsageGuideView({ usageDocs }: { usageDocs: UsageDoc[] }) {
       <div className="flex-1 min-w-0">
         <div className="bg-white dark:bg-[#1c1c1e] rounded-2xl border border-[#d2d2d7] dark:border-[#3a3a3c] px-6 py-6 md:max-h-[calc(100vh-100px)] md:overflow-y-auto scrollbar-hide">
           {selectedDoc ? (
-            <SimpleMarkdown content={selectedDoc.content} />
+            selectedDoc.body ? (
+              <selectedDoc.body components={getMDXComponents()} />
+            ) : typeof selectedDoc.content === 'string' ? (
+              <SimpleMarkdown content={selectedDoc.content} />
+            ) : (
+              selectedDoc.content
+            )
           ) : (
             <p className="text-[14px] text-[#86868b] dark:text-[#6e6e73]">暂无使用指南</p>
           )}
@@ -604,7 +612,7 @@ function UsageGuideView({ usageDocs }: { usageDocs: UsageDoc[] }) {
 
 type ActiveTab = 'files' | 'guide';
 
-export function ResourceBrowser({ data }: { data: ResourceData }) {
+export function ResourceBrowser({ data, guideContent }: { data: ResourceData; guideContent?: React.ReactNode }) {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<ActiveTab>('files');
   const [view, setView] = useState<ViewState>({ type: 'root' });
@@ -771,7 +779,7 @@ export function ResourceBrowser({ data }: { data: ResourceData }) {
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18, ease: appleEase }}
             >
-              <UsageGuideView usageDocs={data.usageDocs} />
+              {guideContent ?? <UsageGuideView usageDocs={data.usageDocs} />}
             </motion.div>
           )}
         </AnimatePresence>

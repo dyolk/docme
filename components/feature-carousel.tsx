@@ -13,6 +13,7 @@ import {
   GitBranch,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { useSearchContext } from 'fumadocs-ui/contexts/search';
 
 interface Feature {
   icon: LucideIcon;
@@ -70,6 +71,7 @@ const features: Feature[] = [
 export function FeatureCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeFeature, setActiveFeature] = useState<Feature | null>(null);
+  const { setOpenSearch } = useSearchContext();
 
   const scroll = (direction: 'left' | 'right') => {
     if (!scrollRef.current) return;
@@ -178,15 +180,30 @@ export function FeatureCarousel() {
               </p>
 
               {/* 链接 */}
-              <Link
-                href={activeFeature.href}
-                className="text-[#0071E3] text-[15px] font-medium hover:underline inline-flex items-center gap-1"
-              >
-                进一步了解
-                <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                </svg>
-              </Link>
+              {activeFeature.title === '全文搜索' ? (
+                <button
+                  onClick={() => {
+                    setActiveFeature(null);
+                    setOpenSearch(true);
+                  }}
+                  className="text-[#0071E3] text-[15px] font-medium hover:underline inline-flex items-center gap-1 cursor-pointer"
+                >
+                  立即使用搜索功能
+                  <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              ) : (
+                <Link
+                  href={activeFeature.href}
+                  className="text-[#0071E3] text-[15px] font-medium hover:underline inline-flex items-center gap-1"
+                >
+                  进一步了解
+                  <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </Link>
+              )}
             </motion.div>
           </motion.div>
         )}
