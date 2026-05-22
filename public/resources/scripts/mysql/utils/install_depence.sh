@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Author: Aucru@mail.dyolk.com
+# Author: aucru@mail.dyolk.com
 # Date: 2026-05-19
 # Version: 1.0.0
 
