@@ -179,8 +179,8 @@ function buildReleaseIndexes(): SearchIndexEntry[] {
         // meta.json not found, use defaults
       }
 
-      // Index project index.mdx (overview page)
-      const indexFile = join(projectPath, 'index.mdx');
+      // Index project install.mdx (overview page)
+      const indexFile = join(projectPath, 'install.mdx');
       try {
         const content = readFileSync(indexFile, 'utf-8');
         const body = stripFrontmatter(content);
@@ -196,7 +196,7 @@ function buildReleaseIndexes(): SearchIndexEntry[] {
           breadcrumbs: [projectTitle],
         });
       } catch {
-        // index.mdx not found
+        // install.mdx not found
       }
 
       // Index version-specific MDX files

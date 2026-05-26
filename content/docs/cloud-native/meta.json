@@ -1,0 +1,13 @@
+{
+  "title": "云原生",
+  "description": "云原生相关内容",
+  "icon": "ShipWheel",
+  "root": true,
+  "color": "hsl(224, 77%, 55%)",
+  "defaultOpen": false,
+  "pages": [
+    "index",
+    "---Kubernetes 部分---",
+    "k8s/install"
+  ]
+}

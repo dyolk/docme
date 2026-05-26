@@ -1,6 +1,7 @@
 {
   "pages": [
     "(start)",
-    "cve"
+    "cve",
+    "cloud-native"
   ]
 }
