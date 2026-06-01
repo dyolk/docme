@@ -2,6 +2,7 @@
   "pages": [
     "(start)",
     "cve",
+    "net",
     "cloud-native"
   ]
 }

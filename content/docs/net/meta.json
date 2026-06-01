@@ -1,0 +1,11 @@
+{
+  "title": "网络详解",
+  "description": "网络部分相关知识",
+  "icon": "Router",
+  "root": true,
+  "color": "hsl(240, 100%, 50%)",
+  "defaultOpen": false,
+  "pages": [
+    "index"
+  ]
+}
