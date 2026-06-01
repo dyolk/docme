@@ -2,9 +2,10 @@ import { readdirSync, readFileSync } from 'fs';
 import { join } from 'path';
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { appName, formatBlogDate, gitConfig } from './shared';
+import { BookOpen, Compass, FileSearch, Newspaper, Package } from 'lucide-react';
 
 /** 从 content/blog/ 目录动态生成最新博客菜单项 */
-function getBlogMenuItems(): { text: string; url: string; description: string }[] {
+function getBlogMenuItems(): { text: string; url: string; description: string; icon?: React.ReactNode }[] {
   const blogPath = join(process.cwd(), 'content', 'blog');
   const items: { text: string; url: string; description: string; date: string }[] = [];
 
@@ -50,14 +51,14 @@ function getBlogMenuItems(): { text: string; url: string; description: string }[
   });
 
   // 取最新 3 篇 + 末尾 "全部文章" 链接
-  const latest = items.slice(0, 3).map(({ text, url, description }) => ({ text, url, description }));
-  latest.push({ text: '全部文章', url: '/blog', description: '查看所有博客文章' });
+  const latest = items.slice(0, 3).map(({ text, url, description }) => ({ text, url, description, icon: <BookOpen className="size-4" /> }));
+  latest.push({ text: '全部文章', url: '/blog', description: '查看所有博客文章', icon: <Newspaper className="size-4" /> });
 
   return latest;
 }
 
 /** 从 content/releases/ 目录动态生成版本追踪菜单项 */
-function getReleaseMenuItems(): { text: string; url: string; description: string }[] {
+function getReleaseMenuItems(): { text: string; url: string; description: string; icon?: React.ReactNode }[] {
   const releasesPath = join(process.cwd(), 'content', 'releases');
   const items: { text: string; url: string; description: string; order: number }[] = [];
 
@@ -92,13 +93,12 @@ function getReleaseMenuItems(): { text: string; url: string; description: string
   }
 
   items.sort((a, b) => b.order - a.order);
-  return items.map(({ text, url, description }) => ({ text, url, description }));
+  return items.map(({ text, url, description }) => ({ text, url, description, icon: <Package className="size-4" /> }));
 }
 
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
-      // JSX supported
       title: appName,
     },
     links: [
@@ -106,30 +106,62 @@ export function baseOptions(): BaseLayoutProps {
         type: 'menu',
         text: '文档',
         url: '/docs',
+        on: 'nav',
         items: [
-          { text: '快速开始', url: '/docs', description: '入门指南与基础概念' },
+          { text: '快速开始', url: '/docs', description: '入门指南与基础概念', icon: <Compass className="size-4" /> },
         ],
+      },
+      {
+        type: 'main',
+        text: '文档',
+        url: '/docs',
+        on: 'menu',
+        description: '快速开始',
       },
       {
         type: 'menu',
         text: '博客',
         url: '/blog',
+        on: 'nav',
         items: getBlogMenuItems(),
+      },
+      {
+        type: 'main',
+        text: '博客',
+        url: '/blog',
+        on: 'menu',
+        description: '查看所有文章',
       },
       {
         type: 'menu',
         text: '资源',
         url: '/resources',
+        on: 'nav',
         items: [
-          { text: '文件浏览', url: '/resources?tab=files', description: '运维脚本与配置文件' },
-          { text: '使用指南', url: '/resources?tab=guide', description: '快速入门与使用说明' }
+          { text: '文件浏览', url: '/resources?tab=files', description: '运维脚本与配置文件', icon: <FileSearch className="size-4" /> },
+          { text: '使用指南', url: '/resources?tab=guide', description: '快速入门与使用说明', icon: <BookOpen className="size-4" /> }
         ],
+      },
+      {
+        type: 'main',
+        text: '资源',
+        url: '/resources',
+        on: 'menu',
+        description: '文件浏览与使用指南',
       },
       {
         type: 'menu',
         text: '版本追踪',
         url: '/releases',
+        on: 'nav',
         items: getReleaseMenuItems(),
+      },
+      {
+        type: 'main',
+        text: '版本追踪',
+        url: '/releases',
+        on: 'menu',
+        description: '版本更新记录',
       },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
