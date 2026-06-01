@@ -3,6 +3,8 @@ title: K8S 的安装
 description: K8S 的安装教程
 ---
 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
 ## 服务器准备
 
 服务器列表如下：
@@ -24,9 +26,34 @@ description: K8S 的安装教程
 
 在安装 K8s 之前，还需要对服务器进行如下的配置。
 
-#### 更新系统依赖
+#### 更新系统依赖 [step]
 
-```bash
-dnf update -y
-dnf upgrade -y
-```
+<Tabs groupId="os" items={['Rocky Linux', 'Ubuntu Linux']}>
+    <Tab value="Rocky Linux">
+        ```bash
+        dnf update -y
+
+        dnf upgrade -y
+        ```
+    </Tab>
+    <Tab value="Ubuntu Linux">
+        ```bash
+        # TODO
+        ```
+    </Tab>
+</Tabs>
+
+#### 安装常用软件包 [step]
+
+<Tabs groupId="os" items={['Rocky Linux', 'Ubuntu Linux']}>
+    <Tab value="Rocky Linux">
+        ```bash
+        dnf install -y gcc gcc-c++ make
+        ```
+    </Tab>
+    <Tab value="Ubuntu Linux">
+        ```bash
+        # TODO
+        ```
+    </Tab>
+</Tabs>

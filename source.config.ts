@@ -4,6 +4,7 @@ import { z } from 'zod';
 import lastModified from 'fumadocs-mdx/plugins/last-modified';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import { remarkSteps } from 'fumadocs-core/mdx-plugins/remark-steps';
 
 // 扩展博客文章的 schema
 const blogPageSchema = pageSchema.extend({
@@ -74,7 +75,7 @@ export const usage = defineDocs({
 export default defineConfig({
   plugins: [lastModified()],
   mdxOptions: {
-    remarkPlugins: [remarkMath],
+    remarkPlugins: [remarkMath, remarkSteps],
     rehypePlugins: (v) => [rehypeKatex, ...v],
   },
 });
