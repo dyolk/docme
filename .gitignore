@@ -28,3 +28,6 @@ next-env.d.ts
 # IDES
 .idea/
 .vscode/
+
+# Tools
+public/resources/scripts/os/CrystalDiskInfo/*
