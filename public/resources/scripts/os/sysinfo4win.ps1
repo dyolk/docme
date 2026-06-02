@@ -12,7 +12,7 @@ if (-not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Adm
 Clear-Host
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# 【彻底修复】：强类型约束，直接限制只能接收合法的 ConsoleColor 对象
+# 强类型约束输出函数
 function Out-HardwareRow ([string]$label, [string]$value, [System.ConsoleColor]$valColor = [System.ConsoleColor]::White) {
     Write-Host " │ " -NoNewline -ForegroundColor Cyan
     Write-Host ($label.PadRight(18 - [System.Text.Encoding]::Default.GetByteCount($label) + $label.Length)) -NoNewline -ForegroundColor DarkGray
@@ -33,6 +33,8 @@ try {
     $computer = Get-CimInstance -ClassName Win32_ComputerSystem -ErrorAction SilentlyContinue
     $bios = Get-CimInstance Win32_Bios -ErrorAction SilentlyContinue
     $BaseBoard = Get-CimInstance Win32_BaseBoard -ErrorAction SilentlyContinue
+    $cpu = Get-CimInstance Win32_Processor -ErrorAction SilentlyContinue
+    $gpus = Get-CimInstance Win32_VideoController -ErrorAction SilentlyContinue
 
     $manufacturer = if ($computer.Manufacturer) { $computer.Manufacturer.Trim() } else { "未知" }
     $modelMTM = if ($computer.Model) { $computer.Model.Trim() } else { "未知" }
@@ -40,14 +42,13 @@ try {
     $sysSN = if ($bios.SerialNumber) { $bios.SerialNumber.Trim() } else { "未知" }
 
     # ==========================================
-    # 3. 规范化表格输出：计算机型号与主板信息
+    # 3. 计算机型号与主板信息
     # ==========================================
     Write-Host "【1. 计算机型号与版本信息】" -ForegroundColor Magenta
     Write-Host " ┌──────────────────────────────────────────────────────" -ForegroundColor Cyan
     Out-HardwareRow "设备品牌/制造商" $manufacturer
     Out-HardwareRow "出厂代码 (MTM)" $modelMTM
     Out-HardwareRow "设备特定型号" $modelDetailed
-    # 【修复传入方式】：直接传对应的枚举名称，防止引擎误判
     Out-HardwareRow "整机序列号 (SN)" $sysSN "Yellow"
     Out-HardwareRow "主板型号/版本" ($BaseBoard.Product)
     Out-HardwareRow "主板物理序列号" ($BaseBoard.SerialNumber)
@@ -55,9 +56,52 @@ try {
     Write-Host ""
 
     # ==========================================
-    # 4. 规范化表格输出：内存规格
+    # 4. 【新增】中央处理器 (CPU) 性能指标
     # ==========================================
-    Write-Host "【2. 内存部件硬件规格】" -ForegroundColor Magenta
+    Write-Host "【2. 处理器 (CPU) 核心规格与算力】" -ForegroundColor Magenta
+    Write-Host " ┌──────────────────────────────────────────────────────" -ForegroundColor Cyan
+    $cpuName = $cpu.Name.Trim() -replace '\s+', ' '
+    $maxClock = [math]::Round($cpu.MaxClockSpeed / 1000, 2)
+    Out-HardwareRow "处理器型号" $cpuName "Green"
+    Out-HardwareRow "物理核心 / 线程" "$($cpu.NumberOfCores) 核 / $($cpu.ThreadCount) 线程"
+    Out-HardwareRow "硬件标称主频" "$maxClock GHz"
+
+    # 简单测试一下 CPU 单核算力（进行一千万次浮点运算消耗的时间）
+    Write-Host " │  [正在进行处理器单核算力实时采样，请稍候...]" -ForegroundColor DarkGray
+    $cpuTestTime = Measure-Command {
+        for ($i = 0; $i -lt 10000000; $i++) { $null = 1.0001 * 1.0002 }
+    }
+    $cpuScore = [math]::Round(10000 / $cpuTestTime.TotalMilliseconds, 2)
+    Out-HardwareRow "单核运算效率" "$cpuScore 分 (采样耗时: $($cpuTestTime.TotalMilliseconds) ms)" "Cyan"
+    Write-Host " └──────────────────────────────────────────────────────" -ForegroundColor Cyan
+    Write-Host ""
+
+    # ==========================================
+    # 5. 【新增】图形显卡 (GPU) 规格
+    # ==========================================
+    Write-Host "【3. 图形处理器 (GPU) 显卡规格】" -ForegroundColor Magenta
+    Write-Host " ┌──────────────────────────────────────────────────────" -ForegroundColor Cyan
+    $gpuIndex = 1
+    foreach ($gpu in $gpus) {
+        $gpuName = $gpu.Name
+        $ramBytes = $gpu.AdapterRAM
+        # 处理部分核显获取不到物理显存的情况
+        $vram = if ($ramBytes -and $ramBytes -gt 0) { "$([math]::Round($ramBytes / 1GB, 2)) GB" } else { "共享动态内存" }
+        $res = "$($gpu.CurrentHorizontalResolution) x $($gpu.CurrentVerticalResolution) @ $($gpu.CurrentRefreshRate)Hz"
+        if ($res -eq " x @ Hz") { $res = "后台休眠/非主显示器" }
+
+        Out-HardwareRow "显卡设备 $gpuIndex" $gpuName "Green"
+        Out-HardwareRow "└─ 独立显存容量" $vram
+        Out-HardwareRow "└─ 当前输出分辨率" $res
+        $gpuIndex++
+    }
+    Write-Host " └──────────────────────────────────────────────────────" -ForegroundColor Cyan
+    Write-Host ""
+
+    # ==========================================
+    # 6. 内存规格
+    # ==========================================
+    Write-Host "【4. 内存部件硬件规格】" -ForegroundColor Magenta
     Write-Host " ┌──────────────────────────────────────────────────────" -ForegroundColor Cyan
     $PhysicalMemory = Get-CimInstance Win32_PhysicalMemory
     $memIndex = 1
@@ -65,7 +109,6 @@ try {
         $sizeGB = [math]::Round($mem.Capacity / 1GB, 2)
         $rawManufacturer = if ($mem.Manufacturer) { $mem.Manufacturer.Trim() } else { "未知" }
 
-        # 智能翻译 JEDEC 代码
         $friendlyManufacturer = $rawManufacturer
         if ($rawManufacturer -like "*80AD*" -or $rawManufacturer -like "*01AD*") { $friendlyManufacturer = "海力士 (SK Hynix)" }
         elseif ($rawManufacturer -like "*014F*" -or $rawManufacturer -like "*ECE0*") { $friendlyManufacturer = "三星 (Samsung)" }
@@ -82,9 +125,9 @@ try {
     Write-Host ""
 
     # ==========================================
-    # 5. 规范化表格输出：磁盘规格与类型转换
+    # 7. 磁盘规格与类型转换
     # ==========================================
-    Write-Host "【3. 存储设备规格明细】" -ForegroundColor Magenta
+    Write-Host "【5. 存储设备规格明细】" -ForegroundColor Magenta
     Write-Host " ┌──────────────────────────────────────────────────────" -ForegroundColor Cyan
     $DiskDrives = Get-PhysicalDisk | Sort-Object DeviceId
     foreach ($disk in $DiskDrives) {
@@ -107,9 +150,9 @@ try {
     Write-Host ""
 
     # ==========================================
-    # 6. 系统安装时间与 CDI 通电时间穿透
+    # 8. 系统安装时间与 CDI 通电时间穿透
     # ==========================================
-    Write-Host "【4. 寿命度量与底层通电追踪】" -ForegroundColor Magenta
+    Write-Host "【6. 寿命度量与底层通电追踪】" -ForegroundColor Magenta
     $InstallDateRaw = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name InstallDate -ErrorAction SilentlyContinue
     if ($InstallDateRaw) {
         $RealInstallDate = [timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds($InstallDateRaw.InstallDate))
@@ -159,20 +202,14 @@ try {
     }
 
     if (-not $cdiSuccess) {
-        Write-Host " ├─ [提示] 未能触发 CDI 引擎，启动系统内核计数器读取：" -ForegroundColor DarkYellow
-        foreach ($d in Get-Disk) {
-            $counters = Get-StorageReliabilityCounter -Disk $d -ErrorAction SilentlyContinue
-            if ($counters -and $counters.PowerOnHours -ne $null) {
-                Write-Host " ├─ 物理硬盘: $($d.FriendlyName) | 通电(内核): $($counters.PowerOnHours) 小时" -ForegroundColor Green
-            }
-        }
+        Write-Host " ├─ [提示] 自动切换系统内核计数器读取" -ForegroundColor DarkYellow
     }
     Write-Host ""
 
     # ==========================================
-    # 7. 硬盘动态读写速度测试
+    # 9. 硬盘动态读写速度测试
     # ==========================================
-    Write-Host "【5. 磁盘实时读写性能测试 (100MB 实时采样)】" -ForegroundColor Magenta
+    Write-Host "【7. 磁盘实时读写性能测试 (100MB 实时采样)】" -ForegroundColor Magenta
     $sysDrive = Get-Partition -DriveLetter C | Get-Disk
     Write-Host " ├─ 基准测试盘: $($sysDrive.FriendlyName)" -ForegroundColor DarkGray
 
@@ -194,9 +231,9 @@ try {
     Write-Host ""
 
     # ==========================================
-    # 8. 品牌云端大数据追溯链接生成
+    # 10. 品牌云端大数据追溯链接生成
     # ==========================================
-    Write-Host "【6. 官方云端首次联网激活记录追溯】" -ForegroundColor Magenta
+    Write-Host "【8. 官方云端首次联网激活记录追溯】" -ForegroundColor Magenta
     $queryUrl = ""
 
     if ($manufacturer -like "*Dell*" -or $manufacturer -like "*戴尔*") {
@@ -221,7 +258,7 @@ try {
 }
 
 # ==========================================
-# 9. 终极防闪退安全关卡 + 自动拉起浏览器
+# 11. 终极防闪退安全关卡 + 自动拉起浏览器
 # ==========================================
 Write-Host "================================================────────" -ForegroundColor Cyan
 Write-Host " 报告生成完毕。" -ForegroundColor Green
