@@ -1,0 +1,11 @@
+{
+  "title": "AI",
+  "description": "AI 相关内容",
+  "icon": "Gpu",
+  "root": true,
+  "color": "hsl(82, 100%, 36%)",
+  "defaultOpen": false,
+  "pages": [
+    "index",
+  ]
+}

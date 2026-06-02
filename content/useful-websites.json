@@ -2,7 +2,13 @@
   {
     "name": "End of Life",
     "url": "https://endoflife.date/",
-    "description": "追踪各种软件、语言、框架的 EOL（End of Life）日期和版本支持状态",
+    "description": "追踪各种软件、语言、框架的 EOL（End of Life）日期和版本支持状态。",
     "icon": "https://endoflife.date/assets/logo.svg"
+  },
+  {
+    "name": "vLLM",
+    "url": "https://vllm.ai/",
+    "description": "The High-Throughput and Memory-Efficient inference and serving engine for LLMs.",
+    "icon": "https://vllm.ai/vLLM-Logo.svg"
   }
 ]
