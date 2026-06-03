@@ -4,6 +4,23 @@ description: K8S 的安装教程
 ---
 
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+
+## 软件准备
+
+安装 k8s 之前我们需要提前下载好相应的组件，各个组件版本与下载地址如下所示：
+
+<Accordions type="single">
+    <Accordion title="k8s 版本：1.36.0">
+        | 组件名称 | 组件版本 | 组件下载地址 |
+        |:----:|:------:|:-----:|
+        | etcd | | |
+        | runc | v1.4.2 | https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.amd64 |
+        | CNI plugins | | |
+        | containerd | | |
+    </Accordion>
+</Accordions>
+
 
 ## 服务器准备
 
@@ -22,11 +39,9 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 |:----------------:|:-----------------------------------------------------------------------------------:|:----:|
 | Rocky Linux 10.2 | https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.2-x86_64-dvd1.iso |  是   |
 
-### 准备工作
+##### 更新系统依赖 [step]
 
-在安装 K8s 之前，还需要对服务器进行如下的配置。
-
-#### 更新系统依赖 [step]
+在安装 K8s 之前，还需要对服务器进行如下的配置：
 
 <Tabs groupId="os" items={['Rocky Linux', 'Ubuntu Linux']}>
     <Tab value="Rocky Linux">
@@ -43,7 +58,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
     </Tab>
 </Tabs>
 
-#### 安装常用软件包 [step]
+##### 安装常用软件包 [step]
 
 <Tabs groupId="os" items={['Rocky Linux', 'Ubuntu Linux']}>
     <Tab value="Rocky Linux">
