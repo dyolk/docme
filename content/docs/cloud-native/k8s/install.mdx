@@ -39,7 +39,7 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 |:----------------:|:-----------------------------------------------------------------------------------:|:----:|
 | Rocky Linux 10.2 | https://download.rockylinux.org/pub/rocky/10/isos/x86_64/Rocky-10.2-x86_64-dvd1.iso |  是   |
 
-##### 更新系统依赖 [step]
+### 更新系统依赖 [step]
 
 在安装 K8s 之前，还需要对服务器进行如下的配置：
 
@@ -58,12 +58,13 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
     </Tab>
 </Tabs>
 
-##### 安装常用软件包 [step]
+### 安装常用软件包 [step]
 
 <Tabs groupId="os" items={['Rocky Linux', 'Ubuntu Linux']}>
     <Tab value="Rocky Linux">
         ```bash
-        dnf install -y gcc gcc-c++ make
+        dnf install -y gcc gcc-c++ make telnet htop net-tools \
+            wget curl
         ```
     </Tab>
     <Tab value="Ubuntu Linux">
@@ -72,3 +73,9 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
         ```
     </Tab>
 </Tabs>
+
+### 安装 k8s 所需依赖 [step]
+
+#### 安装 runc [step]
+
+将刚才下载的 `runc.tar.gz` 二进制包上传至各个服务器的 `/usr/local/src` 目录下。
