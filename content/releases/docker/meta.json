@@ -1,6 +1,7 @@
 {
   "title": "Docker",
   "description": "Docker 版本追踪与 Docker Compose 的支持矩阵",
+  "show": true,
   "order": 2,
   "logo": "/images/logo-docker.svg",
   "repo": "moby/moby",

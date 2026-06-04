@@ -50,11 +50,8 @@ function getBlogMenuItems(): { text: string; url: string; description: string; i
     return a.text.localeCompare(b.text);
   });
 
-  // 取最新 3 篇 + 末尾 "全部文章" 链接
-  const latest = items.slice(0, 3).map(({ text, url, description }) => ({ text, url, description, icon: <BookOpen className="size-4" /> }));
-  latest.push({ text: '全部文章', url: '/blog', description: '查看所有博客文章', icon: <Newspaper className="size-4" /> });
-
-  return latest;
+  // 只取最新 3 篇
+  return items.slice(0, 3).map(({ text, url, description }) => ({ text, url, description, icon: <BookOpen className="size-4" /> }));
 }
 
 /** 从 content/releases/ 目录动态生成版本追踪菜单项 */
@@ -74,6 +71,7 @@ function getReleaseMenuItems(): { text: string; url: string; description: string
 
       try {
         const meta = JSON.parse(readFileSync(metaPath, 'utf-8'));
+        if (meta.show !== true) continue; // 只展示标记了 show: true 的项目
         title = meta.title ?? entry.name;
         description = meta.description ?? '';
         order = meta.order ?? 999;
@@ -93,7 +91,11 @@ function getReleaseMenuItems(): { text: string; url: string; description: string
   }
 
   items.sort((a, b) => b.order - a.order);
-  return items.map(({ text, url, description }) => ({ text, url, description, icon: <Package className="size-4" /> }));
+
+  // 取最多 6 个展示
+  return items.slice(0, 6).map(({ text, url, description }) => ({ text, url, description, icon: <Package className="size-4" /> }));
+
+  return latest;
 }
 
 export function baseOptions(): BaseLayoutProps {

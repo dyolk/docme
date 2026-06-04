@@ -19,11 +19,13 @@ export interface ResourceFile {
   size: string;
   rawSize: number;
   content: string;
+  isBinary?: boolean;
   lastUpdated: string;
 }
 
 export interface ResourceDirectory {
   name: string;
+  fullPath?: string;
   readme: string;
   files: ResourceFile[];
   lastUpdated: string;
@@ -461,7 +463,18 @@ function DirectoryView({
                   }
                   rightMeta={file.lastUpdated}
                   rightMeta2={file.size}
-                  onClick={() => onNavigate({ type: 'file', path, fileIndex })}
+                  onClick={() => {
+                    if (file.isBinary && dir.fullPath) {
+                      const a = document.createElement('a');
+                      a.href = '/resources/' + dir.fullPath + '/' + file.fullName;
+                      a.download = file.fullName;
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    } else {
+                      onNavigate({ type: 'file', path, fileIndex });
+                    }
+                  }}
                 />
               );
             });

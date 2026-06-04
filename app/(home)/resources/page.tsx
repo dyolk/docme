@@ -27,7 +27,7 @@ function formatDate(ms: number): string {
   return new Date(ms).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' });
 }
 
-function scanDirectory(dirPath: string, name: string): { dir: ResourceDirectory | null; mtime: number } {
+function scanDirectory(dirPath: string, name: string, parentPath?: string): { dir: ResourceDirectory | null; mtime: number } {
   const entries = readdirSync(dirPath, { withFileTypes: true });
 
   let readme = '';
@@ -41,7 +41,8 @@ function scanDirectory(dirPath: string, name: string): { dir: ResourceDirectory 
     const entryPath = join(dirPath, entry.name);
 
     if (entry.isDirectory()) {
-      const child = scanDirectory(entryPath, entry.name);
+      const childPath = parentPath ? `${parentPath}/${name}` : name;
+      const child = scanDirectory(entryPath, entry.name, childPath);
       if (child.dir) {
         children.push(child.dir);
         dirLatestMtime = Math.max(dirLatestMtime, child.mtime);
@@ -59,8 +60,10 @@ function scanDirectory(dirPath: string, name: string): { dir: ResourceDirectory 
       continue;
     }
 
-    const content = readFileSync(entryPath, 'utf-8');
     const parsed = parse(entry.name);
+    // 二进制/产物文件：不读取内容，直接标记为可下载
+    const isBinary = ['.zip', '.tar', '.gz', '.rar', '.7z', '.exe', '.msi', '.dmg', '.pkg', '.deb', '.rpm', '.apk', '.ipa'].includes(parsed.ext?.toLowerCase() ?? '');
+    const content = isBinary ? '' : readFileSync(entryPath, 'utf-8');
 
     resourceFiles.push({
       name: parsed.name,
@@ -68,14 +71,16 @@ function scanDirectory(dirPath: string, name: string): { dir: ResourceDirectory 
       size: formatSize(stats.size),
       rawSize: stats.size,
       content,
+      isBinary,
       lastUpdated: formatDate(stats.mtimeMs),
     });
   }
 
-  if (resourceFiles.length > 0 || readme || children.length > 0) {
+    if (resourceFiles.length > 0 || readme || children.length > 0) {
     return {
       dir: {
         name,
+        fullPath: parentPath ? `${parentPath}/${name}` : name,
         readme,
         files: resourceFiles.sort((a, b) => a.fullName.localeCompare(b.fullName)),
         lastUpdated: formatDate(dirLatestMtime),
