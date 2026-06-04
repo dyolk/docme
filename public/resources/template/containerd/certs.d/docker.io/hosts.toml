@@ -1,0 +1,4 @@
+server = "https://docker.io"
+
+[host."https://dockerproxy.example.com"]
+    capabilities = ["pull","resolve"]
