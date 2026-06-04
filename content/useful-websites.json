@@ -10,5 +10,11 @@
     "url": "https://vllm.ai/",
     "description": "The High-Throughput and Memory-Efficient inference and serving engine for LLMs.",
     "icon": "https://vllm.ai/vLLM-Logo.svg"
+  },
+  {
+    "name": "Download Kubernetes",
+    "url": "https://www.downloadkubernetes.com/",
+    "description": "快速下载 k8s 二进制包",
+    "icon": "https://www.downloadkubernetes.com/favicon.ico"
   }
 ]

@@ -11,16 +11,18 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 安装 k8s 之前我们需要提前下载好相应的组件，各个组件版本与下载地址如下所示：
 
 <Accordions type="single">
-    <Accordion title="k8s 版本：1.36.0">
-        | 组件名称 | 组件版本 | 组件下载地址 |
-        |:----:|:------:|:-----:|
-        | etcd | | |
-        | runc | v1.4.2 | https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.amd64 |
-        | CNI plugins | | |
-        | containerd | | |
+    <Accordion title="k8s 版本：1.36.1">
+        |    组件名称     |  组件版本   |                                   组件下载地址                                   |
+        |:-----------:|:-------:|:--------------------------------------------------------------------------:|
+        |    etcd     |         |                                                                            |
+        |    runc     | v1.4.2  | https://github.com/opencontainers/runc/releases/download/v1.4.2/runc.amd64 |
+        | CNI plugins | v1.9.1  |                                                                            |
+        | containerd  | v2.1.8  |                                                                            |
+        |   nerdctl   | v2.3.1  |                                                                            |
+        |   kubectl   | v1.36.1 |             https://dl.k8s.io/v1.36.1/bin/linux/amd64/kubectl              |
+        |   kubelet   | v1.36.1 |             https://dl.k8s.io/v1.36.1/bin/linux/amd64/kubelet              |
     </Accordion>
 </Accordions>
-
 
 ## 服务器准备
 
@@ -64,7 +66,7 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
     <Tab value="Rocky Linux">
         ```bash
         dnf install -y gcc gcc-c++ make telnet htop net-tools \
-            wget curl
+            wget curl tar zip unzip
         ```
     </Tab>
     <Tab value="Ubuntu Linux">
@@ -76,6 +78,10 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 
 ### 安装 k8s 所需依赖 [step]
 
-#### 安装 runc [step]
+#### 安装 containerd [step]
 
-将刚才下载的 `runc.tar.gz` 二进制包上传至各个服务器的 `/usr/local/src` 目录下。
+1. 将下载好的 `containerd-2.1.8-linux-amd64.tar.gz` 文件上传至各个服务器的 `/usr/local/src` 目录下。
+2. 执行如下命令解压文件至特定位置
+    ```bash
+    tar Czxvf /usr/local containerd-2.1.8-linux-amd64.tar.gz
+    ```
