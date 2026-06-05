@@ -65,8 +65,9 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 <Tabs groupId="os" items={['Rocky Linux', 'Ubuntu Linux']}>
     <Tab value="Rocky Linux">
         ```bash
-        dnf install -y gcc gcc-c++ make telnet htop net-tools \
-            wget curl tar zip unzip
+        dnf install -y gcc* make telnet htop net-tools \
+            wget curl tar zip unzip vim-enhanced bash-completion \
+            lrzsz sysstat iftop dstat lsof chkconfig git
         ```
     </Tab>
     <Tab value="Ubuntu Linux">
